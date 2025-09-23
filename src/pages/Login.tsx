@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,6 +12,7 @@ type FormData = yup.InferType<typeof loginSchema>;
 const Login: React.FC = () => {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+  const [loginError, setLoginError] = useState<boolean | null>(null);
 
   const {
     register, // 입력 필드를 폼에 등록하는 함수
@@ -43,7 +44,12 @@ const Login: React.FC = () => {
         navigate('/');
       }
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error) && error.response) {
+        // 아이디, 비밀번호 일치 안함
+        if (error.response.status === 401) {
+          setLoginError(true);
+        }
+      }
     }
   };
   return (
@@ -105,6 +111,8 @@ const Login: React.FC = () => {
                 {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
               </div>
             </div>
+
+            {loginError && <p className='text-red-500'>아이디 혹은 비밀번호가 일치하지 않습니다.</p>}
 
             <div>
               <button

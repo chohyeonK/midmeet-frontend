@@ -36,10 +36,7 @@ const Login: React.FC = () => {
       if (response.status === 200) {
         // 회원가입 성공
         // 세션 저장 + 환영 페이지 이동
-        const user = {
-          id: data.userId,
-        };
-        const { token } = response.data;
+        const { user, token } = response.data;
         login(user, token);
         navigate('/');
       }

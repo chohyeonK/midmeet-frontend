@@ -2,17 +2,12 @@ import { create } from 'zustand';
 
 // 사용자 데이터의 타입을 정의합니다.
 // 서버 응답과 일치해야 합니다.
-// interface User {
-//   uid: string;
-//   id: string;
-//   email: string;
-//   name: string;
-//   phone: string;
-// }
-
-// 로그인, 회원가입 타입이 다름 논의 필요!!!!!!!!!!!!!!
 interface User {
+  uid: string;
   id: string;
+  email: string;
+  name: string;
+  phone: string;
 }
 
 // 인증 상태의 타입을 정의합니다.

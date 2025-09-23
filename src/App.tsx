@@ -1,20 +1,51 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import './App.css';
+import Home from './pages/Home';
+import SignUp from './pages/SignUp';
+import Login from './pages/Login';
+import Layout from './components/layouts/Layout';
+import SignUpSuccess from './pages/SignUpSuccess';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div className='flex min-h-screen items-center justify-center bg-green-500 text-white text-4xl font-bold'>
-        Tailwind v4 적용 완료 🎉
-      </div>
-      <div>
-        <h1>Hello</h1>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path='/signup'
+          element={
+            <Layout>
+              <SignUp />
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path='/signup/success'
+          element={
+            <Layout>
+              <SignUpSuccess />
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path='/login'
+          element={
+            <Layout>
+              <Login />
+            </Layout>
+          }
+        ></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -1,1 +1,6 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+  /* 새로운 'mint' 색상에 대한 테마 변수 정의 */
+  --color-mint-500: #00c48c;
+}

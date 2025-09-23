@@ -54,7 +54,7 @@ const Login: React.FC = () => {
     <div>
       {/* <p className='text-4xl'>로그인</p> */}
 
-      <div className='flex min-h-full flex-col justify-center px-6 py-12 lg:px-8'>
+      <div className='flex min-h-full flex-col justify-center pb-22 px-4'>
         <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
           <h2 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-white'>로그인</h2>
         </div>
@@ -103,7 +103,7 @@ const Login: React.FC = () => {
                   type='password'
                   name='password'
                   id='password'
-                  className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                  className='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                   required
                 />
                 {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
@@ -113,7 +113,7 @@ const Login: React.FC = () => {
             <div>
               <button
                 type='submit'
-                className='flex w-full justify-center rounded-md bg-mint-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500'
+                className='flex w-full justify-center rounded-md bg-mint-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500'
               >
                 로그인
               </button>
@@ -122,9 +122,9 @@ const Login: React.FC = () => {
 
           <p className='mt-10 text-center text-sm/6 text-gray-500 dark:text-gray-400'>
             아직 회원이 아니신가요?{' '}
-            <a href='#' className='font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'>
+            <Link to='/signup' className='font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'>
               회원가입
-            </a>
+            </Link>
           </p>
         </div>
       </div>

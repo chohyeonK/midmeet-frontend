@@ -87,9 +87,9 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <section className='bg-gray-50 dark:bg-gray-900'>
-      <div className='flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0'>
-        <div className='flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white'>회원가입</div>
+    <section className=''>
+      <div className='flex flex-col items-center justify-center px-6 mx-auto'>
+        <div className='flex items-center mt-10 mb-6 text-2xl font-semibold text-gray-900 dark:text-white'>회원가입</div>
         <div className='w-full bg-white rounded-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
             <form className='space-y-4 md:space-y-6' action='#' method='POST' onSubmit={handleSubmit(onSubmit)}>
@@ -105,7 +105,6 @@ const SignUp: React.FC = () => {
                     type='userId'
                     name='userId'
                     id='userId'
-                    // flex-1 클래스를 추가하여 남은 공간을 모두 채웁니다.
                     className='flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     placeholder='user1'
                     required

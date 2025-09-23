@@ -15,9 +15,13 @@ type FormData = yup.InferType<typeof signUpSchema>;
 const SignUp: React.FC = () => {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+
   const {
     register, // 입력 필드를 폼에 등록하는 함수
     handleSubmit, // 폼 제출을 처리하는 함수
+    getValues, // 입력 필드 값을 가져오는 함수
+    trigger, // 특정 필드의 유효성 검사를 수동으로 실행
+    resetField, // 특정 필드 초기화하는 함수
     formState: { errors }, // 유효성 검사 에러 객체
   } = useForm<FormData>({
     resolver: yupResolver(signUpSchema), // Yup 스키마를 리졸버로 연결
@@ -53,6 +57,35 @@ const SignUp: React.FC = () => {
     }
   };
 
+  const handleUserIdCheck = async () => {
+    const isValid = await trigger('userId');
+
+    if (isValid) {
+      checkUserIdDuplication();
+    }
+  };
+
+  const checkUserIdDuplication = async () => {
+    // 아이디 중복 확인 메소드
+    const userId = getValues('userId');
+    try {
+      const response = await axios.get(`http://localhost:3000/user/check-id?id=${userId}`);
+
+      if (response.status === 200) {
+        const { available } = response.data;
+
+        if (available) {
+          alert('사용 가능한 아이디입니다.');
+        } else {
+          alert('사용할 수 없는 아이디입니다.');
+          resetField('userId');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <section className='bg-gray-50 dark:bg-gray-900'>
       <div className='flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0'>
@@ -78,7 +111,8 @@ const SignUp: React.FC = () => {
                     required
                   />
                   <button
-                    type='submit'
+                    type='button'
+                    onClick={handleUserIdCheck}
                     className='flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500'
                   >
                     중복확인

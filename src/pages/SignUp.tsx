@@ -89,7 +89,7 @@ const SignUp: React.FC = () => {
   return (
     <section className=''>
       <div className='flex flex-col items-center justify-center px-6 mx-auto'>
-        <div className='flex items-center mt-10 mb-6 text-2xl font-semibold text-gray-900 dark:text-white'>회원가입</div>
+        <div className='flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white'>회원가입</div>
         <div className='w-full bg-white rounded-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
             <form className='space-y-4 md:space-y-6' action='#' method='POST' onSubmit={handleSubmit(onSubmit)}>
@@ -102,22 +102,22 @@ const SignUp: React.FC = () => {
                 <div className='flex items-center justify-between space-x-4'>
                   <input
                     {...register('userId')}
-                    type='userId'
+                    type='text'
                     name='userId'
                     id='userId'
-                    className='flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className='grow-5 rounded-md bg-gray-50 border border-gray-300 px-3 py-1.5 text-sm font-semibold text-gray-900 placeholder:text-gray-400 focus:ring-primary-600 focus:border-primary-600 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     placeholder='user1'
                     required
                   />
                   <button
                     type='button'
                     onClick={handleUserIdCheck}
-                    className='flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500'
+                    className='w-28 flex-shrink-0 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500 flex items-center justify-center'
                   >
                     중복확인
                   </button>
                 </div>
-                {errors.userId && <p className='text-red-500'>{errors.userId.message}</p>}
+                {errors.userId && <p className='text-red-500 text-sm mt-1'>{errors.userId.message}</p>}
               </div>
               <div>
                 <div className='flex items-center justify-between'>
@@ -125,25 +125,17 @@ const SignUp: React.FC = () => {
                     이메일
                   </label>
                 </div>
-
                 <div className='flex items-center justify-between space-x-4'>
                   <input
                     {...register('email')}
                     type='email'
                     name='email'
                     id='email'
-                    className='flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className='grow-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     placeholder='name@company.com'
-                    required
                   />
-                  <button
-                    type='submit'
-                    className='flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500'
-                  >
-                    인증
-                  </button>
                 </div>
-                {errors.email && <p className='text-red-500'>{errors.email.message}</p>}
+                {errors.email && <p className='text-red-500 text-sm mt-1'>{errors.email.message}</p>}
               </div>
               <div>
                 <div className='flex items-center justify-between'>

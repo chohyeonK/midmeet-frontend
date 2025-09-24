@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
 
 const Header: React.FC = ({}) => {
-  const { isLoggedIn, user, logout } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // user가 null이 아니면 로그인 상태로 간주
+  const isLoggedIn = !!user;
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -21,30 +25,29 @@ const Header: React.FC = ({}) => {
         </div>
 
         {/* 로그인/회원가입 버튼 (데스크톱) */}
-        <div className='hidden md:flex flex-grow items-center justify-end space-x-4'>
+        <div className='md:block hidden'>
           {isLoggedIn ? (
-            <>
-              <span className='text-gray-600'>안녕하세요, {user?.name}님!</span>
+            <div className='flex items-center space-x-4'>
+              <span className='text-gray-600'>안녕하세요, {user?.name || '손님'}님!</span>
               <Link to='/mypage' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
                 마이페이지
               </Link>
               <button onClick={logout} className='bg-red-500 text-white py-2 px-4 rounded-md'>
                 로그아웃
               </button>
-            </>
+            </div>
           ) : (
-            <>
+            <div className='flex items-center space-x-4'>
               <Link to='/login' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
                 로그인
               </Link>
               <Link to='/signup' className='ml-4 text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-md'>
                 회원가입
               </Link>
-            </>
+            </div>
           )}
         </div>
 
-        {/* 모바일 메뉴 버튼 (모바일) */}
         <div className='md:hidden'>
           <button className='text-gray-600 hover:text-gray-900' onClick={handleMenuToggle}>
             <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>

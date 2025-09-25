@@ -20,6 +20,7 @@ interface AuthState {
   login: (user: User, token: string) => void; // 로그인 액션
   logout: () => void; // 로그아웃 액션
   initializeAuth: () => void;
+  updateUser: (user: User) => void; // 회원정보 수정
 }
 
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
@@ -50,6 +51,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }),
       localStorage.removeItem('token'));
   },
+
+  updateUser: (newUserData) =>
+    set((state) => ({
+      // Parentheses around the object literal
+      user: {
+        ...state.user,
+        ...newUserData,
+      },
+    })),
 
   initializeAuth: async () => {
     const token = getTokenFromStorage();

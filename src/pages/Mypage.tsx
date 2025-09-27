@@ -23,45 +23,39 @@ const getTokenFromStorage = () => localStorage.getItem('token') || null;
 
 const Mypage: React.FC = () => {
   const { user, updateUser } = useAuthStore();
-
   const {
-    register, // 입력 필드를 폼에 등록하는 함수
-    handleSubmit, // 폼 제출을 처리하는 함수
-    formState: { errors }, // 유효성 검사 에러 객체
-    watch,
+    register,
+    handleSubmit,
+    formState: { errors },
     reset,
   } = useForm<FormData>({
-    resolver: yupResolver(mypageSchema), // Yup 스키마를 리졸버로 연결
+    resolver: yupResolver(mypageSchema),
     defaultValues: {
-      email: '', // 새 이메일은 비워둠
+      email: '',
+      currentPassword: '',
       password: '',
       confirmPassword: '',
-      userName: user?.name || '',
-      phoneNumber: user?.phone || '',
+      userName: '',
+      phoneNumber: '',
     },
   });
-
-  useEffect(() => {
-    if (user) {
-      reset({
-        email: '',
-        password: '',
-        confirmPassword: '',
-        userName: '',
-        phoneNumber: '',
-      });
-    }
-  }, [user, reset]);
 
   const handleSignup: SubmitHandler<FormData> = async (data: FormData) => {
     const token = getTokenFromStorage();
     const payload = {
-      email: data.email,
-      name: data.userName,
-      phone: '+82' + data.phoneNumber,
+      email: user?.email,
+      name: user?.name,
+      phone: user?.phone,
     };
 
-    console.log(payload);
+    console.log(data);
+
+    if (data.email) payload.email = data.email;
+    if (data.userName) payload.name = data.userName;
+    if (data.phoneNumber) payload.phone = '+82' + data.phoneNumber;
+
+    console.log(payload, token);
+
     if (token) {
       try {
         const response = await axios.patch('http://localhost:3000/user/user-info', payload, {
@@ -76,10 +70,23 @@ const Mypage: React.FC = () => {
           updateUser(response.data.user);
         }
       } catch (error) {
+        // console.log(error);
         alert('회원 정보 수정에 실패했습니다. 다시 시도해주세요.');
       }
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        userName: '',
+        phoneNumber: '',
+      });
+    }
+  }, [user, reset]);
 
   // user가 null일 경우, 로딩 메시지를 반환합니다.
   if (!user) {

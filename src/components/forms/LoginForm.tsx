@@ -39,7 +39,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loginError, setLoginErr
         <div>
           <div className='flex items-center justify-between'>
             <Label htmlFor='userId' LabelName='아이디' />
-            <Link to='/login' className='text-sm font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'>
+            <Link to='/find-id' className='text-sm font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'>
               아이디 찾기
             </Link>
           </div>
@@ -51,7 +51,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loginError, setLoginErr
         <div>
           <div className='flex items-center justify-between'>
             <Label htmlFor='userPasswd' LabelName='비밀번호' />
-            <Link to='/login' className='text-sm font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'>
+            <Link to='/find-passwd' className='text-sm font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'>
               비밀번호 찾기
             </Link>
           </div>

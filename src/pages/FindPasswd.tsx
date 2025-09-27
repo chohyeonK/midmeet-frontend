@@ -6,11 +6,11 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
 import { useAuthStore } from '../store/useAuthStore';
-import { findIdSchema } from '../validation/authSchema';
+import { findPasswdSchema } from '../validation/authSchema';
 
-type FormData = yup.InferType<typeof findIdSchema>;
+type FormData = yup.InferType<typeof findPasswdSchema>;
 
-const FindId: React.FC = () => {
+const FindPasswd: React.FC = () => {
   const {
     register, // 입력 필드를 폼에 등록하는 함수
     handleSubmit, // 폼 제출을 처리하는 함수
@@ -19,10 +19,16 @@ const FindId: React.FC = () => {
     resetField, // 특정 필드 초기화하는 함수
     formState: { errors }, // 유효성 검사 에러 객체
   } = useForm<FormData>({
-    resolver: yupResolver(findIdSchema), // Yup 스키마를 리졸버로 연결
+    resolver: yupResolver(findPasswdSchema), // Yup 스키마를 리졸버로 연결
   });
 
   const inputsConfig = [
+    {
+      name: 'userId',
+      label: '아이디',
+      type: 'text',
+      placeholder: '아이디를 입력하세요.',
+    },
     {
       name: 'email',
       label: '이메일',
@@ -34,33 +40,34 @@ const FindId: React.FC = () => {
   const buttonConfig = [
     {
       type: 'submit',
-      label: '아이디 찾기',
+      label: '비밀번호 찾기',
       className: 'w-full',
     },
   ] as const;
 
   const [result, setResult] = useState<{ type: 'id' | 'password'; result: string } | null>(null);
 
-  const handleFindId: SubmitHandler<FormData> = async () => {
-    const email = getValues('email');
-    try {
-      const response = await axios.get(`http://localhost:3000/user/find-id?email=${email}`);
-      if (response.status === 200) {
-        setResult({
-          type: 'id',
-          result: response.data.id,
-        });
-      }
-    } catch (error) {
-      // 없는 계정이거나 잘못 입력한 계정일때 처리
-    }
+  const handleFindPasswd: SubmitHandler<FormData> = async () => {
+    // const email = getValues('email');
+    // try {
+    //   const response = await axios.get(`http://localhost:3000/user/find-id?email=${email}`);
+    //   if (response.status === 200) {
+    //     setResult({
+    //       type: 'id',
+    //       result: response.data.id,
+    //     });
+    //   }
+    // } catch (error) {}
+    console.log('비밀번호 찾기');
   };
 
   return (
-    <FormCard title='아이디 찾기'>
-      <FindForm onSubmit={handleFindId} handleSubmit={handleSubmit} inputs={inputsConfig} buttons={buttonConfig} register={register} errors={errors} ResultProps={result} />
-    </FormCard>
+    <>
+      <FormCard title='비밀번호 찾기'>
+        <FindForm onSubmit={handleFindPasswd} handleSubmit={handleSubmit} inputs={inputsConfig} buttons={buttonConfig} register={register} errors={errors} ResultProps={result} />
+      </FormCard>
+    </>
   );
 };
 
-export default FindId;
+export default FindPasswd;

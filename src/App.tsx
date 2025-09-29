@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Layout from './components/layouts/Layout';
-import SignUpSuccess from './pages/SignUpSuccess';
+import SuccessSignUp from './pages/SuccessSignUp';
 import Mypage from './pages/Mypage';
 import MypageHistory from './pages/MypageHistory';
 import NotFound from './pages/NotFound';
@@ -36,13 +36,13 @@ function App() {
         <Route element={<Layout />}>
           <Route path='/' element={<Home />} />
           <Route path='/signup' element={<SignUp />} />
+          <Route path='/signup/success' element={<SuccessSignUp />} />
           <Route path='/login' element={<Login />} />
           <Route path='/find-id' element={<FindId />} />
           <Route path='/find-passwd' element={<FindPasswd />} />
           <Route path='/reset-passwd' element={<ResetPasswd />} />
           <Route path='/reset-passwd/success' element={<SuccessPasswd />} />
           <Route element={<PrivateRoute />}>
-            <Route path='/signup/success' element={<SignUpSuccess />} />
             <Route path='/mypage' element={<Mypage />} />
             <Route path='/mypage/history' element={<MypageHistory />} />
           </Route>

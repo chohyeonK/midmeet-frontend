@@ -45,20 +45,34 @@ const FindPasswd: React.FC = () => {
     },
   ] as const;
 
-  const [result, setResult] = useState<{ type: 'id' | 'password'; result: string } | null>(null);
+  const [result, setResult] = useState<{ result: string } | null>(null);
 
-  const handleFindPasswd: SubmitHandler<FormData> = async () => {
-    // const email = getValues('email');
-    // try {
-    //   const response = await axios.get(`http://localhost:3000/user/find-id?email=${email}`);
-    //   if (response.status === 200) {
-    //     setResult({
-    //       type: 'id',
-    //       result: response.data.id,
-    //     });
-    //   }
-    // } catch (error) {}
-    console.log('비밀번호 찾기');
+  const handleFindPasswd: SubmitHandler<FormData> = async (data: FormData) => {
+    const payload = {
+      id: data.userId,
+      email: data.email,
+    };
+
+    console.log(payload);
+
+    try {
+      const response = await axios.post('http://localhost:3000/user/reset-password', payload);
+      console.log(response);
+      if (response.status === 201) {
+        setResult({
+          result: '비밀번호 재등록 메일을 보냈습니다. \n메일함을 확인해주세요.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 404) {
+          setResult({
+            result: '해당 사용자가 없습니다.',
+          });
+        }
+      }
+    }
   };
 
   return (

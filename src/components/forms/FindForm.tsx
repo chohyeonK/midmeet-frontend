@@ -34,7 +34,7 @@ interface FindFormProps<T extends FieldValues> {
   errors: FieldErrors<T>;
   onSubmit: SubmitHandler<T>;
   handleSubmit: UseFormHandleSubmit<T>;
-  ResultProps: ResultProps | null;
+  ResultProps?: ResultProps | null;
 }
 
 const FindForm = <T extends FieldValues>({ inputs, buttons, register, errors, onSubmit, handleSubmit, ResultProps }: FindFormProps<T> & { handleSubmit: UseFormHandleSubmit<T> }) => {
@@ -62,13 +62,9 @@ const FindForm = <T extends FieldValues>({ inputs, buttons, register, errors, on
         <>
           <hr className='h-px my-8 bg-gray-200 border-0 dark:bg-gray-700' />
           <div className='p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400' role='alert'>
-            {ResultProps.type === 'id' && <span className='font-medium'>아이디는 {ResultProps.result}입니다.</span>}
-            {ResultProps.type === 'password' && (
-              <span className='font-medium'>
-                비밀번호 재등록 메일을 보냈습니다. <br />
-                메일함을 확인해주세요.{' '}
-              </span>
-            )}
+            <span className='font-medium' style={{ whiteSpace: 'pre-line' }}>
+              {ResultProps.result}
+            </span>
           </div>
           <div></div>
         </>

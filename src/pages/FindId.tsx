@@ -39,7 +39,7 @@ const FindId: React.FC = () => {
     },
   ] as const;
 
-  const [result, setResult] = useState<{ type: 'id' | 'password'; result: string } | null>(null);
+  const [result, setResult] = useState<{ result: string } | null>(null);
 
   const handleFindId: SubmitHandler<FormData> = async () => {
     const email = getValues('email');
@@ -47,12 +47,20 @@ const FindId: React.FC = () => {
       const response = await axios.get(`http://localhost:3000/user/find-id?email=${email}`);
       if (response.status === 200) {
         setResult({
-          type: 'id',
-          result: response.data.id,
+          result: '아이디는 ' + response.data.id + '입니다.',
         });
       }
     } catch (error) {
-      // 없는 계정이거나 잘못 입력한 계정일때 처리
+      console.log(error.response.data.message);
+      if (error.response.status === 404) {
+        setResult({
+          result: error.response.data.message,
+        });
+      } else if (error.response.status === 500) {
+        setResult({
+          result: '일시적인 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
+        });
+      }
     }
   };
 

@@ -28,6 +28,7 @@ const Mypage: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setFocus,
   } = useForm<FormData>({
     resolver: yupResolver(mypageSchema),
     defaultValues: {
@@ -40,24 +41,38 @@ const Mypage: React.FC = () => {
     },
   });
 
-  const handleSignup: SubmitHandler<FormData> = async (data: FormData) => {
+  const handleSaveUser: SubmitHandler<FormData> = async (data: FormData) => {
     const token = getTokenFromStorage();
+
+    const passwordPayload = data.password
+      ? {
+          current_passwd: data.currentPassword,
+          new_passwd: data.password,
+        }
+      : null;
+
     const payload = {
       email: user?.email,
       name: user?.name,
       phone: user?.phone,
     };
 
-    console.log(data);
-
     if (data.email) payload.email = data.email;
     if (data.userName) payload.name = data.userName;
     if (data.phoneNumber) payload.phone = '+82' + data.phoneNumber;
 
-    console.log(payload, token);
-
     if (token) {
       try {
+        // 1. 비밀번호 변경 API 호출
+        if (passwordPayload) {
+          await axios.patch('http://localhost:3000/user/change-password', passwordPayload, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        }
+
+        // 2. 비밀번호 외 정보 업데이트 API 호출
         const response = await axios.patch('http://localhost:3000/user/user-info', payload, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -70,8 +85,19 @@ const Mypage: React.FC = () => {
           updateUser(response.data.user);
         }
       } catch (error) {
-        // console.log(error);
-        alert('회원 정보 수정에 실패했습니다. 다시 시도해주세요.');
+        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+          if (error.response.status === 403) {
+            alert('현재 비밀번호가 일치하지 않습니다.');
+            setFocus('currentPassword');
+          } else if (error.response.status === 402) {
+            alert('새 비밀번호는 현재 비밀번호와 다르게 설정해야 합니다.');
+          } else if (error.response.status === 500) {
+            alert('일시적인 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');
+          }
+        } else {
+          alert('회원 정보 수정에 실패했습니다. 다시 시도해주세요.');
+        }
       }
     }
   };
@@ -80,6 +106,7 @@ const Mypage: React.FC = () => {
     if (user) {
       reset({
         email: '',
+        currentPassword: '',
         password: '',
         confirmPassword: '',
         userName: '',
@@ -96,7 +123,7 @@ const Mypage: React.FC = () => {
   return (
     <>
       <FormCard title='회원정보'>
-        <MypageForm onSubmit={handleSignup} register={register} handleSubmit={handleSubmit} errors={errors} data={user} />{' '}
+        <MypageForm onSubmit={handleSaveUser} register={register} handleSubmit={handleSubmit} errors={errors} data={user} />{' '}
       </FormCard>
     </>
   );

@@ -14,6 +14,8 @@ import PrivateRoute from './components/layouts/PrivateRoute';
 import { useAuthStore } from './store/useAuthStore';
 import FindId from './pages/FindId';
 import FindPasswd from './pages/FindPasswd';
+import ResetPasswd from './pages/ResetPasswd';
+import SuccessPasswd from './pages/SuccessPasswd';
 
 function App() {
   const { isAuthReady, initializeAuth } = useAuthStore();
@@ -37,6 +39,8 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/find-id' element={<FindId />} />
           <Route path='/find-passwd' element={<FindPasswd />} />
+          <Route path='/reset-passwd' element={<ResetPasswd />} />
+          <Route path='/reset-passwd/success' element={<SuccessPasswd />} />
           <Route element={<PrivateRoute />}>
             <Route path='/signup/success' element={<SignUpSuccess />} />
             <Route path='/mypage' element={<Mypage />} />

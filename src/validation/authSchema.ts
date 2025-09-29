@@ -75,3 +75,21 @@ export const findPasswdSchema = yup.object().shape({
   userId: yup.string().required('아이디는 필수 항목입니다.'),
   email: yup.string().email('올바른 이메일 형식이 아닙니다.').required('이메일은 필수 항목입니다.'),
 });
+
+// 비밀번호 찾기 스키마
+export const resetPasswdSchema = yup.object().shape({
+  password: yup
+    .string()
+    .transform((value) => (value === '' ? undefined : value))
+    .optional()
+    .min(8, '비밀번호는 8자 이상이어야 합니다.'),
+
+  confirmPassword: yup
+    .string()
+    .transform((value) => (value === '' ? undefined : value))
+    .optional()
+    .when('password', {
+      is: (val: string) => val && val.length > 0,
+      then: (schema) => schema.oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다.').required(),
+    }),
+});

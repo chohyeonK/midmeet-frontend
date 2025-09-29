@@ -16,6 +16,7 @@ import FindId from './pages/FindId';
 import FindPasswd from './pages/FindPasswd';
 import ResetPasswd from './pages/ResetPasswd';
 import SuccessPasswd from './pages/SuccessPasswd';
+import SuccessEmail from './pages/SuccessEmail';
 
 function App() {
   const { isAuthReady, initializeAuth } = useAuthStore();
@@ -37,6 +38,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/signup/success' element={<SuccessSignUp />} />
+          <Route path='/signup/success/completed' element={<SuccessEmail />} />
           <Route path='/login' element={<Login />} />
           <Route path='/find-id' element={<FindId />} />
           <Route path='/find-passwd' element={<FindPasswd />} />

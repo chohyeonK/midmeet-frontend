@@ -3,10 +3,10 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
-import { useAuthStore } from '../store/useAuthStore';
-import { mypageSchema } from '../validation/authSchema';
-import FormCard from '../components/common/FormCard';
-import MypageForm from '../components/forms/MypageForm';
+import { useAuthStore } from '../../store/useAuthStore';
+import { mypageSchema } from '../../validation/authSchema';
+import FormCard from '../../components/common/FormCard';
+import MypageForm from '../../components/forms/MypageForm';
 
 // 핵심 데이터: 실제 저장 데이터
 interface UserData {

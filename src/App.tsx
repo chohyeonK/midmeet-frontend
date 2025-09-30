@@ -3,20 +3,20 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import './App.css';
 import Home from './pages/Home';
-import SignUp from './pages/SignUp';
-import Login from './pages/Login';
+import SignUp from './pages/auth/SignUp';
+import Login from './pages/auth/Login';
 import Layout from './components/layouts/Layout';
-import SuccessSignUp from './pages/SuccessSignUp';
-import Mypage from './pages/Mypage';
-import MypageHistory from './pages/MypageHistory';
+import SuccessSignUp from './pages/auth/SuccessSignUp';
+import Mypage from './pages/mypage/Mypage';
+import MypageHistory from './pages/mypage/MypageHistory';
 import NotFound from './pages/NotFound';
 import PrivateRoute from './components/layouts/PrivateRoute';
 import { useAuthStore } from './store/useAuthStore';
-import FindId from './pages/FindId';
-import FindPasswd from './pages/FindPasswd';
-import ResetPasswd from './pages/ResetPasswd';
-import SuccessPasswd from './pages/SuccessPasswd';
-import SuccessEmail from './pages/SuccessEmail';
+import FindId from './pages/auth/FindId';
+import FindPasswd from './pages/auth/FindPasswd';
+import ResetPasswd from './pages/auth/ResetPasswd';
+import SuccessPasswd from './pages/auth/SuccessPasswd';
+import SuccessEmail from './pages/auth/SuccessEmail';
 
 function App() {
   const { isAuthReady, initializeAuth } = useAuthStore();

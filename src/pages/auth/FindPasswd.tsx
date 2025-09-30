@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import FormCard from '../components/common/FormCard';
-import FindForm from '../components/forms/FindForm';
+import FormCard from '../../components/common/FormCard';
+import FindForm from '../../components/forms/FindForm';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
-import { useAuthStore } from '../store/useAuthStore';
-import { findPasswdSchema } from '../validation/authSchema';
+import { useAuthStore } from '../../store/useAuthStore';
+import { findPasswdSchema } from '../../validation/authSchema';
 
 type FormData = yup.InferType<typeof findPasswdSchema>;
 

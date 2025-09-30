@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
-import { useAuthStore } from '../store/useAuthStore';
+import { useAuthStore } from '../../store/useAuthStore';
 import { Link, useNavigate } from 'react-router-dom';
-import { signUpSchema } from '../validation/authSchema';
-import FormCard from '../components/common/FormCard';
-import SignUpForm from '../components/forms/SignUpForm';
+import { signUpSchema } from '../../validation/authSchema';
+import FormCard from '../../components/common/FormCard';
+import SignUpForm from '../../components/forms/SignUpForm';
 
 // 폼 데이터의 타입을 정의합니다.
 // 스키마에 정의된 필드와 일치해야 합니다.

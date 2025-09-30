@@ -1,5 +1,5 @@
 import React from 'react';
-import StatusForm from '../components/forms/StatusForm';
+import StatusForm from '../../components/forms/StatusForm';
 
 const SuccessEmail: React.FC = () => {
   const props = {

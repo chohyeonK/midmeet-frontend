@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useAuthStore } from '../store/useAuthStore';
-import { loginSchema } from '../validation/authSchema';
-import FormCard from '../components/common/FormCard';
-import LoginForm from '../components/forms/LoginForm';
+import { useAuthStore } from '../../store/useAuthStore';
+import { loginSchema } from '../../validation/authSchema';
+import FormCard from '../../components/common/FormCard';
+import LoginForm from '../../components/forms/LoginForm';
 import type { SubmitHandler } from 'react-hook-form';
 
 type FormData = yup.InferType<typeof loginSchema>;

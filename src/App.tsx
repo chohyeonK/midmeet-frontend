@@ -17,6 +17,7 @@ import FindPasswd from './pages/auth/FindPasswd';
 import ResetPasswd from './pages/auth/ResetPasswd';
 import SuccessPasswd from './pages/auth/SuccessPasswd';
 import SuccessEmail from './pages/auth/SuccessEmail';
+import Create from './pages/party/Create';
 
 function App() {
   const { isAuthReady, initializeAuth } = useAuthStore();
@@ -47,6 +48,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path='/mypage' element={<Mypage />} />
             <Route path='/mypage/history' element={<MypageHistory />} />
+            <Route path='/party/create' element={<Create />} />
           </Route>
         </Route>
         <Route path='*' element={<NotFound />} />

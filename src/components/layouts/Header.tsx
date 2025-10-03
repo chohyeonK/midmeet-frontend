@@ -28,9 +28,12 @@ const Header: React.FC = ({}) => {
         <div className='md:block hidden'>
           {isLoggedIn ? (
             <div className='flex items-center space-x-4'>
-              <span className='text-gray-600'>안녕하세요, {user?.name || '손님'}님!</span>
+              <span className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>안녕하세요, {user?.name || '손님'}님!</span>
               <Link to='/mypage' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
                 회원정보
+              </Link>
+              <Link to='/party/create' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
+                모임 생성
               </Link>
               <Link to='/mypage/history' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
                 방문기록
@@ -41,6 +44,9 @@ const Header: React.FC = ({}) => {
             </div>
           ) : (
             <div className='flex items-center space-x-4'>
+              <Link to='/party/create' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
+                모임 생성
+              </Link>
               <Link to='/login' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
                 로그인
               </Link>

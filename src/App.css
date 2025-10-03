@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 }
+
+/* datepicker 커스텀 css 추가 */
+.react-datepicker-wrapper {
+  display: block;
+  width: 100%;
+}
+.react-datepicker__input-container {
+  width: 100%;
+}

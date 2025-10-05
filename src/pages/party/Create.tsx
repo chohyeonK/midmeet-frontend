@@ -1,5 +1,4 @@
 import React, { forwardRef, useState } from 'react';
-import CreatePartyForm from '../../components/forms/CreatePartyForm';
 import PartyFormContainer from '../../components/party/PartyContainer';
 import StepForm from '../../components/party/StepForm';
 import StepMethod from '../../components/party/StepMethod';

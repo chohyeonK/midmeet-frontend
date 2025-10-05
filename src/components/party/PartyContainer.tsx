@@ -1,5 +1,7 @@
 import React from 'react';
 import Button from '../common/Button';
+import type { PartyFormData } from '../../pages/party/Create';
+import type { SubmitHandler } from 'react-hook-form';
 
 interface PartyFormProps {
   step: number;
@@ -7,10 +9,11 @@ interface PartyFormProps {
   title: string;
   children: React.ReactNode;
   onPrev: () => void;
-  onNext: () => void;
+  onNext: (data: Partial<PartyFormData>) => void;
+  onSubmit?: SubmitHandler<any>;
 }
 
-const PartyFormContainer: React.FC<PartyFormProps> = ({ step, totalSteps, title, children, onPrev, onNext }) => {
+const PartyFormContainer: React.FC<PartyFormProps> = ({ step, totalSteps, title, children, onPrev, onNext, onSubmit }) => {
   const isLastStep = step === totalSteps - 1;
   return (
     <>
@@ -26,7 +29,7 @@ const PartyFormContainer: React.FC<PartyFormProps> = ({ step, totalSteps, title,
 
         <div className='flex justify-end w-full'>
           {onPrev && step !== 0 && <Button buttonName='이전' onClick={onPrev} className='bg-white !text-black mr-4' />}
-          {isLastStep ? <Button buttonName='완료' onClick={onNext} /> : <Button buttonName='다음' onClick={onNext} />}
+          {isLastStep ? <Button buttonName='완료' onClick={onSubmit} /> : <Button buttonName='다음' onClick={onNext} />}
         </div>
       </div>
     </>

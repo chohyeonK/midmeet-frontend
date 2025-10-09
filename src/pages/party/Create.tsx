@@ -7,6 +7,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import { format, formatISO } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import { usePartyStore } from '../../store/usePartyStore';
 
 export interface Course {
   course_no: number;
@@ -38,6 +39,7 @@ const Create: React.FC = () => {
       },
     ],
   });
+  const setParty = usePartyStore((state) => state.setPartyId);
 
   const handlePrev = () => {
     setStep((prev) => prev - 1);
@@ -78,19 +80,27 @@ const Create: React.FC = () => {
         },
       });
 
+      console.log(partyResponse);
+
       if (partyResponse.status === 201) {
+        // 공유 링크 저장
+        const { party_id } = partyResponse.data;
+
+        setParty(party_id);
+
         const coursePayload = {
           courses: formData.courseList,
         };
 
-        console.log(coursePayload);
+        // console.log(coursePayload);
 
-        const { party_id } = partyResponse.data;
         const courseResponse = await axios.post(`http://localhost:3000/party/${party_id}/course`, coursePayload, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        // console.log(courseResponse);
 
         if (courseResponse.status === 200) {
           navigate('/party/success');

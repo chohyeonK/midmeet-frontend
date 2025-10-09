@@ -22,7 +22,6 @@ export const loginSchema = yup.object().shape({
 });
 
 // 마이페이지 - 회원정보 수정 스키마
-
 export const mypageSchema = yup.object().shape({
   email: yup
     .string()
@@ -92,4 +91,20 @@ export const resetPasswdSchema = yup.object().shape({
       is: (val: string) => val && val.length > 0,
       then: (schema) => schema.oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다.').required(),
     }),
+});
+
+// 폼 데이터 타입 정의
+interface ParticipantFormData {
+  from: string;
+  transportation: 'public' | 'private' | '';
+  // 출발지 주소 등이 있다면 여기에 추가
+}
+
+// 모임 시작 사용자 입력 스키마
+export const partyJoinInputSchema = yup.object().shape({
+  from: yup.string().required('주소를 입력해주세요.'),
+  transportation: yup
+    .mixed<ParticipantFormData['transportation']>() // Union Type 사용
+    .oneOf(['public', 'private'], '교통 수단을 선택해 주세요.')
+    .required('교통 수단은 필수 선택입니다.'),
 });

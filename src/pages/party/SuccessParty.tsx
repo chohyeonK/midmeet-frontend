@@ -22,7 +22,7 @@ const SuccessParty: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { partyId } = usePartyStore();
-  const BASE_URL = 'http://localhost:5173';
+  // const BASE_URL = 'http://localhost:5173';
 
   useEffect(() => {
     // partyId가 없으면 API 호출 하지 않음
@@ -32,7 +32,8 @@ const SuccessParty: React.FC = () => {
 
     const getPartyId = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/party/${partyId}/invite`, {
+        const baseURL = import.meta.env.VITE_API_URL;
+        const response = await axios.get(`${baseURL}/party/${partyId}/invite`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -41,7 +42,8 @@ const SuccessParty: React.FC = () => {
         if (response.status === 200) {
           const { token } = response.data;
 
-          const joinLink = partyId && token ? `${BASE_URL}/join/${partyId}/${token}` : '링크 생성 정보가 없습니다.';
+          const baseURL = import.meta.env.VITE_API_URL;
+          const joinLink = partyId && token ? `${baseURL}/join/${partyId}/${token}` : '링크 생성 정보가 없습니다.';
           setStatusProps({
             title: '모임이 생성되었습니다!',
             message: '모임원들에게 공유하여 모임을 시작하세요.',

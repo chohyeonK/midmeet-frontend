@@ -65,7 +65,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const token = getTokenFromStorage();
     if (token) {
       try {
-        const response = await axios.get('http://localhost:3000/user/user-info', {
+        const baseURL = import.meta.env.VITE_API_URL;
+
+        const response = await axios.get(`${baseURL}/user/user-info`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.status === 200) {

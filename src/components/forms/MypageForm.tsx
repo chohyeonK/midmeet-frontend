@@ -67,8 +67,8 @@ const MypageForm: React.FC<MypageFormProps> = ({ onSubmit, register, handleSubmi
           <div className='flex items-center justify-between'>
             <Label htmlFor='confirmPassword' LabelName='비밀번호 재확인' />
           </div>
-          <div className='mt-2 flex items-center space-x-4'>
-            <Input name='confirmPassword' type='password' register={register} error={errors.confirmPassword} isFullWidth={false} className='grow-5' />
+          <div className='mt-2'>
+            <Input name='confirmPassword' type='password' register={register} error={errors.confirmPassword} />
           </div>
         </div>
         <div>

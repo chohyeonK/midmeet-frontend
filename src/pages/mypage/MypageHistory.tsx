@@ -2,30 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FormCard from '../../components/common/FormCard';
 import VisitHistoryItem from '../../components/VisitHistoryItem';
 import axios from 'axios';
-
-// [
-//     {
-//         "party_id": "cmg9lyz2k0000vpigqvrxn3fd",
-//         "date_time": "2025-12-31T18:30:00.000Z",
-//         "party_name": "테스트 모임2",
-//         "party_type": null,
-//         "party_state": true,
-//         "courses": [
-//             {
-//                 "course_id": "cmg9n3tnl0000vp00wtxuzl7x",
-//                 "course_no": 1,
-//                 "place_name": null,
-//                 "place_address": null
-//             },
-//             {
-//                 "course_id": "cmg9n3tnl0001vp00fadyilc6",
-//                 "course_no": 2,
-//                 "place_name": null,
-//                 "place_address": null
-//             }
-//         ]
-//     }
-// ]
+// const BASE_URL = import.meta.env.VITE_LOCAL_SERVER_URL;
 
 interface CourseResponse {
   course_id: string;
@@ -55,7 +32,8 @@ const MypageHistory: React.FC = () => {
   useEffect(() => {
     const fectchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/user/visits', {
+        const baseURL = import.meta.env.VITE_API_URL;
+        const response = await axios.get(`${baseURL}/user/visits`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

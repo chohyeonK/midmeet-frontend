@@ -54,7 +54,8 @@ const ResetPasswd: React.FC = () => {
     };
 
     try {
-      const response = await axios.post(`http://localhost:3000/auth/verify-reset?token=${token}`, payload, {
+      const baseURL = import.meta.env.VITE_API_URL;
+      const response = await axios.post(`${baseURL}/auth/verify-reset?token=${token}`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

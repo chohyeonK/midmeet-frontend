@@ -56,7 +56,8 @@ const FindPasswd: React.FC = () => {
     console.log(payload);
 
     try {
-      const response = await axios.post('http://localhost:3000/user/reset-password', payload);
+      const baseURL = import.meta.env.VITE_API_URL;
+      const response = await axios.post(`${baseURL}/user/reset-password`, payload);
       console.log(response);
       if (response.status === 201) {
         setResult({

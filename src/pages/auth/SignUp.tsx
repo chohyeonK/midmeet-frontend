@@ -38,10 +38,11 @@ const SignUp: React.FC = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/auth/signup', payload);
+      const baseURL = import.meta.env.VITE_API_URL;
+      const response = await axios.post(`${baseURL}/auth/signup`, payload);
       console.log(response);
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         // 회원가입 성공
         // 세션 저장 + 환영 페이지 이동
         const { user, token } = response.data;
@@ -65,7 +66,8 @@ const SignUp: React.FC = () => {
     // 아이디 중복 확인 메소드
     const userId = getValues('userId');
     try {
-      const response = await axios.get(`http://localhost:3000/user/check-id?id=${userId}`);
+      const baseURL = import.meta.env.VITE_API_URL;
+      const response = await axios.get(`${baseURL}/user/check-id?id=${userId}`);
 
       if (response.status === 200) {
         const { available } = response.data;

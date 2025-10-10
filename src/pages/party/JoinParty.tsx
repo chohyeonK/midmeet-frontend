@@ -16,7 +16,6 @@ const JoinParty: React.FC = () => {
   const { partyId, token } = useParams();
   const [statusProps, setStatusProps] = useState<StatusFormProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  // const BASE_URL = 'http://localhost:5173';
 
   const setParty = usePartyStore((state) => state.setPartyId);
 

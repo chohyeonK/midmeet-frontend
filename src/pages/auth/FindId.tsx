@@ -44,7 +44,8 @@ const FindId: React.FC = () => {
   const handleFindId: SubmitHandler<FormData> = async () => {
     const email = getValues('email');
     try {
-      const response = await axios.get(`http://localhost:3000/user/find-id?email=${email}`);
+      const baseURL = import.meta.env.VITE_API_URL;
+      const response = await axios.get(`${baseURL}/user/find-id?email=${email}`);
       if (response.status === 200) {
         setResult({
           result: '아이디는 ' + response.data.id + '입니다.',

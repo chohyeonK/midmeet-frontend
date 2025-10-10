@@ -74,7 +74,8 @@ const Create: React.FC = () => {
         date_time: formattedDate,
       };
 
-      const partyResponse = await axios.post('http://localhost:3000/party', partyPayload, {
+      const baseURL = import.meta.env.VITE_API_URL;
+      const partyResponse = await axios.post(`${baseURL}/party`, partyPayload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,9 +83,11 @@ const Create: React.FC = () => {
 
       console.log(partyResponse);
 
-      if (partyResponse.status === 201) {
+      if (partyResponse.status === 200) {
+        console.log('들어옴');
         // 공유 링크 저장
         const { party_id } = partyResponse.data;
+        console.log(party_id);
 
         setParty(party_id);
 
@@ -92,15 +95,16 @@ const Create: React.FC = () => {
           courses: formData.courseList,
         };
 
-        // console.log(coursePayload);
+        console.log(coursePayload);
 
-        const courseResponse = await axios.post(`http://localhost:3000/party/${party_id}/course`, coursePayload, {
+        const baseURL = import.meta.env.VITE_API_URL;
+        const courseResponse = await axios.post(`${baseURL}/party/${party_id}/course`, coursePayload, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        // console.log(courseResponse);
+        console.log(courseResponse);
 
         if (courseResponse.status === 200) {
           navigate('/party/success');

@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../components/layouts/Header';
 import Footer from '../components/layouts/Footer';
 import Button from '../components/common/Button';
+import { Link } from 'react-router-dom';
 
 // 폰트 디바이스별 조정 필요
 
@@ -15,11 +16,14 @@ const Home = () => {
           <br />
           약속 장소 고민, 이제 그만!
           <br /> 우리가 찾아드릴게요.
-          <Button
-            type='button'
-            buttonName='시작하기'
-            className='focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg px-5 py-2.5 me-2 my-4 dark:focus:ring-yellow-900'
-          />
+          <div>
+            <Link
+              to='/party/create'
+              className='focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg px-5 py-2.5 me-2 my-4 dark:focus:ring-yellow-900'
+            >
+              시작하기
+            </Link>
+          </div>
         </div>
         <div className='w-1/3 flex items-center justify-center'>
           {/* <img src='your-image-url.jpg' alt='Description' /> */}

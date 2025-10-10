@@ -65,7 +65,8 @@ const Mypage: React.FC = () => {
       try {
         // 1. 비밀번호 변경 API 호출
         if (passwordPayload) {
-          await axios.patch('http://localhost:3000/user/change-password', passwordPayload, {
+          const baseURL = import.meta.env.VITE_API_URL;
+          await axios.patch(`${baseURL}/user/change-password`, passwordPayload, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -73,7 +74,8 @@ const Mypage: React.FC = () => {
         }
 
         // 2. 비밀번호 외 정보 업데이트 API 호출
-        const response = await axios.patch('http://localhost:3000/user/user-info', payload, {
+        const baseURL = import.meta.env.VITE_API_URL;
+        const response = await axios.patch(`${baseURL}/user/user-info`, payload, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

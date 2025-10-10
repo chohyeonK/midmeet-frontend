@@ -19,6 +19,8 @@ import SuccessPasswd from './pages/auth/SuccessPasswd';
 import SuccessEmail from './pages/auth/SuccessEmail';
 import Create from './pages/party/Create';
 import SuccessParty from './pages/party/SuccessParty';
+import JoinParty from './pages/party/JoinParty';
+import JoinInput from './pages/party/JoinInput';
 
 function App() {
   const { isAuthReady, initializeAuth } = useAuthStore();
@@ -51,6 +53,8 @@ function App() {
             <Route path='/mypage/history' element={<MypageHistory />} />
             <Route path='/party/create' element={<Create />} />
             <Route path='/party/success' element={<SuccessParty />} />
+            <Route path='/join/:partyId/:token' element={<JoinParty />} />
+            <Route path='/join/input' element={<JoinInput />} />
           </Route>
         </Route>
         <Route path='*' element={<NotFound />} />

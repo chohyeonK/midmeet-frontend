@@ -84,6 +84,8 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
 
             <div>
               <button
+                data-modal-target='popup-modal'
+                data-modal-toggle='popup-modal'
                 id='dropdownButton'
                 onClick={handleDropdownToggle}
                 className='inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5'
@@ -96,7 +98,7 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
               </button>
 
               {isDropdownOpen && (
-                <div className='z-10 absolute top-full right-0 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700'>
+                <div id='popup-modal' className='z-10 absolute top-full right-0 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700'>
                   <ul className='py-2' aria-labelledby='dropdownButton'>
                     <li>
                       <a href='#' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>

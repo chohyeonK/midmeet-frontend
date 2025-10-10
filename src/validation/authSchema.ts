@@ -96,7 +96,7 @@ export const resetPasswdSchema = yup.object().shape({
 // 폼 데이터 타입 정의
 interface ParticipantFormData {
   from: string;
-  transportation: 'public' | 'private' | '';
+  transportation: 'PUBLIC' | 'PRIVATE' | '';
   // 출발지 주소 등이 있다면 여기에 추가
 }
 
@@ -105,6 +105,6 @@ export const partyJoinInputSchema = yup.object().shape({
   from: yup.string().required('주소를 입력해주세요.'),
   transportation: yup
     .mixed<ParticipantFormData['transportation']>() // Union Type 사용
-    .oneOf(['public', 'private'], '교통 수단을 선택해 주세요.')
+    .oneOf(['PUBLIC', 'PRIVATE'], '교통 수단을 선택해 주세요.')
     .required('교통 수단은 필수 선택입니다.'),
 });

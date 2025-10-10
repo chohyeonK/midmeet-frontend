@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import StatusForm from '../../components/forms/StatusForm';
 import axios from 'axios';
+import { usePartyStore } from '../../store/usePartyStore';
 
 interface StatusFormProps {
   topTitle: string;
@@ -15,12 +16,18 @@ const JoinParty: React.FC = () => {
   const { partyId, token } = useParams();
   const [statusProps, setStatusProps] = useState<StatusFormProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const BASE_URL = 'http://localhost:5173';
+  // const BASE_URL = 'http://localhost:5173';
+
+  const setParty = usePartyStore((state) => state.setPartyId);
 
   useEffect(() => {
     const getJoinParty = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/party/${partyId}/verify-invite`, {
+        if (partyId) {
+          setParty(partyId);
+        }
+        const baseURL = import.meta.env.VITE_API_URL;
+        const response = await axios.get(`${baseURL}/party/${partyId}/verify-invite`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

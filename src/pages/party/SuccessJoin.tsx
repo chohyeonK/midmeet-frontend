@@ -36,7 +36,9 @@ const SuccessJoin: React.FC = () => {
     title: `${currentCount}/${wholeCount}`,
     message: '완료되면 카카오톡으로 알림을 받을 수 있습니다.',
     buttonText: '홈',
-    linkTo: '/',
+    linkTo: {
+      pathname: '/',
+    },
   };
 
   return <StatusForm {...props} />;

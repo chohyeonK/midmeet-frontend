@@ -9,7 +9,9 @@ const SuccessSignUp: React.FC = () => {
     title: user?.name + '님, 환영합니다!',
     message: '가입하신 이메일로 인증 메일을 보냈어요. \n 메일함을 확인하고 인증을 완료해 주세요. \n 그럼 이제 미드미트의 모든 기능을 사용할 수 있답니다!',
     buttonText: '홈',
-    linkTo: '/',
+    linkTo: {
+      pathname: '/',
+    },
   };
 
   return <StatusForm {...props} />;

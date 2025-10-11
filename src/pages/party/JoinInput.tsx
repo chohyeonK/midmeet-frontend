@@ -6,7 +6,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { partyJoinInputSchema } from '../../validation/authSchema';
 import axios from 'axios';
 import { usePartyStore } from '../../store/usePartyStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 type FormData = yup.InferType<typeof partyJoinInputSchema>;
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
@@ -15,6 +15,8 @@ const JoinInput: React.FC = () => {
   const partyId = usePartyStore((state) => state.partyId);
   const token = getTokenFromStorage();
   const navigate = useNavigate();
+  const location = useLocation();
+  const partyName = location.state?.partyName;
 
   const {
     register,
@@ -54,7 +56,7 @@ const JoinInput: React.FC = () => {
 
   return (
     <>
-      <JoinForm title='모임명' subTitle='모임원 정보 입력하기' setAddressAndField={setAddressAndField} onSubmit={formSubmitHandler} register={register} errors={errors} />
+      <JoinForm title={partyName} subTitle='모임원 정보 입력하기' setAddressAndField={setAddressAndField} onSubmit={formSubmitHandler} register={register} errors={errors} />
     </>
   );
 };

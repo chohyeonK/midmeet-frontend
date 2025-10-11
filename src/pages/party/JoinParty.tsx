@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, type To } from 'react-router-dom';
 import StatusForm from '../../components/forms/StatusForm';
 import axios from 'axios';
 import { usePartyStore } from '../../store/usePartyStore';
@@ -9,7 +9,10 @@ interface StatusFormProps {
   title: string;
   message: string;
   buttonText: string;
-  linkTo: string;
+  linkTo: {
+    pathname: string;
+    state?: any; // state는 선택적 속성으로
+  };
 }
 
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
@@ -45,7 +48,11 @@ const JoinParty: React.FC = () => {
             title: '모임 초대가 도착했습니다! \n모임에 참여하여 새로운 만남을 시작해 보세요.',
             message: '모임원 정보를 입력하여 시작하세요.',
             buttonText: '시작',
-            linkTo: '/join/input',
+            // linkTo: '/join/input',
+            linkTo: {
+              pathname: '/join/input',
+              state: { partyName: party_name },
+            },
           });
         }
       } catch (error) {

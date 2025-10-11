@@ -20,12 +20,12 @@ interface JoinFormProps {
   setAddressAndField: (addressFieldName: string, addressValue: string) => void;
 }
 
-const JoinForm: React.FC<JoinFormProps> = ({ onSubmit, register, errors, setAddressAndField }) => {
+const JoinForm: React.FC<JoinFormProps> = ({ title, subTitle, onSubmit, register, errors, setAddressAndField }) => {
   return (
     <div className='flex flex-col items-center py-12 px-4'>
       <form onSubmit={onSubmit} className='w-full sm:max-w-md space-y-6 text-left'>
-        <h1 className='text-3xl font-bold mb-6 text-mint-500'>모임명</h1>
-        <h1 className='text-2xl font-bold mb-6'>모임원 정보 입력하기</h1>
+        <h1 className='text-3xl font-bold mb-6 text-mint-500'>{title}</h1>
+        <h1 className='text-2xl font-bold mb-6'>{subTitle}</h1>
 
         <div className='space-y-2'>
           {/* <Label htmlFor='from' LabelName='출발지 입력' />

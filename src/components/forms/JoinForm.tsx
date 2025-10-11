@@ -17,10 +17,10 @@ interface JoinFormProps {
   onSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
   register: UseFormReturn<FormData>['register'];
   errors: FieldErrors<FormData>;
-  setAddressAndCoords: (addressFieldName: string, addressValue: string) => void;
+  setAddressAndField: (addressFieldName: string, addressValue: string) => void;
 }
 
-const JoinForm: React.FC<JoinFormProps> = ({ onSubmit, register, errors, setAddressAndCoords }) => {
+const JoinForm: React.FC<JoinFormProps> = ({ onSubmit, register, errors, setAddressAndField }) => {
   return (
     <div className='flex flex-col items-center py-12 px-4'>
       <form onSubmit={onSubmit} className='w-full sm:max-w-md space-y-6 text-left'>
@@ -34,7 +34,7 @@ const JoinForm: React.FC<JoinFormProps> = ({ onSubmit, register, errors, setAddr
             <Button type='button' buttonName='검색' className='w-28 flex-shrink-0 bg-indigo-600' onClick={handleModalOpen} />
           </div>
           <div ref={mapRef} className='w-full h-64 bg-gray-200 rounded-lg border'></div> */}
-          <AddressSearchMap setAddressAndCoords={setAddressAndCoords} addressFieldName='from' latFieldName='startLatitude' lngFieldName='startLongitude' />
+          <AddressSearchMap setAddressAndField={setAddressAndField} addressFieldName='from' latFieldName='startLatitude' lngFieldName='startLongitude' />
         </div>
 
         <div className='space-y-2'>

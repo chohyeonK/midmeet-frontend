@@ -3,20 +3,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import type { FieldValues, UseFormSetValue } from 'react-hook-form';
 
-declare global {
-  interface Window {
-    vw: any;
-    vworld: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     vw: any;
+//     vworld: any;
+//   }
+// }
+
 interface AddressSearchMapProps {
-  setAddressAndCoords: (addressFieldName: string, addressValue: string) => void;
+  setAddressAndField: (addressFieldName: string, addressValue: string) => void;
   addressFieldName: string;
   latFieldName: string;
   lngFieldName: string;
 }
 
-const AddressSearchMap: React.FC<AddressSearchMapProps> = ({ setAddressAndCoords, addressFieldName, latFieldName, lngFieldName }) => {
+const AddressSearchMap: React.FC<AddressSearchMapProps> = ({ setAddressAndField, addressFieldName, latFieldName, lngFieldName }) => {
   // const mapRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [address, setAddress] = useState('');
@@ -24,7 +25,7 @@ const AddressSearchMap: React.FC<AddressSearchMapProps> = ({ setAddressAndCoords
   const handleComplete = (data: any) => {
     setIsModalOpen(false);
     setAddress(data.address);
-    setAddressAndCoords(addressFieldName, data.address);
+    setAddressAndField(addressFieldName, data.address);
   };
 
   const postcodeStyle = {

@@ -31,7 +31,7 @@ const Create: React.FC = () => {
     name: '',
     date: null,
     numberOfPeople: 2,
-    midpointMethod: 'custom', // custom: 사용자, ai: ai 지정
+    midpointMethod: 'CUSTOM_COURSE',
     courseList: [
       {
         course_no: 1,
@@ -72,6 +72,7 @@ const Create: React.FC = () => {
         party_name: formData.name,
         participant_count: formData.numberOfPeople,
         date_time: formattedDate,
+        party_type: formData.midpointMethod,
       };
 
       const baseURL = import.meta.env.VITE_API_URL;
@@ -81,13 +82,9 @@ const Create: React.FC = () => {
         },
       });
 
-      console.log(partyResponse);
-
       if (partyResponse.status === 200) {
-        console.log('들어옴');
         // 공유 링크 저장
         const { party_id } = partyResponse.data;
-        console.log(party_id);
 
         setParty(party_id);
 
@@ -95,16 +92,12 @@ const Create: React.FC = () => {
           courses: formData.courseList,
         };
 
-        console.log(coursePayload);
-
         const baseURL = import.meta.env.VITE_API_URL;
         const courseResponse = await axios.post(`${baseURL}/party/${party_id}/course`, coursePayload, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        console.log(courseResponse);
 
         if (courseResponse.status === 200) {
           navigate('/party/success');

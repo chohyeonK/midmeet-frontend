@@ -12,6 +12,8 @@ interface StatusFormProps {
   linkTo: string;
 }
 
+const getTokenFromStorage = () => localStorage.getItem('token') || null;
+
 const JoinParty: React.FC = () => {
   const { partyId, token } = useParams();
   const [statusProps, setStatusProps] = useState<StatusFormProps | null>(null);
@@ -25,17 +27,21 @@ const JoinParty: React.FC = () => {
         if (partyId) {
           setParty(partyId);
         }
+        const userToken = getTokenFromStorage();
         const baseURL = import.meta.env.VITE_API_URL;
         const response = await axios.get(`${baseURL}/party/${partyId}/verify-invite`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${userToken}`,
+          },
+          params: {
+            token: token,
           },
         });
 
         if (response.status === 200) {
-          const { party_id } = response.data;
+          const { party_name } = response.data;
           setStatusProps({
-            topTitle: party_id,
+            topTitle: party_name,
             title: '모임 초대가 도착했습니다! \n모임에 참여하여 새로운 만남을 시작해 보세요.',
             message: '모임원 정보를 입력하여 시작하세요.',
             buttonText: '시작',

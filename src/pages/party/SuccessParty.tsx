@@ -42,7 +42,7 @@ const SuccessParty: React.FC = () => {
         if (response.status === 200) {
           const { token } = response.data;
 
-          const baseURL = import.meta.env.VITE_API_URL;
+          const baseURL = import.meta.env.VITE_APP_URL;
           const joinLink = partyId && token ? `${baseURL}/join/${partyId}/${token}` : '링크 생성 정보가 없습니다.';
           setStatusProps({
             title: '모임이 생성되었습니다!',

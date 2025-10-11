@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaCrown } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import axios from 'axios';
 
 // 모임명
 // 방장 여부
@@ -28,12 +29,15 @@ interface PartyResponse {
 }
 
 interface VisitHistoryProps {
-  party: PartyResponse; // ✅ PartyResponse 타입의 'party' 객체를 받습니다.
+  party: PartyResponse;
   className?: string;
 }
 
+const getTokenFromStorage = () => localStorage.getItem('token') || null;
+
 const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => {
-  console.log(party);
+  // console.log(party);
+  const token = getTokenFromStorage();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -46,6 +50,33 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
     const formattedDate = format(dateObject, 'yyyy-MM-dd a h시 m분', { locale: ko });
 
     return formattedDate;
+  };
+
+  const handleDeleteParty = async () => {
+    try {
+      if (!window.confirm('정말로 이 모임을 삭제하시겠습니까?')) {
+        return;
+      }
+
+      const partyId = party.party_id;
+      const baseURL = import.meta.env.VITE_API_URL;
+      const response = await axios.delete(`${baseURL}/party/${partyId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          party_id: partyId,
+        },
+      });
+      console.log(response);
+
+      if (response.status === 200) {
+        alert('모임이 성공적으로 삭제되었습니다.');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log('삭제 안됨');
+    }
   };
 
   return (
@@ -111,7 +142,7 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
                       </a>
                     </li>
                     <li>
-                      <a href='#' className='block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
+                      <a onClick={handleDeleteParty} className='block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
                         삭제
                       </a>
                     </li>

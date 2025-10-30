@@ -1,6 +1,107 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'NoonnuBasicGothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noon-2410@1.0/NoonnuBasicGothicRegular.woff2') format('woff2');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GowoonDodum';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+/* @font-face {
+  font-family: 'GounBatang';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+} */
+
+@font-face {
+  font-family: 'GounBatang';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Bold.woff') format('woff');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OmuDaye';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Yangjin';
+  src: url('https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GangwonEducationTteontteon';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Daeojamjil';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil3Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Suit';
+  /* Suit 폰트 URL을 여기에 추가 (눈누 또는 Google Fonts 등) */
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AstaSans';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2505-1@1.0/AstaSans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PyeojinGothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2504-1@1.0/PyeojinGothic-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+}
+
 @theme {
   /* 새로운 'mint' 색상에 대한 테마 변수 정의 */
   --color-mint-500: #00c48c;
+}
+
+@layer base {
+  body {
+    /* font-family: 'NoonnuBasicGothic', sans-serif; */
+    /* font-family: 'GowoonDodum', sans-serif; */
+    /* font-family: 'GounBatang', sans-serif; */
+    /* font-family: 'OmuDaye', sans-serif; */
+    /* font-family: 'Yangjin', sans-serif; */
+    /* font-family: 'GangwonEducationTteontteon', sans-serif; */
+    /* font-family: 'Daeojamjil', sans-serif; */
+    /* font-family: 'Suit', sans-serif; */
+    font-family: 'Pretendard', sans-serif;
+    /* font-family: 'AstaSans', sans-serif; */
+    /* font-family: 'PyeojinGothic', sans-serif; */
+  }
 }

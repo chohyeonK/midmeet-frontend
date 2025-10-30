@@ -19,6 +19,10 @@ interface CourseResponse {
   course_placeAddress: string | null;
 }
 
+interface Participant {
+  role: string;
+}
+
 interface PartyResponse {
   party_id: string;
   date_time: string;
@@ -26,6 +30,7 @@ interface PartyResponse {
   party_type: string | null;
   party_state: boolean;
   courses: CourseResponse[];
+  participants: Participant[];
 }
 
 interface VisitHistoryProps {
@@ -40,6 +45,10 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
   const token = getTokenFromStorage();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const userRole = party.participants[0].role;
+
+  const isLeader = userRole === 'LEADER';
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -86,7 +95,7 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
           <div className='flex justify-between px-6 pt-6 relative'>
             <div className='flex items-center mb-1'>
               <div className='text-2xl font-extrabold mr-3'>{party.party_name}</div>
-              <FaCrown className='w-6 h-6 mr-3' />
+              {isLeader && <FaCrown className='w-6 h-6 mr-3' />}
               {party.party_state ? (
                 <span className='inline-flex items-center text-sm px-2 py-1 rounded-full border border-primary-green text-green-700 bg-green-50 dark:bg-green-900 dark:text-green-300'>
                   <svg className='w-3 h-3 mr-1' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
@@ -136,16 +145,20 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
                         보기
                       </a>
                     </li>
-                    <li>
-                      <a href='#' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
-                        수정
-                      </a>
-                    </li>
-                    <li>
-                      <a onClick={handleDeleteParty} className='block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
-                        삭제
-                      </a>
-                    </li>
+                    {isLeader && (
+                      <>
+                        <li>
+                          <a href='#' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
+                            수정
+                          </a>
+                        </li>
+                        <li>
+                          <a onClick={handleDeleteParty} className='block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
+                            삭제
+                          </a>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </div>
               )}

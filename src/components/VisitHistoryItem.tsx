@@ -19,9 +19,9 @@ interface CourseResponse {
   course_placeAddress: string | null;
 }
 
-interface Participant {
-  role: string;
-}
+// interface Participant {
+//   role: string;
+// }
 
 interface PartyResponse {
   party_id: string;
@@ -30,7 +30,8 @@ interface PartyResponse {
   party_type: string | null;
   party_state: boolean;
   courses: CourseResponse[];
-  participants: Participant[];
+  myRole: string;
+  // participants: Participant[];
 }
 
 interface VisitHistoryProps {
@@ -46,7 +47,7 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const userRole = party.participants[0].role;
+  const userRole = party.myRole;
 
   const isLeader = userRole === 'LEADER';
 

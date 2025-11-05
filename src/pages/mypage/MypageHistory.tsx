@@ -18,6 +18,7 @@ interface PartyResponse {
   party_type: string | null;
   party_state: boolean;
   courses: CourseResponse[];
+  myRole: string;
 }
 
 type PartyList = PartyResponse[];

@@ -22,6 +22,10 @@ import SuccessParty from './pages/party/SuccessParty';
 import JoinParty from './pages/party/JoinParty';
 import JoinInput from './pages/party/JoinInput';
 import SuccessJoin from './pages/party/SuccessJoin';
+import MidFinding from './pages/midpoint/MidFinding';
+import MidStart from './pages/midpoint/MidStart';
+import MidSuccess from './pages/midpoint/MidSuccess';
+import MidResult from './pages/midpoint/MidResult';
 
 function App() {
   const { isAuthReady, initializeAuth } = useAuthStore();
@@ -57,6 +61,11 @@ function App() {
             <Route path='/join/:partyId/:token' element={<JoinParty />} />
             <Route path='/join/input' element={<JoinInput />} />
             <Route path='/join/success' element={<SuccessJoin />} />
+            {/* 컴포넌트 수정 예정 */}
+            <Route path='/midpoint/start' element={<MidStart />} />
+            <Route path='/midpoint/calculate' element={<MidFinding />} />
+            <Route path='/midpoint/success' element={<MidSuccess />} />
+            <Route path='/midpoint/result' element={<MidResult />} />
           </Route>
         </Route>
         <Route path='*' element={<NotFound />} />

@@ -1,12 +1,13 @@
 import React from 'react';
+import type { RecommendedPlace } from '../../types/MidFindTypes';
 
-interface RecommendedPlace {
-  placeId: number;
-  placeName: string;
-  address: string;
-  hitMenu: string;
-  review: string;
-}
+// interface RecommendedPlace {
+//   placeId: number;
+//   placeName: string;
+//   address: string;
+//   hitMenu: string;
+//   review?: string;
+// }
 
 interface PlaceDetailProps {
   place: RecommendedPlace;

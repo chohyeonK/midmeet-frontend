@@ -1,21 +1,10 @@
 import React from 'react';
 
-interface RecommendedPlace {
-  placeId: number;
-  placeName: string;
-  address: string;
-  hitMenu: string;
-  review: string;
-}
-
-interface PartyCourse {
-  courseNo: number;
-  courseName: string;
-  selectedPlace: RecommendedPlace | null; // 이걸 나중에 장소 고유 id로 받으면 될듯
-}
+import type { PartyCourse } from '../../types/MidFindTypes';
+import type { FinalCourse } from '../../types/PartyResultTypes';
 
 interface Course {
-  courses: PartyCourse[];
+  courses: PartyCourse[] | FinalCourse[];
   currentIndex: number;
 }
 

@@ -6,6 +6,7 @@ export interface FinalCourse {
   courseType: string; // '밥집', '카페' 등 코스 목적
   finalAddress: string; // 최종 확정 주소
   externalLink: string; // 보기 버튼에 연결될 외부 지도 링크
+  hitMenu: string;
   lat: number; // 최종 장소의 위도
   lng: number; // 최종 장소의 경도
 }
@@ -39,4 +40,4 @@ export interface FinalPartyResult {
 }
 
 // ✅ Pick을 사용하여 courseNo와 courseName만 추출
-export type CourseSummary = Pick<FinalCourse, 'courseNo' | 'courseName' | 'courseId' | 'finalAddress'>;
+export type CourseSummary = Pick<FinalCourse, 'courseNo' | 'courseName' | 'courseId' | 'finalAddress' | 'hitMenu'>;

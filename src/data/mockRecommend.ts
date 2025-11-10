@@ -1,4 +1,4 @@
-import type { RecommendedPlace, PartyData } from '../types/MidFindTypes';
+import type { RecommendedPlace, PartyData, AiRecommendPlace } from '../types/MidFindTypes';
 
 export const foodList: RecommendedPlace[] = [
   {
@@ -79,12 +79,49 @@ export const shoppingList: RecommendedPlace[] = [
   },
 ];
 
+export const AI_RECOMMENDATION_OPTIONS: AiRecommendPlace[] = [
+  // --- 추천 코스 1 ---
+  {
+    courseId: 'ai-c-001',
+    title: '추천 코스 1',
+    places: [
+      { placeId: 1, placeName: '마포 생갈비', address: '서울 마포구 상수동 123', hitMenu: '한우 생갈비', review: '한우 생갈비가 정말 맛있음!' },
+      { placeId: 2, placeName: '이디야 커피', address: '서울 마포구 와우산로 45', hitMenu: '수박 쥬스', review: '생 수박을 갈아서 정말 맛있어요~' },
+      { placeId: 3, placeName: 'CGV 영화관', address: '서울 마포구 양화로 100', hitMenu: ' ', review: '리클라이너 좌석이라 편해요!' },
+    ],
+  },
+
+  // --- 추천 코스 2 ---
+  {
+    courseId: 'ai-c-002',
+    title: '추천 코스 2',
+    places: [
+      { placeId: 1, placeName: '아웃백 스테이크', address: '경기 성남시 분당구 12', hitMenu: '투움바 파스타', review: '이 지점이 제일 맛있음!!' },
+      { placeId: 2, placeName: '투썸플레이스', address: '경기 성남시 판교역로 34', hitMenu: '말차라떼', review: '좌석이 많아요' },
+      { placeId: 3, placeName: '롯데백화점', address: '경기 성남시 동판교로 56', hitMenu: ' ', review: ' ' },
+    ],
+  },
+
+  // --- 추천 코스 3 ---
+  {
+    courseId: 'ai-c-003',
+    title: '추천 코스 3',
+    places: [
+      { placeId: 1, placeName: '역전우동', address: '서울 강남구 역삼로 10', hitMenu: '불고기 덮밥', review: '싸고 맛있음' },
+      { placeId: 2, placeName: '컴포즈 커피', address: '서울 강남구 테헤란로 20', hitMenu: '아인슈페너', review: '아인슈페너 꿀맛' },
+      { placeId: 3, placeName: '신세계 백화점', address: '서울 강남구 압구정로 30', hitMenu: ' ', review: ' ' },
+    ],
+  },
+];
+
 export const initialPartyData: PartyData = {
   partyName: '안산팟',
   partyDate: '2025.11.10 오후 3시',
   midPoint: '경기도 부천시',
+  courseType: 'CUSTOM_COURSE',
   currentCourseIndex: 0,
   recommendList: null,
+  aiRecommendList: null,
   placeData: null,
   courseList: [
     { courseNo: 1, courseName: '미지정', courseId: 400, selectedPlace: null },

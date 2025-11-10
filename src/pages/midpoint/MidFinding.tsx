@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import MidContainer from '../../components/midpoint/MidContainer';
 import Loading from '../../components/common/Loading';
-import { foodList, cafeList, shoppingList, initialPartyData } from '../../data/mockRecommend';
-import type { RecommendedPlace, PartyData } from '../../types/MidFindTypes';
+import { foodList, cafeList, shoppingList, initialPartyData, AI_RECOMMENDATION_OPTIONS } from '../../data/mockRecommend';
+import type { RecommendedPlace, PartyData, AiRecommendPlace } from '../../types/MidFindTypes';
 import { useNavigate } from 'react-router-dom';
 
 const MidFinding: React.FC = () => {
   const navigate = useNavigate();
   const midMode = 'FIND';
+  const midType = initialPartyData.courseType;
 
   const [courses, setCourses] = useState(initialPartyData.courseList);
   const [currentCourseIndex, setCurrentCourseIndex] = useState(initialPartyData.currentCourseIndex);
   const [recommendList, setRecommendList] = useState<RecommendedPlace[] | null>(null);
+  const [aiRecommendList, setAiRecommendList] = useState<AiRecommendPlace[] | null>(null);
   const [placeData, setPlaceData] = useState<RecommendedPlace | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,33 +24,42 @@ const MidFinding: React.FC = () => {
     partyName: initialPartyData.partyName,
     partyDate: initialPartyData.partyDate,
     midPoint: initialPartyData.midPoint,
+    courseType: midType,
   };
 
-  // 2. 추천 리스트 로드 로직 (currentCourseIndex가 바뀔 때 실행)
+  // 2. 추천 리스트 로드 로직 (currentCourseIndex가 바뀔 때 실행, ai/custom 분기 처리)
   const loadRecommendList = useCallback(() => {
-    let newRecommend: RecommendedPlace[] = [];
-    let defaultDetail: RecommendedPlace | null = null;
+    let newRecommend: RecommendedPlace[] = []; // CUSTOM 모드용
 
-    // 이 switch 문은 MidFinding.tsx에 남아 있어야 합니다.
+    if (midType === 'AI_COURSE') {
+      // ✅ 1. AI 모드일 때: AI 추천 옵션 배열 전체를 설정
+      // AI_RECOMMENDATION_OPTIONS 배열을 그대로 사용합니다.
+      setAiRecommendList(AI_RECOMMENDATION_OPTIONS);
+      console.log('++++++++++++', aiRecommendList);
+      setPlaceData(null); // AI 모드에서는 상세 장소 대신 코스 카드를 선택하므로 상세 정보를 초기화
+      return;
+    }
+
+    // ✅ 2. CUSTOM 모드일 때: 인덱스별 리스트를 설정 (기존 로직)
     switch (currentCourseIndex) {
       case 0:
         newRecommend = foodList;
-        break; // 첫 번째 코스
+        break;
       case 1:
         newRecommend = cafeList;
-        break; // 두 번째 코스
+        break;
       case 2:
         newRecommend = shoppingList;
-        break; // 세 번째 코스
+        break;
       default:
         newRecommend = [];
         break;
     }
 
     setRecommendList(newRecommend);
-    // 현재 코스에 선택된 장소가 있으면 그 장소의 상세를 보여주고, 없으면 새 리스트의 첫 번째 장소를 보여줍니다.
+
+    // 현재 코스에 선택된 장소가 없다면, 새 리스트의 첫 번째 장소를 상세 정보로 설정
     const selectedPlace = courses[currentCourseIndex]?.selectedPlace;
-    console.log(selectedPlace);
     setPlaceData(selectedPlace || newRecommend[0] || null);
   }, [currentCourseIndex, courses]); // courses 의존성 추가 (선택된 장소 확인용)
 
@@ -113,6 +124,7 @@ const MidFinding: React.FC = () => {
     courseList: courses,
     currentCourseIndex: currentCourseIndex,
     recommendList: recommendList,
+    aiRecommendList: aiRecommendList,
     placeData: placeData,
   };
 

@@ -43,6 +43,14 @@ export interface PartyCourse {
   // lng: number; // 최종 장소의 경도
 }
 
+export type CourseMode = 'CUSTOM_COURSE' | 'AI_COURSE';
+
+export interface AiRecommendPlace {
+  courseId: string; // 이 코스 묶음의 고유 ID
+  title: string; // 예: "추천 코스 1"
+  places: RecommendedPlace[];
+}
+
 export interface PartyData {
   partyName: string;
   partyDate: string;
@@ -50,5 +58,7 @@ export interface PartyData {
   courseList: PartyCourse[];
   currentCourseIndex: number;
   recommendList: RecommendedPlace[] | null;
+  aiRecommendList: AiRecommendPlace[] | null;
   placeData: RecommendedPlace | null;
+  courseType: CourseMode;
 }

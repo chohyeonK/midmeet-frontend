@@ -5,8 +5,9 @@ import Button from '../common/Button';
 import CourseRouteViewer from './CourseRouteViewer';
 import type { RecommendedPlace, PartyData } from '../../types/MidFindTypes';
 import type { CourseSummary, FinalCourse, FinalPartyResult } from '../../types/PartyResultTypes';
+import MemberRouteDetail from './MemberRouteDetail';
 
-type ViewMode = 'FIND' | 'VIEW';
+export type ViewMode = 'FIND' | 'VIEW';
 interface MidContainerProps {
   mode: ViewMode;
   resultData: PartyData | FinalPartyResult;
@@ -24,7 +25,7 @@ const transformCourseToRecommendedPlace = (course: FinalCourse | CourseSummary):
     placeName: course.courseName,
     address: course.finalAddress,
     // '인기메뉴' 자리에 '코스 유형' 정보 표시
-    hitMenu: undefined,
+    hitMenu: course.hitMenu,
     review: undefined,
   };
 };
@@ -52,10 +53,13 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
   // VIEW 모드에서는 FinalPartyResult의 courses를, FIND 모드에서는 PartyData의 courseList를 사용합니다.
   // const courses = finalData?.courses || findData?.recommendList || [];
   const courses = (finalData?.courses as any) || findData?.courseList || [];
+  console.log('coursessssssss', courses);
 
   // ... (나머지 isFirst, isLast 계산은 courses를 기반으로 수행)
   const totalCourses = courses.length;
   const currentCourseIndex = findData?.currentCourseIndex || 0; // FIND 모드에서만 인덱스 필요
+
+  const isCurrentUserLeader = finalData?.isLeader;
 
   const renderContent = () => {
     if (isFindMode && findData) {
@@ -66,7 +70,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
             <div className='flex flex-nowrap overflow-x-auto space-x-4 items-stretch'>
               {findData.recommendList &&
                 findData.recommendList.map((place, index) => {
-                  return <MidPlaceItem key={place.placeName} index={index} data={place} onClickDetail={onPlaceSelect} />;
+                  return <MidPlaceItem key={place.placeName} index={index} data={place} onClickDetail={onPlaceSelect} mode={mode} />;
                 })}
             </div>
           </div>
@@ -82,11 +86,21 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
               {finalData.courses &&
                 finalData.courses.map((place, index) => {
                   const recommendedPlaceData = transformCourseToRecommendedPlace(place);
-                  return <MidPlaceItem key={place.courseName} index={index} data={recommendedPlaceData} onClickDetail={onPlaceSelect} />;
+                  return <MidPlaceItem key={place.courseName} index={index} data={recommendedPlaceData} onClickDetail={onPlaceSelect} mode={mode} />;
                 })}
             </div>
           </div>
           {finalData.placeData && <MidPlaceDetail place={transformCourseToRecommendedPlace(finalData.placeData)} />}
+
+          <div className='mb-6'>
+            <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>모임원별 가는 방법</div>
+            {finalData.members.map((member, index) => {
+              // ✅ 이 member가 방장인지 판단합니다. (API 응답에 userId가 있어야 정확함)
+              const isThisMemberTheLeader = isCurrentUserLeader && member.name.includes('(나)');
+
+              return <MemberRouteDetail key={member.name} member={member} isLeader={!!isThisMemberTheLeader} />;
+            })}
+          </div>
         </>
       );
     }

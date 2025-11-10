@@ -29,7 +29,7 @@ const MidPlaceDetail: React.FC<PlaceDetailProps> = ({ place }) => {
     //   </div>
     // </div>
     <div className='text-left bg-white border border-gray-200 rounded-lg shadow-sm p-6 mb-6'>
-      <h5 className='mb-6 text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 pb-3'>선택된 장소</h5>
+      <h5 className='mb-6 text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 pb-3'>자세히 보기</h5>
       <div className='flex'>
         <div className='col-span-1 mr-6'>
           <img src='https://placehold.co/200x150/00C48C/fff?text=Course+Image' alt='장소 대표 이미지' className='w-full h-auto rounded-lg' />

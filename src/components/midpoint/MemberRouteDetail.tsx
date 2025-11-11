@@ -1,5 +1,5 @@
 import React from 'react';
-import type { MemberRouteInfo } from '../../types/PartyResultTypes';
+import type { MemberRouteInfo } from '../../types/MidResultTypes';
 import { FaCrown } from 'react-icons/fa';
 import Button from '../common/Button';
 
@@ -9,7 +9,7 @@ interface MemberRouteDetailProps {
 }
 
 const MemberRouteDetail: React.FC<MemberRouteDetailProps> = ({ member, isLeader }) => {
-  const { name, startAddress, transportMode, routeDetail } = member;
+  const { name, startAddr, transportMode, routeDetail } = member;
 
   const displayTransportMode = transportMode === 'PUBLIC' ? '대중교통' : '자가';
 
@@ -27,7 +27,7 @@ const MemberRouteDetail: React.FC<MemberRouteDetailProps> = ({ member, isLeader 
             </h3>
 
             {/* 상세 출발 정보 */}
-            <p className='text-md text-gray-500'>출발지: {startAddress}</p>
+            <p className='text-md text-gray-500'>출발지: {startAddr}</p>
             <p className='text-md text-gray-500'>교통수단: {displayTransportMode}</p>
           </div>
 

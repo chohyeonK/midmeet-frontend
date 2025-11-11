@@ -1,12 +1,14 @@
 import React from 'react';
-import type { FinalPartyResult } from '../../types/PartyResultTypes';
-import { MOCK_PARTY_RESULT } from '../../data/mockPartyResult'; // 목업 데이터 임포트
+// import type { FinalPartyResult } from '../../types/MidResultTypes';
+// import { MOCK_PARTY_RESULT } from '../../data/mockPartyResult'; // 목업 데이터 임포트
 import MidContainer from '../../components/midpoint/MidContainer';
+import type { MidResultData } from '../../types/MidResultTypes';
+import { MOCK_MID_RESULT_DATA } from '../../data/mockPartyResult';
 // MidContainerProps 타입 정의는 MidContainer.tsx에 있다고 가정
 
 const MidResult: React.FC = () => {
   // 1. 목업 데이터를 FinalPartyResult 타입으로 가져옵니다.
-  const partyResultData: FinalPartyResult = MOCK_PARTY_RESULT as FinalPartyResult;
+  const partyResultData: MidResultData = MOCK_MID_RESULT_DATA as MidResultData;
 
   // ✅ 2. midContainerProps 변수에 값을 할당합니다.
   const midContainerProps = {

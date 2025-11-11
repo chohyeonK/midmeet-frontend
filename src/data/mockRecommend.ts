@@ -1,131 +1,217 @@
-import type { RecommendedPlace, PartyData, AiRecommendPlace } from '../types/MidFindTypes';
+import type { AIRecommendPlace, MidFindData, RecommendedPlace } from '../types/MidFindTypes';
 
-export const foodList: RecommendedPlace[] = [
-  {
-    placeId: 1,
-    placeName: '000 고깃집',
-    address: '경기도 안산시',
-    hitMenu: '차돌 볶음',
-    review: '정말 맛있어용!!',
-  },
-  {
-    placeId: 2,
-    placeName: '00 김밥천국',
-    address: '경기도 부천시',
-    hitMenu: '참치땡초김밥',
-    review: '정말 김밥이 끝내주네용!!',
-  },
-  {
-    placeId: 3,
-    placeName: '000 파스타',
-    address: '경기도 과천시',
-    hitMenu: '쉬림프 로제 파스타',
-    review: '파스타가 굉장히 맛있어요.',
-  },
-  {
-    placeId: 4,
-    placeName: '000 쌈밥집',
-    address: '경기도 이천시',
-    hitMenu: '우렁 쌈밥',
-    review: '쌈밥하면 이집입니다!',
-  },
-  {
-    placeId: 5,
-    placeName: '프레디의 피자가게',
-    address: '경기도 수원시',
-    hitMenu: '오리지널 피자',
-    review: '피자를 사면 곰이 와요..',
-  },
-];
-
-export const cafeList: RecommendedPlace[] = [
-  {
-    placeId: 1,
-    placeName: '투썸플레이스',
-    address: '경기도 수원시',
-    hitMenu: '말차라떼',
-    review: '아이스박스 보다 꿀맛',
-  },
-  {
-    placeId: 1,
-    placeName: '스타벅스',
-    address: '경기도 안산시',
-    hitMenu: '콘파냐',
-    review: '쌉싸름해용',
-  },
-  {
-    placeId: 1,
-    placeName: '이디야',
-    address: '경기도 수원시',
-    hitMenu: '수박주스',
-    review: '생으로 갈은 수박이라 꿀맛!!',
-  },
-];
-
-export const shoppingList: RecommendedPlace[] = [
-  {
-    placeId: 10,
-    placeName: '스타필드 코엑스',
-    address: '서울특별시 강남구',
-    hitMenu: '영풍문고, 카카오프렌즈',
-    review: '하루종일 놀기 좋아요.',
-  },
-  {
-    placeId: 11,
-    placeName: '더현대 서울',
-    address: '서울특별시 영등포구',
-    hitMenu: '층별 팝업 스토어',
-    review: '트렌디한 장소!',
-  },
-];
-
-export const AI_RECOMMENDATION_OPTIONS: AiRecommendPlace[] = [
-  // --- 추천 코스 1 ---
-  {
-    courseId: 'ai-c-001',
-    title: '추천 코스 1',
-    places: [
-      { placeId: 1, placeName: '마포 생갈비', address: '서울 마포구 상수동 123', hitMenu: '한우 생갈비', review: '한우 생갈비가 정말 맛있음!' },
-      { placeId: 2, placeName: '이디야 커피', address: '서울 마포구 와우산로 45', hitMenu: '수박 쥬스', review: '생 수박을 갈아서 정말 맛있어요~' },
-      { placeId: 3, placeName: 'CGV 영화관', address: '서울 마포구 양화로 100', hitMenu: ' ', review: '리클라이너 좌석이라 편해요!' },
+// MidFindTypes.ts의 MidFindData 구조에 맞춘 초기 상태 목업
+export const MOCK_MID_FIND_INITIAL_DATA: MidFindData = {
+  // 1. party: PartyData (초기 미팅 정보)
+  party: {
+    partyName: '서울 강남 모임',
+    partyDate: '2025.11.30 오후 6시',
+    midPoint: '서울특별시 강남구 신논현역',
+    midPointLat: 37.5048,
+    midPointLng: 127.0245,
+    courses: [
+      // 코스 목록 (예: 1차 식사, 2차 카페)
+      {
+        courseNo: 1,
+        places: {
+          // MidCommonTypes의 PartyCourse 구조에 따름
+          placeId: 900,
+          placeName: '미정',
+          placeAddr: '미정',
+          lat: 0,
+          lng: 0,
+        },
+      },
+      {
+        courseNo: 1,
+        places: {
+          // MidCommonTypes의 PartyCourse 구조에 따름
+          placeId: 900,
+          placeName: '미정',
+          placeAddr: '미정',
+          lat: 0,
+          lng: 0,
+        },
+      },
+      {
+        courseNo: 1,
+        places: {
+          // MidCommonTypes의 PartyCourse 구조에 따름
+          placeId: 900,
+          placeName: '미정',
+          placeAddr: '미정',
+          lat: 0,
+          lng: 0,
+        },
+      },
     ],
   },
 
-  // --- 추천 코스 2 ---
-  {
-    courseId: 'ai-c-002',
-    title: '추천 코스 2',
-    places: [
-      { placeId: 1, placeName: '아웃백 스테이크', address: '경기 성남시 분당구 12', hitMenu: '투움바 파스타', review: '이 지점이 제일 맛있음!!' },
-      { placeId: 2, placeName: '투썸플레이스', address: '경기 성남시 판교역로 34', hitMenu: '말차라떼', review: '좌석이 많아요' },
-      { placeId: 3, placeName: '롯데백화점', address: '경기 성남시 동판교로 56', hitMenu: ' ', review: ' ' },
-    ],
-  },
+  // 2. courseMode: CourseMode
+  courseMode: 'CUSTOM_COURSE', // 기본 모드 설정
+  // courseMode: 'AI_COURSE', // 기본 모드 설정
 
-  // --- 추천 코스 3 ---
-  {
-    courseId: 'ai-c-003',
-    title: '추천 코스 3',
-    places: [
-      { placeId: 1, placeName: '역전우동', address: '서울 강남구 역삼로 10', hitMenu: '불고기 덮밥', review: '싸고 맛있음' },
-      { placeId: 2, placeName: '컴포즈 커피', address: '서울 강남구 테헤란로 20', hitMenu: '아인슈페너', review: '아인슈페너 꿀맛' },
-      { placeId: 3, placeName: '신세계 백화점', address: '서울 강남구 압구정로 30', hitMenu: ' ', review: ' ' },
-    ],
-  },
-];
+  // 3. customRecommendList: RecommendedPlace[] | null
+  customRecommendList: null, // 초기값: null
 
-export const initialPartyData: PartyData = {
-  partyName: '안산팟',
-  partyDate: '2025.11.10 오후 3시',
-  midPoint: '경기도 부천시',
-  courseType: 'CUSTOM_COURSE',
+  // 4. aiRecommendList: AIRecommendPlace[] | null
+  aiRecommendList: null, // 초기값: null
+
+  // 5. currentCourseIndex: number (코스 배열의 인덱스)
   currentCourseIndex: 0,
-  recommendList: null,
-  aiRecommendList: null,
-  placeData: null,
-  courseList: [
-    { courseNo: 1, courseName: '미지정', courseId: 400, selectedPlace: null },
-    { courseNo: 2, courseName: '미지정', courseId: 500, selectedPlace: null },
-    { courseNo: 3, courseName: '미지정', courseId: 600, selectedPlace: null },
-  ],
+
+  // 6. placeData: RecommendedPlace | null (현재 선택된 상세 정보)
+  placeData: null, // 초기값: null
 };
+
+export const MOCK_FOOD_LIST: RecommendedPlace[] = [
+  {
+    placeId: 701,
+    placeName: '시그니처 스테이크 하우스',
+    placeAddr: '서울시 강남구 테헤란로 (음식 1)',
+    lat: 37.5091,
+    lng: 127.0558,
+    hitMenu: '안심 스테이크',
+    review: '데이트 장소로 완벽합니다.',
+  },
+  {
+    placeId: 702,
+    placeName: '분위기 좋은 한정식',
+    placeAddr: '서울시 서초구 강남대로 (음식 2)',
+    lat: 37.502,
+    lng: 127.025,
+    hitMenu: '궁중 갈비찜',
+  },
+  {
+    placeId: 703,
+    placeName: '인기 많은 이탈리안 비스트로',
+    placeAddr: '서울시 강남구 역삼동 (음식 3)',
+    lat: 37.4981,
+    lng: 127.0285,
+    hitMenu: '봉골레 파스타',
+    link: 'https://food.example.com/bistro',
+  },
+];
+
+export const MOCK_CAFE_LIST: RecommendedPlace[] = [
+  {
+    placeId: 801,
+    placeName: '루프탑 전망 좋은 카페',
+    placeAddr: '서울시 강남구 논현동 (카페 1)',
+    lat: 37.5055,
+    lng: 127.04,
+    hitMenu: '아인슈페너',
+    review: '야경이 정말 아름다워요.',
+  },
+  {
+    placeId: 802,
+    placeName: '조용한 북카페',
+    placeAddr: '서울시 서초구 서초동 (카페 2)',
+    lat: 37.511,
+    lng: 127.0505,
+    hitMenu: '수제 밀크티',
+  },
+  {
+    placeId: 803,
+    placeName: '감성 가득한 디저트 전문점',
+    placeAddr: '서울시 강남구 신사동 (카페 3)',
+    lat: 37.518,
+    lng: 127.025,
+    hitMenu: '딸기 케이크',
+    link: 'https://cafe.example.com/dessert',
+  },
+];
+
+export const MOCK_SHOPPING_LIST: RecommendedPlace[] = [
+  {
+    placeId: 901,
+    placeName: '유니크한 의류 편집샵',
+    placeAddr: '서울시 강남구 압구정로 (쇼핑 1)',
+    lat: 37.5255,
+    lng: 127.035,
+    review: '희귀한 디자이너 상품이 많습니다.',
+  },
+  {
+    placeId: 902,
+    placeName: '대형 라이프스타일 스토어',
+    placeAddr: '서울시 강남구 도산대로 (쇼핑 2)',
+    lat: 37.521,
+    lng: 127.0415,
+    hitMenu: '향초 및 방향제',
+  },
+  {
+    placeId: 903,
+    placeName: '액세서리 전문점',
+    placeAddr: '서울시 강남구 청담동 (쇼핑 3)',
+    lat: 37.528,
+    lng: 127.045,
+  },
+];
+
+// AI 추천 코스 목록 (1차: 식사, 2차: 카페)
+export const MOCK_AI_RECOMMEND_LIST: AIRecommendPlace[] = [
+  // 🎯 첫 번째 코스 (1차: 식사)에 대한 AI 추천 목록
+  {
+    courseId: 'AI_C_001',
+    courseNo: 1,
+    courseName: '저녁 식사 추천',
+    places: [
+      {
+        placeId: 101,
+        placeName: 'AI 추천 한정식',
+        placeAddr: '강남역 부근 1',
+        lat: 37.506,
+        lng: 127.026,
+        hitMenu: '갈비찜',
+      },
+      {
+        placeId: 102,
+        placeName: 'AI 추천 이탈리안',
+        placeAddr: '강남역 부근 2',
+        lat: 37.5055,
+        lng: 127.027,
+        review: '데이트 명소',
+      },
+      {
+        placeId: 102,
+        placeName: 'AI 추천 카페',
+        placeAddr: '강남역 부근 3',
+        lat: 37.5055,
+        lng: 127.027,
+        hitMenu: '아인슈페너',
+        review: '자리 짱많아요',
+      },
+    ],
+  },
+
+  // 🎯 두 번째 코스 (2차: 카페)에 대한 AI 추천 목록
+  {
+    courseId: 'AI_C_002',
+    courseNo: 2,
+    courseName: '디저트 카페 추천',
+    places: [
+      {
+        placeId: 103,
+        placeName: 'AI 추천 루프탑 카페',
+        placeAddr: '신논현역 부근 3',
+        lat: 37.503,
+        lng: 127.025,
+        hitMenu: '아메리카노',
+      },
+      {
+        placeId: 104,
+        placeName: 'AI 추천 베이커리',
+        placeAddr: '신논현역 부근 4',
+        lat: 37.5045,
+        lng: 127.0235,
+      },
+      {
+        placeId: 104,
+        placeName: 'AI 추천 3',
+        placeAddr: '신논현역 부근 3',
+        lat: 37.5045,
+        lng: 127.0235,
+      },
+    ],
+  },
+];

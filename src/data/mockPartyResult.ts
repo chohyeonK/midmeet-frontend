@@ -1,82 +1,82 @@
-import type { FinalPartyResult } from '../types/PartyResultTypes';
+import type { MidResultData } from '../types/MidResultTypes';
 
-export const MOCK_PARTY_RESULT: FinalPartyResult = {
-  isLeader: true,
-  partyName: '안산팟 번개 모임',
-  partyDate: '2025.11.10 오후 3시',
-  midPointName: '경기도 부천시청역 인근',
-  midPointLat: 37.5028, // 서울/경기권 중앙 임의 좌표
-  midPointLng: 127.0294,
-  placeData: null,
+export const MOCK_MID_RESULT_DATA: MidResultData = {
+  party: {
+    partyName: '강남 크리스마스 모임',
+    partyDate: '2025.12.25 오후 7시',
+    midPoint: '서울특별시 강남구 강남역 11번 출구',
+    midPointLat: 37.497942,
+    midPointLng: 127.027621,
+    courses: [
+      {
+        courseNo: 1,
+        places: {
+          placeId: 901,
+          placeName: '추천 맛집 A',
+          placeAddr: '강남구 역삼동 123-45',
+          lat: 37.4981,
+          lng: 127.0285,
+        },
+      },
+      {
+        courseNo: 2,
+        places: {
+          placeId: 901,
+          placeName: '추천 맛집 B',
+          placeAddr: '강남구 역삼동 123-45',
+          lat: 37.4981,
+          lng: 127.0285,
+        },
+      },
+      {
+        courseNo: 3,
+        places: {
+          placeId: 901,
+          placeName: '추천 맛집 C',
+          placeAddr: '강남구 역삼동 123-45',
+          lat: 37.4981,
+          lng: 127.0285,
+        },
+      },
+    ],
+  },
 
-  courses: [
-    {
-      courseNo: 1,
-      courseId: 100,
-      courseType: '밥집',
-      courseName: '000 쌈밥집',
-      finalAddress: '경기도 이천시 부발읍 000길 12',
-      externalLink: 'https://map.naver.com/...',
-      hitMenu: '김치찌개',
-      lat: 37.5,
-      lng: 127.05,
-    },
-    {
-      courseNo: 2,
-      courseId: 200,
-      courseType: '카페',
-      courseName: '뚜섬플레이스',
-      finalAddress: '경기도 수원시 영통구 000',
-      externalLink: 'https://map.naver.com/...',
-      hitMenu: '아인슈페너',
-      lat: 37.51,
-      lng: 127.04,
-    },
-    {
-      courseNo: 3,
-      courseId: 300,
-      courseType: '쇼핑',
-      courseName: '더현대 서울',
-      finalAddress: '서울특별시 영등포구',
-      externalLink: 'https://map.naver.com/...',
-      hitMenu: ' ',
-      lat: 37.52,
-      lng: 127.03,
-    },
-  ],
+  // 2. isLeader: boolean
+  isLeader: true, // 현재 사용자가 모임 리더라고 가정
 
+  // 3. members: MemberRouteInfo[] (모임원별 이동 정보)
   members: [
     {
-      name: '홍길동',
-      startAddress: '인천광역시 미추홀구',
+      name: '김모임(나)', // 리더 본인
+      startAddr: '경기도 성남시 분당구 판교동',
       transportMode: 'PUBLIC',
       routeDetail: {
-        totalTime: '1시간 10분',
-        routeSummary: '4호선 2회 환승',
-        startLat: 37.45,
-        startLng: 126.68,
+        totalTime: '55분',
+        routeSummary: '신분당선 1회 환승',
+        startLat: 37.3942,
+        startLng: 127.1115,
       },
     },
     {
-      name: '김철수',
-      startAddress: '경기도 성남시 분당구',
+      name: '이친구',
+      startAddr: '서울특별시 송파구 잠실동',
       transportMode: 'PRIVATE',
       routeDetail: {
         totalTime: '40분',
-        routeSummary: '경부고속도로 이용',
-        startLat: 37.38,
-        startLng: 127.1,
+        routeSummary: '자가용 (경부고속도로)',
+        startLat: 37.5117,
+        startLng: 127.0858,
       },
     },
     {
-      name: '방장 (나)',
-      startAddress: '경기도 부천시',
+      name: '박약속',
+      startAddr: '서울특별시 영등포구 여의도동',
       transportMode: 'PUBLIC',
       routeDetail: {
-        totalTime: '30분',
-        routeSummary: '1호선 직통',
-        startLat: 37.54,
-        startLng: 126.89,
+        totalTime: '1시간 10분',
+        routeSummary: '9호선 급행 1회 환승',
+        startLat: 37.5255,
+        startLng: 126.9248,
       },
     },
   ],

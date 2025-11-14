@@ -26,6 +26,7 @@ import MidFinding from './pages/midpoint/MidFinding';
 import MidStart from './pages/midpoint/MidStart';
 import MidSuccess from './pages/midpoint/MidSuccess';
 import MidResult from './pages/midpoint/MidResult';
+import MidEdit from './pages/midpoint/MidEdit';
 
 function App() {
   const { isAuthReady, initializeAuth } = useAuthStore();
@@ -66,6 +67,7 @@ function App() {
             <Route path='/midpoint/calculate' element={<MidFinding />} />
             <Route path='/midpoint/success' element={<MidSuccess />} />
             <Route path='/midpoint/result' element={<MidResult />} />
+            <Route path='/midpoint/edit' element={<MidEdit />} />
           </Route>
         </Route>
         <Route path='*' element={<NotFound />} />

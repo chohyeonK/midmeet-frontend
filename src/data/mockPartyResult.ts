@@ -1,3 +1,4 @@
+import type { PartyData } from '../types/MidCommonTypes';
 import type { MidResultData } from '../types/MidResultTypes';
 
 export const MOCK_MID_RESULT_DATA: MidResultData = {
@@ -77,6 +78,46 @@ export const MOCK_MID_RESULT_DATA: MidResultData = {
         routeSummary: '9호선 급행 1회 환승',
         startLat: 37.5255,
         startLng: 126.9248,
+      },
+    },
+  ],
+};
+
+export const MOCK_MID_EDIT_DATA: PartyData = {
+  partyName: '강남 크리스마스 모임',
+  partyDate: '2025.12.25 오후 7시',
+  midPoint: '서울특별시 강남구 강남역 11번 출구',
+  midPointLat: 37.497942,
+  midPointLng: 127.027621,
+  courses: [
+    {
+      courseNo: 1,
+      places: {
+        placeId: 901,
+        placeName: '추천 맛집 A',
+        placeAddr: '강남구 역삼동 123-45',
+        lat: 37.4981,
+        lng: 127.0285,
+      },
+    },
+    {
+      courseNo: 2,
+      places: {
+        placeId: 901,
+        placeName: '추천 맛집 B',
+        placeAddr: '강남구 역삼동 123-45',
+        lat: 37.4981,
+        lng: 127.0285,
+      },
+    },
+    {
+      courseNo: 3,
+      places: {
+        placeId: 901,
+        placeName: '추천 맛집 C',
+        placeAddr: '강남구 역삼동 123-45',
+        lat: 37.4981,
+        lng: 127.0285,
       },
     },
   ],

@@ -109,29 +109,6 @@ const MidFinding: React.FC = () => {
     [currentCourseIndex], // courses 의존성은 제거하여 불필요한 loadRecommendList 재실행 방지
   );
 
-  // // 몇번째 배열 클릭햇는지 알아야함
-  // const onPlaceAISelect = useCallback(
-  //   (index: number) => {
-  //     console.log('ai 장소 선택 클릭', index);
-  //     const place = aiRecommendList[index].places;
-
-  //     setPlaceData(place);
-
-  //     // ✅ [수정] 선택된 장소의 모든 정보를 코스 리스트(state)에 반영
-  //     // setCourses((prevCourses) => {
-  //     //   const updatedCourses = [...prevCourses];
-  //     //   updatedCourses[currentCourseIndex] = {
-  //     //     ...prevCourses[currentCourseIndex], // 기존 courseNo 복사
-
-  //     //     // 🎯 places 속성 전체를 선택된 장소 (place)의 모든 정보로 교체
-  //     //     places: place,
-  //     //   };
-  //     //   return updatedCourses;
-  //     // });
-  //   },
-  //   [currentCourseIndex], // courses 의존성은 제거하여 불필요한 loadRecommendList 재실행 방지
-  // );
-
   // ai 코스 선택
   const onCourseIndexSelect = useCallback(
     (selectedIndex: number) => {

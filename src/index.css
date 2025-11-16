@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
 
 @font-face {
   font-family: 'NoonnuBasicGothic';
@@ -104,4 +105,68 @@
     /* font-family: 'AstaSans', sans-serif; */
     /* font-family: 'PyeojinGothic', sans-serif; */
   }
+}
+
+/* 📌 필수 확인: 이 스타일이 없으면 마커는 투명한 <div>로만 존재합니다. */
+.custom-map-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.custom-map-marker > div {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; /* 원형 모양 */
+  border: 3px solid white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* 🟦 색상 스타일 */
+.midpoint-marker-style > div {
+  background-color: #007bff; /* 파란색 */
+}
+
+/* 🟥 색상 스타일 */
+.selected-marker-style > div {
+  background-color: #dc3545; /* 빨간색 */
+}
+
+/* 기본 마커 컨테이너 스타일 */
+.numbered-marker {
+  background: none !important;
+  border: none !important;
+}
+
+/* 마커 핀 모양 (원 또는 사각형) */
+.numbered-marker .marker-pin {
+  width: 36px;
+  height: 36px;
+  border-radius: 50% 50% 50% 0; /* 핀 모양으로 만들 수도 있지만, 간단히 원형으로 */
+  border-radius: 50%; /* 원형 마커 */
+  transform: rotate(-45deg); /* 마커가 돌아가지 않도록 합니다. */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid white;
+}
+
+/* 마커 색상 구분 */
+.midpoint-marker-style {
+  background-color: #007bff; /* 파란색 */
+}
+
+.selected-marker-style {
+  background-color: #dc3545; /* 빨간색 */
+}
+
+/* 숫자 라벨 스타일 */
+.numbered-marker .marker-number {
+  transform: rotate(45deg); /* 핀을 돌렸다면 숫자는 다시 되돌립니다. */
+  color: white; /* 흰색 글씨 */
+  font-weight: bold;
+  font-size: 14px;
+  /* 핀 모양이 아닌 원형이라면 transform이 필요 없을 수 있습니다. */
+  /* 현재는 원형 마커이므로, transform: rotate(0deg); 또는 제거 */
+  transform: none;
 }

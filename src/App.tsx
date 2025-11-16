@@ -57,7 +57,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path='/mypage' element={<Mypage />} />
             <Route path='/mypage/history' element={<MypageHistory />} />
-            <Route path='/party/create' element={<Create />} />
+            {/* <Route path='/party/create' element={<Create />} /> */}
             <Route path='/party/success' element={<SuccessParty />} />
             <Route path='/join/:partyId/:token' element={<JoinParty />} />
             <Route path='/join/input' element={<JoinInput />} />
@@ -69,6 +69,8 @@ function App() {
             <Route path='/midpoint/result' element={<MidResult />} />
             <Route path='/midpoint/edit' element={<MidEdit />} />
           </Route>
+
+          <Route path='/party/create' element={<Create />} />
         </Route>
         <Route path='*' element={<NotFound />} />
       </Routes>

@@ -17,3 +17,11 @@ export interface PartyData {
   midPointLng: number;
   courses: PartyCourse[];
 }
+
+// 지도 좌표
+export interface Point {
+  lat: number; // 위도
+  lng: number; // 경도
+  name: string; // 장소 이름 (팝업용)
+  type: 'midpoint' | 'selected';
+}

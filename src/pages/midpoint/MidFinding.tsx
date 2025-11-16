@@ -62,36 +62,36 @@ const MidFinding: React.FC = () => {
     setAiRecommendList(newAIRecommend);
 
     // 🎯 현재 코스에 이미 선택된 장소 데이터가 있는지 확인합니다.
-    const selectedPlace = courses[currentCourseIndex]?.places;
+    // const selectedPlace = courses[currentCourseIndex]?.places;
 
     // 💡 [수정] 이미 선택된 장소가 없다면, 새 리스트의 첫 번째 장소를 상세 정보로 설정
     // placeName이 '미정'이거나 placeId가 초기값(900 등)인 경우를 '미선택'으로 간주
-    if (selectedPlace && selectedPlace.placeName !== '미정' && selectedPlace.placeId !== 900) {
-      setPlaceData(selectedPlace);
-    } else {
-      setPlaceData(newRecommend[0] || null);
-    }
+    // if (selectedPlace && selectedPlace.placeName !== '미정' && selectedPlace.placeId !== 900) {
+    //   setPlaceData(selectedPlace);
+    // } else {
+    //   setPlaceData(newRecommend[0] || null);
+    // }
   }, [currentCourseIndex, courses, midCourseMode]); // midCourseMode 의존성 추가
 
   // 3. '이전/다음' 버튼 핸들러 (useCallback 사용)
   const handlePrev = useCallback(() => {
-    console.log('이전 버튼 클릭');
     if (!isFirst) {
       setCurrentCourseIndex((prev) => prev - 1);
+      setPlaceData(null);
     }
   }, [isFirst]);
 
   const handleNext = useCallback(() => {
-    console.log('다음 버튼 클릭');
     if (!isLast) {
       setCurrentCourseIndex((next) => next + 1);
+      setPlaceData(null);
     }
   }, [isLast]);
 
   // 4. 장소 선택/상세 보기 핸들러 (useCallback 사용)
   const onPlaceSelect = useCallback(
     (place: RecommendedPlace): void => {
-      console.log('장소 선택 클릭', place);
+      // console.log('장소 선택 클릭', place);
       setPlaceData(place);
 
       // ✅ [수정] 선택된 장소의 모든 정보를 코스 리스트(state)에 반영

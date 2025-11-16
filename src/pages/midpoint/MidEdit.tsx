@@ -1,5 +1,5 @@
-import React, { forwardRef, useCallback, useState } from 'react';
-import type { PartyCourse, PartyData } from '../../types/MidCommonTypes';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
+import type { PartyCourse, PartyData, Point } from '../../types/MidCommonTypes';
 import { MOCK_MID_EDIT_DATA } from '../../data/mockPartyResult';
 import { arrayMove } from '@dnd-kit/sortable';
 import { DndContext, closestCenter } from '@dnd-kit/core'; // 💡 Dnd Kit 핵심
@@ -12,6 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
 import { format, parse } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import Map from '../../components/midpoint/Map';
 
 const CustomDatePickerInput = forwardRef<HTMLInputElement, any>(({ value, onClick, onChange }, ref) => (
   <input type='text' className='w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700' value={value} onClick={onClick} onChange={onChange} ref={ref} />
@@ -24,7 +25,8 @@ const MidEdit: React.FC<PartyData> = () => {
   const [coursesList, setCourses] = useState<PartyCourse[]>(courses);
   const [currentCourseIndex, setCurrentCourseIndex] = useState(0);
   const [partyName, setPartyName] = useState(partyData.partyName);
-  console.log(partyData);
+  const [mapPoints, setMapPoints] = useState<Point[]>([]);
+  //   console.log(partyData);
 
   // 날짜 포맷 후 초기 세팅
   const initialDateString = partyDate; // 예: '2025.12.25 오후 7시'
@@ -55,8 +57,6 @@ const MidEdit: React.FC<PartyData> = () => {
         // 2. 🎯 [최종 반환] 순서만 변경되고 ID(courseNo)는 그대로 유지된 배열을 반환합니다.
         return reorderedCourses;
       });
-
-      console.log('✅ Dnd Kit으로 코스 순서 변경 요청 완료 (비동기)');
     },
     [setCourses, setCurrentCourseIndex],
   );
@@ -108,6 +108,35 @@ const MidEdit: React.FC<PartyData> = () => {
     navigate(-1);
   };
 
+  useEffect(() => {
+    // 1. 중간 지점 좌표 추가
+    const midpointPoint: Point = {
+      lat: partyData.midPointLat,
+      lng: partyData.midPointLng,
+      name: partyData.midPoint,
+      type: 'midpoint',
+    };
+
+    // 2. 코스 목록의 모든 장소 좌표 추가
+    const coursePoints: Point[] = coursesList.flatMap((course) =>
+      course.places.lat && course.places.lng
+        ? [
+            {
+              lat: course.places.lat,
+              lng: course.places.lng,
+              name: course.places.placeName,
+              type: 'selected', // 지도 마커에 순서를 매기기 위해 'course' 타입 사용
+            },
+          ]
+        : [],
+    );
+
+    // 3. 두 데이터를 합쳐 mapPoints 상태 업데이트
+    setMapPoints([midpointPoint, ...coursePoints]);
+
+    // 🚨 의존성 배열: coursesList가 변경될 때마다 재실행
+  }, [coursesList, partyData.midPointLat, partyData.midPointLng, partyData.midPoint]); // partyData의 관련 필드도 포함
+
   return (
     <>
       <div className='max-w-6xl mx-auto text-left'>
@@ -142,8 +171,8 @@ const MidEdit: React.FC<PartyData> = () => {
         </div>
 
         <div className='mb-6'>
-          <div className='bg-gray-100 border border-gray-300 rounded-lg shadow-sm w-full' style={{ height: '300px' }}>
-            지도 영역
+          <div className='bg-gray-100 border border-gray-300 rounded-lg shadow-sm w-full' style={{ height: '350px' }}>
+            <Map points={mapPoints} />
           </div>
         </div>
 

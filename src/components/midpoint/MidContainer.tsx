@@ -6,9 +6,10 @@ import CourseRouteViewer from './CourseRouteViewer';
 // 필요한 외부 타입은 모두 import 되었다고 가정합니다.
 import type { RecommendedPlace, MidFindData } from '../../types/MidFindTypes';
 import type { MidResultData } from '../../types/MidResultTypes'; // FinalPartyResult, MemberRouteInfo 추가 가정
-import type { ViewMode, PartyData, PartyCourse } from '../../types/MidCommonTypes'; // PartyData, ViewMode 추가 가정
+import type { ViewMode, PartyData, PartyCourse, Point } from '../../types/MidCommonTypes'; // PartyData, ViewMode 추가 가정
 import MemberRouteDetail from './MemberRouteDetail';
 import MidPlaceItemAI from './MidPlaceItemAI';
+import Map from './Map';
 
 // *******************************************************************
 // 🚨 (가정) Type Guard 함수 정의
@@ -18,22 +19,6 @@ import MidPlaceItemAI from './MidPlaceItemAI';
 const isMidResultData = (data: MidFindData | MidResultData): data is MidResultData => {
   return 'members' in data;
 };
-
-// *******************************************************************
-// 🚨 (가정) VIEW 모드에서 사용하는 변환 함수
-// *******************************************************************
-// const transformCourseToRecommendedPlace = (course: FinalCourse): RecommendedPlace => {
-//   return {
-//     placeId: course.courseId,
-//     placeName: course.courseName,
-//     placeAddr: course.finalAddress, // 'address' -> 'placeAddr'로 수정 가정
-//     lat: 0, // 기본값 설정
-//     lng: 0, // 기본값 설정
-//     hitMenu: course.hitMenu,
-//     review: undefined,
-//     link: course.link || undefined, // link 추가 가정
-//   } as RecommendedPlace;
-// };
 
 interface MidContainerProps {
   mode: ViewMode;
@@ -49,6 +34,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
   const isFindMode = mode === 'FIND';
   const isViewMode = mode === 'VIEW';
   const isResultData = isMidResultData(resultData); // 데이터 타입을 판별
+  const [mapPoints, setMapPoints] = useState<Point[]>([]); // 지도 관련
 
   // ✅ 1. 분기된 데이터 할당 (타입 가드를 이용해 정확하게 형변환)
   // MidResultData는 FinalPartyResult와 구조가 유사하다고 가정하고 resultData를 사용합니다.
@@ -78,6 +64,64 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
     const currentAICourse = findData.aiRecommendList.find((aiCourse) => aiCourse.courseNo === targetCourseNo);
     aiPlacesToRender = currentAICourse?.places || null;
   }
+
+  useEffect(() => {
+    // ⚠️ 1. findData가 null이 아닐 때만 실행
+    if (!findData && !finalData) return;
+
+    // 2. MapData 추출 로직
+    const extractPoints = () => {
+      const dataToProcess = findData || finalData; // 두 모드 중 하나를 사용
+
+      if (!dataToProcess || !dataToProcess.party) return [];
+
+      const { party } = dataToProcess;
+      const newPoints: Point[] = [];
+
+      // 🎯 1. 중간 지점 좌표 추가
+      if (party.midPointLat && party.midPointLng) {
+        newPoints.push({
+          lat: party.midPointLat,
+          lng: party.midPointLng,
+          name: '계산된 중간 지점',
+          type: 'midpoint',
+        });
+      }
+
+      // 🎯 2. (CUSTOM 모드) 사용자가 선택한 장소 데이터 추가
+      // findData.placeData는 사용자가 상세 보기/선택한 장소라고 가정
+      if (findData && findData.placeData && findData.placeData.lat && findData.placeData.lng) {
+        newPoints.push({
+          lat: findData.placeData.lat,
+          lng: findData.placeData.lng,
+          name: findData.placeData.placeName,
+          type: 'selected',
+        });
+      }
+
+      // 🎯 3. (AI/VIEW 모드) 현재 선택된 코스 장소들 추가
+      const placesInCourse = courses.flatMap((c) => (c.places ? [c.places] : [])); // courses 배열에서 장소 추출
+      placesInCourse.forEach((p) => {
+        if (p.lat && p.lng) {
+          newPoints.push({
+            lat: p.lat,
+            lng: p.lng,
+            name: p.placeName,
+            type: 'selected',
+          });
+        }
+      });
+
+      console.log(mapPoints);
+
+      return newPoints;
+    };
+
+    const extractedPoints = extractPoints();
+    setMapPoints(extractedPoints);
+
+    // ⚠️ 3. 의존성 배열 수정: findData, finalData, courses가 변경될 때마다 재실행
+  }, [findData, finalData, courses]); // courses도 상태 변경 시 재실행되도록 포함
 
   // *******************************************************************
   // 3. 렌더링 콘텐츠 로직
@@ -168,7 +212,6 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
             })}
           </div>
         </>
-        // <></>
       );
     }
     return null;
@@ -225,7 +268,9 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-4 gap-4 mb-6'>
-        <div className='col-span-1 md:col-span-3 bg-white border border-gray-200 rounded-lg shadow-sm'>지도</div>
+        <div className='col-span-1 md:col-span-3 bg-white border border-gray-200 rounded-lg shadow-sm'>
+          <Map points={mapPoints} />
+        </div>
 
         <div className='col-span-1 p-4 bg-white border border-gray-200 rounded-lg shadow-sm'>
           <CourseRouteViewer courses={courses} currentIndex={currentCourseIndex} />

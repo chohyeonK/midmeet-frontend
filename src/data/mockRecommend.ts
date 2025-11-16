@@ -48,8 +48,8 @@ export const MOCK_MID_FIND_INITIAL_DATA: MidFindData = {
   },
 
   // 2. courseMode: CourseMode
-  courseMode: 'CUSTOM_COURSE', // 기본 모드 설정
-  // courseMode: 'AI_COURSE', // 기본 모드 설정
+  // courseMode: 'CUSTOM_COURSE', // 기본 모드 설정
+  courseMode: 'AI_COURSE', // 기본 모드 설정
 
   // 3. customRecommendList: RecommendedPlace[] | null
   customRecommendList: null, // 초기값: null
@@ -173,12 +173,11 @@ export const MOCK_AI_RECOMMEND_LIST: AIRecommendPlace[] = [
         review: '데이트 명소',
       },
       {
-        placeId: 102,
-        placeName: 'AI 추천 카페',
+        placeId: 103,
+        placeName: '별마당 도서관',
         placeAddr: '강남역 부근 3',
-        lat: 37.5055,
-        lng: 127.027,
-        hitMenu: '아인슈페너',
+        lat: 37.5100586,
+        lng: 127.0601188,
         review: '자리 짱많아요',
       },
     ],
@@ -206,11 +205,11 @@ export const MOCK_AI_RECOMMEND_LIST: AIRecommendPlace[] = [
         lng: 127.0235,
       },
       {
-        placeId: 104,
-        placeName: 'AI 추천 3',
+        placeId: 105,
+        placeName: '더 스머프 매직 포레스트 강남점',
         placeAddr: '신논현역 부근 3',
-        lat: 37.5045,
-        lng: 127.0235,
+        lat: 37.5034605,
+        lng: 127.0278301,
       },
     ],
   },

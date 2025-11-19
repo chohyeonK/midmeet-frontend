@@ -7,7 +7,7 @@ interface Course {
 }
 
 const CourseRouteViewer: React.FC<Course> = ({ courses, currentIndex }) => {
-  console.log('내부 코스 경로: ', courses);
+  // console.log('내부 코스 경로: ', courses);
   return (
     <>
       <h3 className='text-lg font-bold mb-3'>전체 모임 경로(총 {courses.length}개 코스)</h3>

@@ -13,6 +13,7 @@ export const MOCK_MID_FIND_INITIAL_DATA: MidFindData = {
       // 코스 목록 (예: 1차 식사, 2차 카페)
       {
         courseNo: 1,
+        courseId: 200,
         places: {
           // MidCommonTypes의 PartyCourse 구조에 따름
           placeId: 121,
@@ -24,6 +25,7 @@ export const MOCK_MID_FIND_INITIAL_DATA: MidFindData = {
       },
       {
         courseNo: 2,
+        courseId: 201,
         places: {
           // MidCommonTypes의 PartyCourse 구조에 따름
           placeId: 122,
@@ -35,6 +37,7 @@ export const MOCK_MID_FIND_INITIAL_DATA: MidFindData = {
       },
       {
         courseNo: 3,
+        courseId: 202,
         places: {
           // MidCommonTypes의 PartyCourse 구조에 따름
           placeId: 123,

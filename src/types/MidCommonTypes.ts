@@ -5,6 +5,7 @@ export type ViewMode = 'FIND' | 'VIEW';
 
 // 전체 코스 보기 시 사용
 export interface PartyCourse {
+  courseId: number;
   courseNo: number;
   places: RecommendedPlace;
 }

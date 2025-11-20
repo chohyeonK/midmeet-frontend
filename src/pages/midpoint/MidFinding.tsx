@@ -147,7 +147,7 @@ const MidFinding: React.FC = () => {
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
       loadRecommendList();
-      console.log('✅ useEffect에서 확인한 최종 변경된 코스:', courses);
+      // console.log('✅ useEffect에서 확인한 최종 변경된 코스:', courses);
     }, 1000);
     return () => clearTimeout(loadingTimer);
   }, [loadRecommendList]);

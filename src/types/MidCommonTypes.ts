@@ -24,4 +24,5 @@ export interface Point {
   lng: number; // 경도
   name: string; // 장소 이름 (팝업용)
   type: 'midpoint' | 'selected';
+  index?: number;
 }

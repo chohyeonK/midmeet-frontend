@@ -11,14 +11,17 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
 import { format, parse } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Map from '../../components/midpoint/Map';
+import axios from 'axios';
 
 const CustomDatePickerInput = forwardRef<HTMLInputElement, any>(({ value, onClick, onChange }, ref) => (
   <input type='text' className='w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700' value={value} onClick={onClick} onChange={onChange} ref={ref} />
 ));
 
+// PartyData를 불러서 가져오는게 아니라 밑에 빼야할수도
 const MidEdit: React.FC<PartyData> = () => {
+  const { partyId } = useParams();
   const navigate = useNavigate();
   const partyData = MOCK_MID_EDIT_DATA;
   const { partyDate, midPoint, courses } = partyData;
@@ -48,13 +51,12 @@ const MidEdit: React.FC<PartyData> = () => {
 
         if (oldIndex === -1 || newIndex === -1) return prevCoursesList;
 
-        // 1. 최신 상태(prevCoursesList)를 기반으로 배열 재정렬 (순서만 변경됨)
+        // 최신 상태(prevCoursesList)를 기반으로 배열 재정렬 (순서만 변경됨)
         const reorderedCourses = arrayMove(prevCoursesList, oldIndex, newIndex);
 
         // currentCourseIndex 업데이트
         setCurrentCourseIndex(newIndex);
 
-        // 2. 🎯 [최종 반환] 순서만 변경되고 ID(courseNo)는 그대로 유지된 배열을 반환합니다.
         return reorderedCourses;
       });
     },
@@ -71,37 +73,48 @@ const MidEdit: React.FC<PartyData> = () => {
     }
   };
 
-  const SubmitPartyData = () => {
-    // 파티명, 파티id, 모임장, 날짜/시간, 코스(코스no만 변경될 것)
-    // 날짜 포맷 -> string
-    let formattedDate = '';
-    if (date !== null) {
-      formattedDate = format(date, "yyyy-MM-dd'T'HH:mm:ss");
-      console.log('포맷된 날짜: ', formattedDate);
+  const SubmitPartyData = async () => {
+    try {
+      // 파티명, 파티id, 모임장, 날짜/시간, 코스(코스no만 변경될 것)
+      // 날짜 포맷 -> string
+      let formattedDate = '';
+      if (date !== null) {
+        formattedDate = format(date, "yyyy-MM-dd'T'HH:mm:ss");
+        console.log('포맷된 날짜: ', formattedDate);
+      }
+      // 코스 재정렬된 순서대로 재정렬
+      const finalCoursesList = coursesList.map((course, index) => {
+        // 배열의 현재 인덱스(0, 1, 2...)를 기반으로 courseNo를 1부터 다시 매깁니다.
+        return {
+          ...course,
+          courseNo: index + 1, // 1, 2, 3...
+        };
+      });
+
+      // 최종 데이터 객체 구성
+      // const finalPartyData = {
+      //   party_name: partyName,
+      //   date_time: formattedDate,
+      //   party_type: ,
+      //   party_state: true
+      //   // midPoint: partyData.midPoint,
+      //   // midPointLat: partyData.midPointLat,
+      //   // midPointLng: partyData.midPointLng,
+      //   // courses: finalCoursesList, // 코스 리스트: no 바뀐 결과로 수정해야 함
+      // };
+
+      // console.log('최종 데이터: ', finalPartyData);
+      // 백엔드 api 연동 필요(현재는 성공했다는 전제하에 결과 페이지 리다이렉트)
+      // const baseURL = import.meta.env.VITE_API_URL;
+      // // party 테이블 수정
+      // const response = await axios.post(`${baseURL}/user/reset-password`, finalPartyData);
+      // // course 테이블 수정
+
+      alert('모임 정보가 수정되었습니다.');
+      navigate('/midpoint/result'); // partyId 붙여야함
+    } catch (error) {
+      console.log(error);
     }
-    // 코스 재정렬된 순서대로 재정렬
-    const finalCoursesList = coursesList.map((course, index) => {
-      // 배열의 현재 인덱스(0, 1, 2...)를 기반으로 courseNo를 1부터 다시 매깁니다.
-      return {
-        ...course,
-        courseNo: index + 1, // 1, 2, 3...
-      };
-    });
-
-    // 최종 데이터 객체 구성
-    const finalPartyData: PartyData = {
-      partyName: partyName,
-      partyDate: formattedDate,
-      midPoint: partyData.midPoint,
-      midPointLat: partyData.midPointLat,
-      midPointLng: partyData.midPointLng,
-      courses: finalCoursesList, // 코스 리스트: no 바뀐 결과로 수정해야 함
-    };
-
-    console.log('최종 데이터: ', finalPartyData);
-    // 백엔드 api 연동 필요(현재는 성공했다는 전제하에 결과 페이지 리다이렉트)
-    alert('모임 정보가 수정되었습니다.');
-    navigate('/midpoint/result');
   };
 
   const handleCancel = () => {
@@ -109,7 +122,6 @@ const MidEdit: React.FC<PartyData> = () => {
   };
 
   useEffect(() => {
-    // 1. 중간 지점 좌표 추가
     const midpointPoint: Point = {
       lat: partyData.midPointLat,
       lng: partyData.midPointLng,
@@ -117,24 +129,23 @@ const MidEdit: React.FC<PartyData> = () => {
       type: 'midpoint',
     };
 
-    // 2. 코스 목록의 모든 장소 좌표 추가
-    const coursePoints: Point[] = coursesList.flatMap((course) =>
+    const coursePoints: Point[] = coursesList.flatMap((course, index) =>
       course.places.lat && course.places.lng
         ? [
             {
               lat: course.places.lat,
               lng: course.places.lng,
               name: course.places.placeName,
-              type: 'selected', // 지도 마커에 순서를 매기기 위해 'course' 타입 사용
+              type: 'selected',
+              index: index + 1,
             },
           ]
         : [],
     );
 
-    // 3. 두 데이터를 합쳐 mapPoints 상태 업데이트
     setMapPoints([midpointPoint, ...coursePoints]);
 
-    // 🚨 의존성 배열: coursesList가 변경될 때마다 재실행
+    // coursesList가 변경될 때마다 재실행
   }, [coursesList, partyData.midPointLat, partyData.midPointLng, partyData.midPoint]); // partyData의 관련 필드도 포함
 
   return (

@@ -22,11 +22,11 @@ const DragAndDropCourse: React.FC<DragAndDropCourseProps> = ({ course, index, cu
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 10 : 0, // 드래그 중인 아이템을 위로 올립니다.
+    zIndex: isDragging ? 10 : 0, // 드래그 중인 아이템을 위로 올림
     opacity: isDragging ? 0.8 : 1,
   };
 
-  // 숨김 기능 관련
+  // 숨김 기능 관련(현재 사용 안함)
   const [isHidden, setIsHidden] = useState(false);
   const statusText = isHidden ? '숨김 ON' : '숨김 OFF';
   const statusClasses = isHidden
@@ -35,7 +35,7 @@ const DragAndDropCourse: React.FC<DragAndDropCourseProps> = ({ course, index, cu
   return (
     <div
       ref={setNodeRef} // DND 노드 참조 연결
-      style={style} // 스타일 연결
+      style={style}
       className={`
                 flex items-center justify-between p-3 border transition duration-150 h-full
                 ${isDragging ? 'bg-indigo-100 border-indigo-500 shadow-md' : 'bg-white hover:bg-gray-50 border-white'}
@@ -52,7 +52,7 @@ const DragAndDropCourse: React.FC<DragAndDropCourseProps> = ({ course, index, cu
                     <div>{course.places.placeName}</div>
         </div>
       </div>
-      {/*      {' '}
+      {/*      
       <div className={`p-2 rounded cursor-pointer text-sm font-semibold transition duration-150 ${statusClasses}`} onClick={() => setIsHidden((prev) => !prev)}>
         {statusText}
       </div> */}

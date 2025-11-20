@@ -22,10 +22,7 @@ const PartyFormContainer: React.FC<PartyFormProps> = ({ step, totalSteps, title,
           <div className='text-left mb-6 text-2xl font-semibold text-gray-900'>{title}</div>
         </div>
 
-        <div className='w-full bg-white rounded-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>
-          {/* <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>{children}</div> */}
-          {children}
-        </div>
+        <div className='w-full bg-white rounded-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>{children}</div>
 
         <div className='flex justify-end w-full'>
           {onPrev && step !== 0 && <Button buttonName='이전' onClick={onPrev} className='bg-white !text-black mr-4' />}

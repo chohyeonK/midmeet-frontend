@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FormCard from '../../components/common/FormCard';
 import VisitHistoryItem from '../../components/VisitHistoryItem';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // const BASE_URL = import.meta.env.VITE_LOCAL_SERVER_URL;
 
 interface CourseResponse {
@@ -29,6 +30,17 @@ const MypageHistory: React.FC = () => {
   const [partyList, setPartyList] = useState<PartyList | null>();
   const [isLoading, setIsLoading] = useState(true);
   const token = getTokenFromStorage();
+  const navigate = useNavigate();
+
+  const handleShowMidpoint = (partyId: string, role: string) => {
+    // 리더만 접근 가능, 모임원들은 얼럿창으로 제한
+    const isLeader: boolean = role === 'LEADER';
+    if (isLeader) {
+      navigate(`/midpoint/calculate/${partyId}`);
+    } else {
+      alert('모임장만 중간지점을 도출할 수 있습니다.');
+    }
+  };
 
   useEffect(() => {
     const fectchData = async () => {
@@ -70,7 +82,7 @@ const MypageHistory: React.FC = () => {
       <div className='flex flex-col items-center justify-center px-6 mx-auto max-w-sm sm:max-w-5xl'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {partyList.map((party) => (
-            <VisitHistoryItem key={party.party_id} party={party} />
+            <VisitHistoryItem key={party.party_id} party={party} onClick={handleShowMidpoint} />
           ))}
         </div>
       </div>

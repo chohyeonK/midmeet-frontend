@@ -15,7 +15,7 @@ export const MOCK_MID_FIND_INITIAL_DATA: MidFindData = {
         courseNo: 1,
         places: {
           // MidCommonTypes의 PartyCourse 구조에 따름
-          placeId: 900,
+          placeId: 121,
           placeName: '미정',
           placeAddr: '미정',
           lat: 0,
@@ -23,10 +23,10 @@ export const MOCK_MID_FIND_INITIAL_DATA: MidFindData = {
         },
       },
       {
-        courseNo: 1,
+        courseNo: 2,
         places: {
           // MidCommonTypes의 PartyCourse 구조에 따름
-          placeId: 900,
+          placeId: 122,
           placeName: '미정',
           placeAddr: '미정',
           lat: 0,
@@ -34,10 +34,10 @@ export const MOCK_MID_FIND_INITIAL_DATA: MidFindData = {
         },
       },
       {
-        courseNo: 1,
+        courseNo: 3,
         places: {
           // MidCommonTypes의 PartyCourse 구조에 따름
-          placeId: 900,
+          placeId: 123,
           placeName: '미정',
           placeAddr: '미정',
           lat: 0,
@@ -48,8 +48,8 @@ export const MOCK_MID_FIND_INITIAL_DATA: MidFindData = {
   },
 
   // 2. courseMode: CourseMode
-  // courseMode: 'CUSTOM_COURSE', // 기본 모드 설정
-  courseMode: 'AI_COURSE', // 기본 모드 설정
+  courseMode: 'CUSTOM_COURSE', // 기본 모드 설정
+  // courseMode: 'AI_COURSE', // 기본 모드 설정
 
   // 3. customRecommendList: RecommendedPlace[] | null
   customRecommendList: null, // 초기값: null

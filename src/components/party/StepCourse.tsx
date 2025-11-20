@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import CourseItem from './CourseItem';
-import type { Course, PartyFormData } from '../../pages/party/Create';
+import { emptyTagData, type Course, type PartyFormData } from '../../pages/party/Create';
 
 interface StepCourseProps {
   data: PartyFormData;
@@ -11,18 +11,33 @@ interface StepCourseProps {
 
 const StepCourse: React.FC<StepCourseProps> = ({ data, onUpdateFormData }) => {
   const handleAddCourse = () => {
+    if (data.courseList.length >= 6) {
+      alert('코스는 최대 6개 설정할 수 있습니다.');
+      return;
+    }
     const newIndex = data.courseList.length + 1;
-    const newCourse = { course_no: newIndex, tag: '' };
+    const newCourse = { course_id: Date.now(), course_no: newIndex, tag: emptyTagData };
+
     onUpdateFormData({ courseList: [...data.courseList, newCourse] });
   };
 
   const handleRemoveCourse = (index: number) => {
-    const updatedCourseList = data.courseList.filter((_, i) => i !== index);
+    if (data.courseList.length === 1) {
+      alert('코스는 최소 1개여야 합니다.');
+      return;
+    }
+    const filteredList = data.courseList.filter((_, i) => i !== index);
+    const updatedCourseList = filteredList.map((course, i) => ({
+      ...course,
+      course_no: i + 1,
+    }));
+
     onUpdateFormData({ courseList: updatedCourseList });
   };
 
   const handleUpdateCourse = (index: number, updatedCourse: Course) => {
     const updatedCourseList = data.courseList.map((course, i) => (i === index ? updatedCourse : course));
+
     onUpdateFormData({ courseList: updatedCourseList });
   };
 
@@ -34,7 +49,7 @@ const StepCourse: React.FC<StepCourseProps> = ({ data, onUpdateFormData }) => {
       </div>
       <div>
         {data.courseList.map((course, index) => (
-          <CourseItem key={course.course_no} index={index} course={course} onUpdate={handleUpdateCourse} onRemove={handleRemoveCourse} />
+          <CourseItem key={course.course_id} index={index} course={course} onUpdate={handleUpdateCourse} onRemove={handleRemoveCourse} />
         ))}
         <Button onClick={handleAddCourse} buttonName='코스 추가' />
       </div>

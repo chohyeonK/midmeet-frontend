@@ -10,7 +10,7 @@ const Layout: React.FC = () => {
         <div className='flex-grow'>
           <div className='max-w-7xl mx-auto'>
             <Header />
-            <main className='px-6 py-10'>
+            <main className='px-6 py-5'>
               <Outlet />
             </main>
           </div>

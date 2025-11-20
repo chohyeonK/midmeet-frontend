@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
+import Logo from '../../../src/assets/images/logo_midmeet.png';
 
 const Header: React.FC = ({}) => {
   const user = useAuthStore((state) => state.user);
@@ -20,7 +21,7 @@ const Header: React.FC = ({}) => {
         {/* 로고 */}
         <div className=''>
           <Link to='/' className='text-2xl font-bold text-gray-800'>
-            미드미트
+            <img src={Logo} width={210} />
           </Link>
         </div>
 
@@ -29,11 +30,11 @@ const Header: React.FC = ({}) => {
           {isLoggedIn ? (
             <div className='flex items-center space-x-4'>
               <span className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>안녕하세요, {user?.name || '손님'}님!</span>
-              <Link to='/mypage' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
-                회원정보
-              </Link>
               <Link to='/party/create' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
                 모임 생성
+              </Link>
+              <Link to='/mypage' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
+                회원정보
               </Link>
               <Link to='/mypage/history' className='text-gray-600 hover:text-gray-900 py-2 px-4 rounded-md'>
                 방문기록

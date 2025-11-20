@@ -3,7 +3,7 @@ import { FaCrown } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 // 모임명
 // 방장 여부
 // 모임 장소 리스트
@@ -34,18 +34,24 @@ interface PartyResponse {
   // participants: Participant[];
 }
 
+type handleShowMidpoint = (partyId: string, role: string) => void;
+
 interface VisitHistoryProps {
   party: PartyResponse;
   className?: string;
+  onClick: handleShowMidpoint;
 }
 
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
 
-const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => {
+const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className, onClick }) => {
   // console.log(party);
+  const navigate = useNavigate();
   const token = getTokenFromStorage();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [partyData, setPartyData] = useState(party);
+  const { party_id, myRole } = partyData;
 
   const userRole = party.myRole;
 
@@ -60,6 +66,16 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
     const formattedDate = format(dateObject, 'yyyy-MM-dd a h시 m분', { locale: ko });
 
     return formattedDate;
+  };
+
+  const handleViewParty = () => {
+    // partyId 추출
+    // console.log(partyData);
+    navigate(`/midpoint/result/${party_id}`);
+  };
+
+  const handleEditParty = () => {
+    navigate(`/midpoint/edit/${party_id}`);
   };
 
   const handleDeleteParty = async () => {
@@ -87,6 +103,12 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
     } catch (error) {
       console.log('삭제 안됨');
     }
+  };
+
+  // onClick이 요구하는 타입 (React.MouseEventHandler)을 위해 래퍼
+  const handleClickWrapper = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.stopPropagation(); // 👈 상위 클릭 이벤트 방지
+    onClick(party_id, myRole);
   };
 
   return (
@@ -142,14 +164,19 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className }) => 
                 <div id='popup-modal' className='z-10 absolute top-full right-0 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700'>
                   <ul className='py-2' aria-labelledby='dropdownButton'>
                     <li>
-                      <a href='#' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
-                        보기
+                      <a onClick={handleClickWrapper} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
+                        진행 보기
+                      </a>
+                    </li>
+                    <li>
+                      <a onClick={handleViewParty} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
+                        결과 보기
                       </a>
                     </li>
                     {isLeader && (
                       <>
                         <li>
-                          <a href='#' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
+                          <a onClick={handleEditParty} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
                             수정
                           </a>
                         </li>

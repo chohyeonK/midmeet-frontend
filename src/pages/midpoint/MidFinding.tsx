@@ -290,26 +290,27 @@ const MidFinding: React.FC = () => {
     if (midCourseMode === 'AI_COURSE') {
       // ... (AI 모드 로직 주석 유지 또는 구현) ...
       newAIRecommend = MOCK_AI_RECOMMEND_LIST;
+      setAiRecommendList(newAIRecommend);
+    } else {
+      // 사용자 추천 코스
+      setRecommendList(newRecommend);
     }
 
     // ✅ 2. CUSTOM 모드일 때: 인덱스별 리스트를 설정
-    switch (currentCourseIndex) {
-      case 0:
-        newRecommend = MOCK_FOOD_LIST;
-        break;
-      case 1:
-        newRecommend = MOCK_CAFE_LIST;
-        break;
-      case 2:
-        newRecommend = MOCK_SHOPPING_LIST;
-        break;
-      default:
-        newRecommend = [];
-        break;
-    }
-
-    setRecommendList(newRecommend);
-    setAiRecommendList(newAIRecommend);
+    // switch (currentCourseIndex) {
+    //   case 0:
+    //     newRecommend = MOCK_FOOD_LIST;
+    //     break;
+    //   case 1:
+    //     newRecommend = MOCK_CAFE_LIST;
+    //     break;
+    //   case 2:
+    //     newRecommend = MOCK_SHOPPING_LIST;
+    //     break;
+    //   default:
+    //     newRecommend = [];
+    //     break;
+    // }
 
     // 🎯 이미 선택된 장소가 없다면, 새 리스트의 첫 번째 장소를 상세 정보로 설정 (원래 로직 유지)
     // 이 로직이 courses에 의존하지 않도록 수정해야 재귀 호출을 막을 수 있습니다.
@@ -320,9 +321,8 @@ const MidFinding: React.FC = () => {
   const convertDataFront = (data: any) => {
     // data 타입은 백엔드 응답 구조에 맞게 수정 필요
     console.log('받은 데이터: ', data);
-    const { party, midpoint, course_list } = data;
+    const { party, midPoint, midPointLng, midPointLat, course_list, list } = data;
     const { party_name, date_time, party_type } = party;
-    const { name, lat, lng } = midpoint;
 
     // 1. midCourseMode 상태 업데이트
     setMidCourseMode(party_type);
@@ -331,14 +331,17 @@ const MidFinding: React.FC = () => {
     const newPartyInfo = {
       partyName: party_name,
       partyDate: date_time,
-      midPoint: name,
-      midPointLat: lat,
-      midPointLng: lng,
+      midPoint: midPoint,
+      midPointLat: midPointLat,
+      midPointLng: midPointLng,
     };
     setPartyInfo(newPartyInfo);
 
     // 3. courses 상태 업데이트
     setCourses(course_list);
+
+    // 4. 첫번째 장소 추천 리스트
+    setRecommendList(list);
 
     // 4. 로딩 상태 해제
     setIsLoading(false);
@@ -427,16 +430,17 @@ const MidFinding: React.FC = () => {
     navigate('/midpoint/success');
   }, [courses, navigate, partyInfo]);
 
-  // 6. useEffect: 초기 데이터 로딩 (컴포넌트 마운트 시 1회 실행)
-  useEffect(() => {
-    getPartyAndCourse();
-  }, []);
+  // // 6. useEffect: 초기 데이터 로딩 (컴포넌트 마운트 시 1회 실행)
+  // useEffect(() => {
+
+  // }, []);
 
   // 7. useEffect: 데이터 로드 완료 및 courseIndex/mode 변경 감지 후 추천 리스트 로드
   useEffect(() => {
     // isLoading이 false이고, midCourseMode가 설정되었을 때만 추천 리스트 로드
     if (!isLoading && midCourseMode !== null) {
-      loadRecommendList();
+      getPartyAndCourse();
+      // loadRecommendList();
     }
   }, [loadRecommendList, isLoading, midCourseMode]);
 

@@ -10,6 +10,7 @@ export const MOCK_MID_RESULT_DATA: MidResultData = {
     midPointLng: 127.027621,
     courses: [
       {
+        courseId: 901,
         courseNo: 1,
         places: {
           placeId: 901,
@@ -20,6 +21,7 @@ export const MOCK_MID_RESULT_DATA: MidResultData = {
         },
       },
       {
+        courseId: 902,
         courseNo: 2,
         places: {
           placeId: 901,
@@ -30,6 +32,7 @@ export const MOCK_MID_RESULT_DATA: MidResultData = {
         },
       },
       {
+        courseId: 903,
         courseNo: 3,
         places: {
           placeId: 901,
@@ -92,6 +95,7 @@ export const MOCK_MID_EDIT_DATA: PartyData = {
   courses: [
     {
       courseNo: 1,
+      courseId: 901,
       places: {
         placeId: 901,
         placeName: '추천 맛집 A',
@@ -102,6 +106,7 @@ export const MOCK_MID_EDIT_DATA: PartyData = {
     },
     {
       courseNo: 2,
+      courseId: 902,
       places: {
         placeId: 901,
         placeName: '추천 맛집 B',
@@ -111,6 +116,7 @@ export const MOCK_MID_EDIT_DATA: PartyData = {
       },
     },
     {
+      courseId: 903,
       courseNo: 3,
       places: {
         placeId: 901,

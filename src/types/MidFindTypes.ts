@@ -5,7 +5,7 @@ export type CourseMode = 'CUSTOM_COURSE' | 'AI_COURSE';
 
 // 장소 관련(사용자 지정, AI 추천에서 사용)
 export interface RecommendedPlace {
-  placeId: number;
+  placeId?: number;
   placeName: string;
   placeAddr: string;
   lat: number;

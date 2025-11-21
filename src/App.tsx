@@ -63,9 +63,9 @@ function App() {
             <Route path='/join/input' element={<JoinInput />} />
             <Route path='/join/success' element={<SuccessJoin />} />
             {/* 컴포넌트 수정 예정 */}
-            <Route path='/midpoint/start' element={<MidStart />} />
+            <Route path='/midpoint/start/:partyId' element={<MidStart />} />
             <Route path='/midpoint/calculate/:partyId' element={<MidFinding />} />
-            <Route path='/midpoint/success' element={<MidSuccess />} />
+            <Route path='/midpoint/success/:partyId' element={<MidSuccess />} />
             <Route path='/midpoint/result/:partyId' element={<MidResult />} />
             <Route path='/midpoint/edit/:partyId' element={<MidEdit />} />
           </Route>

@@ -15,8 +15,8 @@ import { useNavigate } from 'react-router-dom';
 interface CourseResponse {
   course_id: string;
   course_no: number;
-  course_placeName: string | null;
-  course_placeAddress: string | null;
+  place_name: string | null;
+  place_address: string | null;
 }
 
 // interface Participant {
@@ -200,7 +200,7 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className, onCli
             {party.courses &&
               party.courses.map((course) => (
                 <div key={course.course_id}>
-                  <span>{course.course_no}.</span> {course.course_placeName ? course.course_placeName : '미지정'}
+                  <span>{course.course_no}.</span> {course.place_name ? course.place_name : '미지정'}
                 </div>
               ))}
           </div>

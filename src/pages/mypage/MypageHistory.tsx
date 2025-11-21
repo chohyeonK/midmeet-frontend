@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 interface CourseResponse {
   course_id: string;
   course_no: number;
-  course_placeName: string | null;
-  course_placeAddress: string | null;
+  place_name: string | null;
+  place_address: string | null;
 }
 
 interface PartyResponse {

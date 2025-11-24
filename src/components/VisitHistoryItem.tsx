@@ -24,7 +24,7 @@ interface Participant {
   role: string;
 }
 
-interface PartyResponse {
+export interface PartyResponse {
   party_id: string;
   date_time: string;
   party_name: string | null;

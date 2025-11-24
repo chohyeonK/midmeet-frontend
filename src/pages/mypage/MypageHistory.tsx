@@ -1,27 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import FormCard from '../../components/common/FormCard';
-import VisitHistoryItem from '../../components/VisitHistoryItem';
+import VisitHistoryItem, { type PartyResponse } from '../../components/VisitHistoryItem';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // const BASE_URL = import.meta.env.VITE_LOCAL_SERVER_URL;
-
-interface CourseResponse {
-  course_id: string;
-  course_no: number;
-  place_name: string | null;
-  place_address: string | null;
-}
-
-interface PartyResponse {
-  party_id: string;
-  date_time: string;
-  party_name: string | null;
-  party_type: string | null;
-  party_state: boolean;
-  courses: CourseResponse[];
-  myRole: string;
-}
-
 type PartyList = PartyResponse[];
 
 const getTokenFromStorage = () => localStorage.getItem('token') || null;

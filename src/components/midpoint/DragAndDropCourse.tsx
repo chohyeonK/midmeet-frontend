@@ -52,10 +52,10 @@ const DragAndDropCourse: React.FC<DragAndDropCourseProps> = ({ course, index, cu
                     <div>{course.places.placeName}</div>
         </div>
       </div>
-      {/*      
+           
       <div className={`p-2 rounded cursor-pointer text-sm font-semibold transition duration-150 ${statusClasses}`} onClick={() => setIsHidden((prev) => !prev)}>
         {statusText}
-      </div> */}
+      </div>
     </div>
   );
 };

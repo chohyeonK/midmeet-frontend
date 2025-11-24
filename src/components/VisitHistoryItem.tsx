@@ -131,7 +131,6 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className, onCli
                   진행 중
                 </span>
               ) : (
-                // party_state가 false면 완료
                 <span className='inline-flex items-center text-sm px-2 py-1 rounded-full border border-gray-400 text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-300'>
                   <svg className='w-3 h-3 mr-1' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
                     <path
@@ -163,16 +162,20 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className, onCli
               {isDropdownOpen && (
                 <div id='popup-modal' className='z-10 absolute top-full right-0 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700'>
                   <ul className='py-2' aria-labelledby='dropdownButton'>
-                    <li>
-                      <a onClick={handleClickWrapper} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
-                        진행 보기
-                      </a>
-                    </li>
-                    <li>
-                      <a onClick={handleViewParty} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
-                        결과 보기
-                      </a>
-                    </li>
+                    {party.party_state ? (
+                      <li>
+                        <a onClick={handleClickWrapper} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
+                          진행 보기
+                        </a>
+                      </li>
+                    ) : (
+                      <li>
+                        <a onClick={handleViewParty} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
+                          결과 보기
+                        </a>
+                      </li>
+                    )}
+
                     {isLeader && (
                       <>
                         <li>

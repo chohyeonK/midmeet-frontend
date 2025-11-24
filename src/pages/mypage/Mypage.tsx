@@ -87,7 +87,7 @@ const Mypage: React.FC = () => {
           updateUser(response.data.user);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         if (axios.isAxiosError(error) && error.response) {
           if (error.response.status === 403) {
             alert('현재 비밀번호가 일치하지 않습니다.');

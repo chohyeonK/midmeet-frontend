@@ -58,8 +58,8 @@ const MypageHistory: React.FC = () => {
           setPartyList(response.data);
         }
       } catch (error) {
-        console.log(error);
-        // setParty([]);
+        // console.log(error);
+        alert('방문 기록 조회에 문제가 발생하였습니다. 잠시후에 다시 시도해주세요.');
       } finally {
         setIsLoading(false);
       }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaCrown } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -19,9 +19,10 @@ interface CourseResponse {
   place_address: string | null;
 }
 
-// interface Participant {
-//   role: string;
-// }
+interface Participant {
+  user_uid: string;
+  role: string;
+}
 
 interface PartyResponse {
   party_id: string;
@@ -31,7 +32,8 @@ interface PartyResponse {
   party_state: boolean;
   courses: CourseResponse[];
   myRole: string;
-  // participants: Participant[];
+  participants: Participant[];
+  participant_count: number;
 }
 
 type handleShowMidpoint = (partyId: string, role: string) => void;
@@ -52,6 +54,7 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className, onCli
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [partyData, setPartyData] = useState(party);
   const { party_id, myRole } = partyData;
+  const [isReady, setIsReady] = useState(false);
 
   const userRole = party.myRole;
 
@@ -111,6 +114,17 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className, onCli
     onClick(party_id, myRole);
   };
 
+  const isReadyCheck = () => {
+    if (party.participants.length === party.participant_count) {
+      // 진행보기 가능
+      setIsReady(true);
+    }
+  };
+
+  useEffect(() => {
+    isReadyCheck();
+  }, []);
+
   return (
     <div className='w-full min-w-80 min-h-40 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700'>
       <div className=''>
@@ -163,11 +177,13 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className, onCli
                 <div id='popup-modal' className='z-10 absolute top-full right-0 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700'>
                   <ul className='py-2' aria-labelledby='dropdownButton'>
                     {party.party_state ? (
-                      <li>
-                        <a onClick={handleClickWrapper} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
-                          진행 보기
-                        </a>
-                      </li>
+                      isReady && (
+                        <li>
+                          <a onClick={handleClickWrapper} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
+                            진행 보기
+                          </a>
+                        </li>
+                      )
                     ) : (
                       <li>
                         <a onClick={handleViewParty} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
@@ -199,7 +215,11 @@ const VisitHistoryItem: React.FC<VisitHistoryProps> = ({ party, className, onCli
         </div>
 
         <div className='flex flex-col px-6 pb-6'>
-          <div className='mt-4 md:mt-6 w-full text-left space-y-3'>
+          <div className='text-left text-mint-500'>
+            {party.participants.length} / {party.participant_count}
+          </div>
+          {isReady ? <div className='text-left text-mint-500'>모임이 준비되었어요! 모임을 시작하세요.</div> : <div className='text-left text-gray-500'>다른 모임원을 기다리고 있어요.</div>}
+          <div className='mt-2 md:mt-6 w-full text-left space-y-3'>
             {party.courses &&
               party.courses.map((course) => (
                 <div key={course.course_id}>

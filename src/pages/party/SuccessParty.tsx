@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { Link, useNavigate } from 'react-router-dom';
-import StatusForm from '../../components/forms/StatusForm';
+import StatusForm, { type StatusProps } from '../../components/forms/StatusForm';
 import { usePartyStore } from '../../store/usePartyStore';
 import axios from 'axios';
 
-interface StatusFormProps {
-  title: string;
-  message: string;
-  buttonText: string;
-  url: string | null;
-}
+// interface StatusFormProps {
+//   title: string;
+//   message: string;
+//   buttonText: string;
+//   url: string | null;
+//   method?:
+// }
 
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
 
@@ -18,11 +19,15 @@ const SuccessParty: React.FC = () => {
   const token = getTokenFromStorage();
   const navigate = useNavigate();
   // API 호출 결과 저장할 상태 선언
-  const [statusProps, setStatusProps] = useState<StatusFormProps | null>(null);
+  const [statusProps, setStatusProps] = useState<StatusProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const { partyId } = usePartyStore();
   // const BASE_URL = 'http://localhost:5173';
+
+  const handleCopy = async (textLink: string) => {
+    await navigator.clipboard.writeText(textLink);
+  };
 
   useEffect(() => {
     // partyId가 없으면 API 호출 하지 않음
@@ -46,9 +51,10 @@ const SuccessParty: React.FC = () => {
           const joinLink = partyId && token ? `${baseURL}/join/${partyId}/${token}` : '링크 생성 정보가 없습니다.';
           setStatusProps({
             title: '모임이 생성되었습니다!',
-            message: '모임원들에게 공유하여 모임을 시작하세요.',
-            buttonText: '공유',
+            message: '모임원 정보 입력 이메일이 자동으로 발송되었습니다. \n확인 후 모임을 시작해 주세요.',
+            buttonText: '공유(복사)',
             url: joinLink,
+            handleClick: handleCopy,
           });
         }
       } catch (error) {

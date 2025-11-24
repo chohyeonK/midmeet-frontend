@@ -33,22 +33,30 @@ const JoinInput: React.FC = () => {
 
   const handleJoinSubmit: SubmitHandler<FormData> = async (data: FormData) => {
     // console.log('handleJoinSubmit => ', data);
+    try {
+      const payload = {
+        transport_mode: data.transportation,
+        start_address: data.from,
+      };
 
-    const payload = {
-      transport_mode: data.transportation,
-      start_address: data.from,
-    };
+      const baseURL = import.meta.env.VITE_API_URL;
+      const response = await axios.post(`${baseURL}/party/${partyId}/participant`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const baseURL = import.meta.env.VITE_API_URL;
-    const response = await axios.post(`${baseURL}/party/${partyId}/participant`, payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    // console.log(response);
-    if (response.status === 200) {
-      navigate('/join/success');
+      // console.log(response);
+      if (response.status === 200) {
+        navigate('/join/success');
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 406) {
+          alert('이미 입력이 완료되었습니다. 마이페이지로 이동합니다.');
+        }
+        navigate('/mypage/history');
+      }
     }
   };
 

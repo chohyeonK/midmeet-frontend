@@ -126,7 +126,7 @@ const Create: React.FC = () => {
         party_type: formData.midpointMethod,
       };
 
-      console.log(formData);
+      // console.log(formData);
 
       const baseURL = import.meta.env.VITE_API_URL;
       const partyResponse = await axios.post(`${baseURL}/party`, partyPayload, {
@@ -157,8 +157,15 @@ const Create: React.FC = () => {
         }
       }
     } catch (error) {
-      console.log(error);
-      alert('저장하는데 오류가 발생하였습니다. 다시 시도하여 주시기 바랍니다.');
+      // console.log(error);
+      // 이메일 인증 안받은 유저가 모임 생성 시 에러 처리
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 403) {
+          alert(error.response.data.message);
+        }
+      } else {
+        alert('저장하는데 오류가 발생하였습니다. 다시 시도하여 주시기 바랍니다.');
+      }
     }
   };
 

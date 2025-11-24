@@ -34,7 +34,7 @@ const SuccessJoin: React.FC = () => {
   const props = {
     topTitle: '입력이 완료되었습니다! \n다른 모임원들이 정보를 \n입력할때까지 기다려주세요!',
     title: `${currentCount}/${wholeCount}`,
-    message: '완료되면 카카오톡으로 알림을 받을 수 있습니다.',
+    message: '완료되면 이메일로 알림을 받을 수 있습니다.',
     buttonText: '홈',
     linkTo: {
       pathname: '/',

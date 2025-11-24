@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Button from '../common/Button';
 
-interface StatusProps {
+export interface StatusProps {
   title: string;
   message: string;
   buttonText: string;
@@ -11,9 +12,10 @@ interface StatusProps {
     state?: any;
   };
   url?: string | null;
+  handleClick?: (textLink: string) => void;
 }
 
-const StatusForm: React.FC<StatusProps> = ({ topTitle, title, message, buttonText, linkTo, url }) => {
+const StatusForm: React.FC<StatusProps> = ({ topTitle, title, message, buttonText, linkTo, url, handleClick }) => {
   return (
     <div className='flex flex-col items-center justify-center px-6 py-12 mx-auto'>
       <div className='flex flex-col'>
@@ -23,10 +25,15 @@ const StatusForm: React.FC<StatusProps> = ({ topTitle, title, message, buttonTex
           {message}
         </div>
         {url ? (
-          <div className='mt-4 p-4 border rounded-lg bg-white shadow-md w-full max-w-lg break-words'>
-            <div className='text-sm text-gray-500 mb-2'>공유(복사)</div>
-            <p className='text-indigo-600 font-medium break-words'>{url}</p>
-          </div>
+          // <div className='mt-4 p-4 border rounded-lg bg-white shadow-md w-full max-w-lg break-words'>
+          //   <div className='text-sm text-gray-500 mb-2'>{buttonText}</div>
+          //   <p className='text-indigo-600 font-medium break-words'>{url}</p>
+          // </div>
+          <Button
+            buttonName={buttonText}
+            onClick={() => handleClick?.(url)}
+            className='mt-8 text-white bg-mint-500 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+          />
         ) : (
           <Link
             to={linkTo?.pathname || '/'}

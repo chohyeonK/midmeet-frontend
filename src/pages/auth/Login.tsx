@@ -42,9 +42,14 @@ const Login: React.FC = () => {
     }
   };
 
+  // 비회원 처리 함수
+  const handleGuest = () => {
+    navigate('/guest/create');
+  };
+
   return (
     <FormCard title='로그인'>
-      <LoginForm onSubmit={handleLogin} loginError={loginError} setLoginError={setLoginError} />
+      <LoginForm onSubmit={handleLogin} loginError={loginError} setLoginError={setLoginError} customClick={handleGuest} />
     </FormCard>
   );
 };

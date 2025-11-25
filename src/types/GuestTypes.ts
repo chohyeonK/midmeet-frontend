@@ -1,3 +1,5 @@
+import type { Course } from '../pages/party/Create';
+
 export type TransportMode = 'PUBLIC' | 'PRIVATE';
 
 export interface MemberData {
@@ -5,6 +7,14 @@ export interface MemberData {
   name: string;
   startAddr: string;
   transportMode: TransportMode;
+}
+
+export interface GuestPartyFormData {
+  name: string;
+  date: Date | null;
+  numberOfPeople: number;
+  members: MemberData[];
+  courseList: Course[];
 }
 
 // 초기 모임원 데이터

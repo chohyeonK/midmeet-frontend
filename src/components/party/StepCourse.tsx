@@ -3,9 +3,10 @@ import Button from '../common/Button';
 import Input from '../common/Input';
 import CourseItem from './CourseItem';
 import { emptyTagData, type Course, type PartyFormData } from '../../pages/party/Create';
+import type { GuestPartyFormData } from '../../types/GuestTypes';
 
 interface StepCourseProps {
-  data: PartyFormData;
+  data: PartyFormData | GuestPartyFormData;
   onUpdateFormData: (data: Partial<PartyFormData>) => void;
 }
 

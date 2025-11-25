@@ -18,9 +18,10 @@ interface LoginFormProps {
   loginError: string | null;
   // 부모로부터 로딩 상태 받음
   setLoginError: React.Dispatch<React.SetStateAction<string | null>>;
+  customClick: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loginError, setLoginError }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loginError, setLoginError, customClick }) => {
   const {
     register, // 입력 필드를 폼에 등록하는 함수
     handleSubmit, // 폼 제출을 처리하는 함수
@@ -64,6 +65,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loginError, setLoginErr
 
         <Button type='submit' buttonName='로그인' className='w-full ' />
       </form>
+      <hr />
+      <Button type='submit' buttonName='비회원으로 시작하기' className='w-full bg-gray-400' onClick={customClick} />
 
       <p className='mt-10 text-center text-sm/6 text-gray-500 dark:text-gray-400'>
         아직 회원이 아니신가요?{' '}

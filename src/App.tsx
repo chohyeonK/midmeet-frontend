@@ -27,6 +27,7 @@ import MidStart from './pages/midpoint/MidStart';
 import MidSuccess from './pages/midpoint/MidSuccess';
 import MidResult from './pages/midpoint/MidResult';
 import MidEdit from './pages/midpoint/MidEdit';
+import GuestCreate from './pages/guest/GuestCreate';
 
 function App() {
   const { isAuthReady, initializeAuth } = useAuthStore();
@@ -54,23 +55,22 @@ function App() {
           <Route path='/find-passwd' element={<FindPasswd />} />
           <Route path='/reset-passwd' element={<ResetPasswd />} />
           <Route path='/reset-passwd/success' element={<SuccessPasswd />} />
+          <Route path='/guest/create' element={<GuestCreate />} />
           <Route element={<PrivateRoute />}>
+            <Route path='/party/create' element={<Create />} />
             <Route path='/mypage' element={<Mypage />} />
             <Route path='/mypage/history' element={<MypageHistory />} />
-            {/* <Route path='/party/create' element={<Create />} /> */}
             <Route path='/party/success' element={<SuccessParty />} />
             <Route path='/join/:partyId/:token' element={<JoinParty />} />
             <Route path='/join/input' element={<JoinInput />} />
             <Route path='/join/success' element={<SuccessJoin />} />
-            {/* 컴포넌트 수정 예정 */}
+
             <Route path='/midpoint/start/:partyId' element={<MidStart />} />
             <Route path='/midpoint/calculate/:partyId' element={<MidFinding />} />
             <Route path='/midpoint/success/:partyId' element={<MidSuccess />} />
             <Route path='/midpoint/result/:partyId' element={<MidResult />} />
-            <Route path='/midpoint/edit/:partyId' element={<MidEdit />} />
+            {/* <Route path='/midpoint/edit/:partyId' element={<MidEdit />} /> */}
           </Route>
-
-          <Route path='/party/create' element={<Create />} />
         </Route>
         <Route path='*' element={<NotFound />} />
       </Routes>

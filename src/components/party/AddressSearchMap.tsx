@@ -15,9 +15,10 @@ interface AddressSearchMapProps {
   addressFieldName: string;
   latFieldName: string;
   lngFieldName: string;
+  currentAddress?: string;
 }
 
-const AddressSearchMap: React.FC<AddressSearchMapProps> = ({ setAddressAndField, addressFieldName, latFieldName, lngFieldName }) => {
+const AddressSearchMap: React.FC<AddressSearchMapProps> = ({ setAddressAndField, addressFieldName, latFieldName, lngFieldName, currentAddress }) => {
   // const mapRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [address, setAddress] = useState('');
@@ -38,6 +39,12 @@ const AddressSearchMap: React.FC<AddressSearchMapProps> = ({ setAddressAndField,
     height: '600px',
     border: '1px solid #000',
   } as React.CSSProperties;
+
+  useEffect(() => {
+    if (currentAddress && currentAddress !== address) {
+      setAddress(currentAddress);
+    }
+  }, [currentAddress]); // currentAddress가 바뀔 때마다 실행
   return (
     <div className='w-full space-y-3'>
       {/* 팝업 열기 버튼 및 검색된 주소 표시 */}

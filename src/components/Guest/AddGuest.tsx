@@ -18,10 +18,21 @@ const AddGuest: React.FC<GuestAdd> = ({ index, member, onChange, onDelete }) => 
   const handleAddrInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(memberId, 'startAddr', e.target.value);
   };
+
   const handleAddressChange = (fieldName: string, value: string) => {
-    // 이 함수는 memberId와 fieldName, value를 가지고 상위 컴포넌트의 setMembers를 호출해야 합니다.
-    console.log(`[상위 전달]: 필드 ${fieldName}, 값 ${value}`);
-    // 예: 상위 컴포넌트의 onChange(memberId, fieldName, value);
+    // AddressSearchMap props에서 addressFieldName='from'으로 넘겼으므로
+    // fieldName이 'from'일 때가 주소 텍스트입니다.
+    if (fieldName === 'from') {
+      onChange(memberId, 'startAddr', value);
+    }
+
+    // (참고) 만약 위도/경도도 저장해야 한다면 MemberData 타입에 필드를 추가하고 아래처럼 처리하세요.
+    // else if (fieldName === 'startLatitude') {
+    //   onChange(memberId, 'lat', value);
+    // }
+    // else if (fieldName === 'startLongitude') {
+    //   onChange(memberId, 'lng', value);
+    // }
   };
   const handleTransportChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(memberId, 'transportMode', e.target.value as TransportMode);
@@ -35,13 +46,13 @@ const AddGuest: React.FC<GuestAdd> = ({ index, member, onChange, onDelete }) => 
       </div>
       <div>
         <div className='block text-left text-gray-700 mt-3'>이름</div>
-        <Input type='text' name='guestName' onChange={(e) => handleNameInput(e)} />
+        <Input type='text' name='guestName' onChange={(e) => handleNameInput(e)} value={member.name} />
       </div>
-      <div>
+      <div className='text-left text-gray-700 mt-3'>
         <Label htmlFor='출발지' LabelName='출발지' />
-        <AddressSearchMap setAddressAndField={handleAddressChange} addressFieldName='from' latFieldName='startLatitude' lngFieldName='startLongitude' />
+        <AddressSearchMap currentAddress={member.startAddr} setAddressAndField={handleAddressChange} addressFieldName='from' latFieldName='startLatitude' lngFieldName='startLongitude' />
       </div>
-      <div>
+      <div className='text-left text-gray-700 mt-3'>
         <Label htmlFor='교통수단' LabelName='교통수단' />
         <select value={member.transportMode} onChange={handleTransportChange} className='w-full border rounded-md p-2'>
           <option value='PUBLIC'>대중교통</option>

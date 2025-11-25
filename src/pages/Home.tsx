@@ -26,7 +26,7 @@ const Home = () => {
             {' '}
             {/* 버튼 위쪽 여백 추가 */}
             <Link
-              to='/party/create'
+              to='/login'
               className='focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg px-5 py-2.5 me-2 dark:focus:ring-yellow-900'
             >
               시작하기

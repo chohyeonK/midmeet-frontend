@@ -611,6 +611,7 @@ const MidFinding: React.FC = () => {
     } else {
       // 1. 전송할 데이터 구조로 변환 (Mapping)
       payloadCourses = courses.map((courseItem) => {
+        console.log(courseItem)
         if (!courseItem.places) {
           console.error(`ERROR: Course No ${courseItem.courseNo}에 선택된 장소 정보가 없습니다.`);
           return null;
@@ -628,6 +629,7 @@ const MidFinding: React.FC = () => {
           course_view: true, // boolean 값 전송
           place_lat: Number(lat), // ✅ 문자열 -> 숫자로 변환
           place_lng: Number(lng), // ✅ 문자열 -> 숫자로 변환
+          place_url: courseItem.places.placeUrl
         };
       });
 

@@ -9,8 +9,10 @@ import type { GuestPartyFormData } from '../../types/GuestTypes';
 import { format } from 'date-fns';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../components/common/Loading';
 
 const GuestCreate: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false); // 초기 로딩 상태는 true
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState<GuestPartyFormData>({
@@ -85,6 +87,8 @@ const GuestCreate: React.FC = () => {
         return;
       }
 
+      setIsLoading(true);
+
       // 날짜 포매팅
       let formattedDate = null;
       if (formData.date) {
@@ -110,15 +114,118 @@ const GuestCreate: React.FC = () => {
 
       console.log('보낸 데이터: ', payload);
 
-      //   navigate('')
-
       const baseURL = import.meta.env.VITE_API_URL;
-      const response = await axios.post(`${baseURL}/party/guest`, payload);
-      console.log('보낸 데이터 응답: ', response);
+      // const response = await axios.post(`${baseURL}/party/guest`, payload);
+      // console.log('보낸 데이터 응답: ', response);
+      const tempResponse = 200;
 
-      if (response.status === 200) {
+      if (tempResponse === 200) {
+        setIsLoading(false);
         // 데이터 받아서 페이지 리다이렉트
+        // 임시 결과 데이터
+        const tempResult = {
+          party: {
+            partyName: '정윤초현',
+            partyDate: '2025-11-27T17:30:00',
+            midPoint: '달월',
+            midPointLat: 37.37968,
+            midPointLng: 126.74518,
+            partyType: 'AI_COURSE',
+            courses: [
+              {
+                courseNo: 1,
+                courseId: '1764057612380',
+                places: {
+                  placeId: '',
+                  placeName: '',
+                  placeAddr: '',
+                  lat: 0,
+                  lng: 0,
+                },
+              },
+              {
+                courseNo: 2,
+                courseId: '1764057645831',
+                places: {
+                  placeId: '',
+                  placeName: '',
+                  placeAddr: '',
+                  lat: 0,
+                  lng: 0,
+                },
+              },
+            ],
+          },
+          list: [
+            {
+              courseId: '241040',
+              courseNo: 1,
+              courseName: '거리우선 추천코스',
+              places: [
+                {
+                  placeId: '1764057612380',
+                  placeName: '평이담백 뼈칼국수 신세계아울렛시흥프리미엄',
+                  placeAddr: '경기 시흥시 배곧동 36',
+                  lat: 37.3797942465734,
+                  lng: 126.73835989687,
+                },
+                {
+                  placeId: '1764057645831',
+                  placeName: '소바공방 신세계아울렛시흥프리미엄',
+                  placeAddr: '경기 시흥시 배곧동 36',
+                  lat: 37.379701214667634,
+                  lng: 126.7382574734017,
+                },
+              ],
+            },
+            {
+              courseId: '597064',
+              courseNo: 2,
+              courseName: '인기우선 추천코스',
+              places: [
+                {
+                  placeId: '1764057612380',
+                  placeName: '만석씨푸드 본점',
+                  placeAddr: '경기 시흥시 배곧동 18-7',
+                  lat: 37.3823736934317,
+                  lng: 126.735847666764,
+                },
+                {
+                  placeId: '1764057645831',
+                  placeName: '히바린 신세계아울렛시흥프리미엄',
+                  placeAddr: '경기 시흥시 배곧동 36',
+                  lat: 37.37991044534868,
+                  lng: 126.73591276097015,
+                },
+              ],
+            },
+            {
+              courseId: '217073',
+              courseNo: 3,
+              courseName: 'AI추천 코스',
+              places: [
+                {
+                  placeId: '1764057612380',
+                  placeName: '정든한우 소머리국밥 배곧신도시점',
+                  placeAddr: '경기 시흥시 배곧동 18-4',
+                  lat: 37.382261905478764,
+                  lng: 126.73501476645305,
+                },
+                {
+                  placeId: '1764057645831',
+                  placeName: '사보텐 신세계배곧점',
+                  placeAddr: '경기 시흥시 배곧동 36',
+                  lat: 37.37990079861863,
+                  lng: 126.73846453181277,
+                },
+              ],
+            },
+          ],
+        };
         console.log('성공');
+        sessionStorage.setItem('partyCreationResult', JSON.stringify(tempResult));
+        sessionStorage.setItem('partyMembers', JSON.stringify(payload.participants));
+        navigate('/guest/start');
       }
     } catch (error) {
       console.log(error);
@@ -259,6 +366,11 @@ const GuestCreate: React.FC = () => {
     onNext: handleNext,
     onSubmit: onSubmit,
   };
+
+  // 로딩 중이거나 필수 데이터(midCourseMode)가 아직 로드되지 않았다면 로딩 컴포넌트를 표시
+  if (isLoading) {
+    return <Loading title='모임을 생성하여 최적의 만남 장소를 분석하고 있습니다.' message='잠시만 기다려주세요!' />;
+  }
 
   return (
     <>

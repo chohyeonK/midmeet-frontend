@@ -28,6 +28,9 @@ import MidSuccess from './pages/midpoint/MidSuccess';
 import MidResult from './pages/midpoint/MidResult';
 import MidEdit from './pages/midpoint/MidEdit';
 import GuestCreate from './pages/guest/GuestCreate';
+import GuestMidStart from './pages/guest/GuestMidStart';
+import GuestMidFinding from './pages/guest/GuestMidFinding';
+import GuestMidResult from './pages/guest/GuestMidResult';
 
 function App() {
   const { isAuthReady, initializeAuth } = useAuthStore();
@@ -56,6 +59,9 @@ function App() {
           <Route path='/reset-passwd' element={<ResetPasswd />} />
           <Route path='/reset-passwd/success' element={<SuccessPasswd />} />
           <Route path='/guest/create' element={<GuestCreate />} />
+          <Route path='/guest/start' element={<GuestMidStart />} />
+          <Route path='/guest/finding' element={<GuestMidFinding />} />
+          <Route path='/guest/result' element={<GuestMidResult />} />
           <Route element={<PrivateRoute />}>
             <Route path='/party/create' element={<Create />} />
             <Route path='/mypage' element={<Mypage />} />

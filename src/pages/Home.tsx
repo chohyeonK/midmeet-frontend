@@ -2,12 +2,25 @@ import React from 'react';
 import Header from '../components/layouts/Header';
 import Footer from '../components/layouts/Footer';
 import Button from '../components/common/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MainImg from '../assets/images/main.png';
-
-// 폰트 디바이스별 조정 필요
+import { useAuthStore } from '../store/useAuthStore';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
+  // user가 null이 아니면 로그인 상태로 간주
+  const isLoggedIn = !!user;
+
+  const handleStartClick = () => {
+    if (isLoggedIn) {
+      // 로그인 되어있으면 바로 모임 시작하게
+      navigate('/party/create');
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <>
       <div className='flex justify-center items-center mb-5 flex-col md:flex-row md:gap-8'>
@@ -25,12 +38,13 @@ const Home = () => {
           <div className='mt-4'>
             {' '}
             {/* 버튼 위쪽 여백 추가 */}
-            <Link
-              to='/login'
+            <a
+              href='#'
+              onClick={handleStartClick}
               className='focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg px-5 py-2.5 me-2 dark:focus:ring-yellow-900'
             >
               시작하기
-            </Link>
+            </a>
           </div>
         </div>
         {/* 이미지 컨테이너의 너비를 조절하여 텍스트와 균형을 맞춥니다.

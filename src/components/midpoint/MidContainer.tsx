@@ -174,7 +174,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
         return (
           <>
             <div className='mb-6'>
-                            <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>코스를 골라주세요!</div>
+              <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>코스를 골라주세요!</div>
               <div className='flex flex-nowrap overflow-x-auto space-x-4 '>
                 {findData.aiRecommendList.map((aiCourse, index) => (
                   <MidPlaceItemAI key={aiCourse.courseId} data={aiCourse} index={index} onClickDetail={() => onPlaceAISelect?.(index)} />
@@ -192,7 +192,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
         return (
           <>
             <div className='mb-6'>
-                            <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>장소를 골라주세요!</div>
+              <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>장소를 골라주세요!</div>
               <div className='flex flex-nowrap overflow-x-auto space-x-4 items-stretch min-h-[250px]'>
                 {findData.customRecommendList.map((place, index) => (
                   <MidPlaceItem
@@ -205,7 +205,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
                 ))}
               </div>
             </div>
-                        {findData.placeData && <MidPlaceDetail place={findData.placeData} mode={midCourseMode} />}
+            {findData.placeData && <MidPlaceDetail place={findData.placeData} mode={midCourseMode} />}
           </>
         );
       }
@@ -214,9 +214,9 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
       return (
         <>
           <div className='mb-6'>
-                        <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>코스가 확정되었습니다!</div>
+            <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>코스가 확정되었습니다!</div>
             <div className='flex flex-nowrap overflow-x-auto space-x-4 items-stretch'>
-                            {/* MidResultData의 courses 배열 사용 */}
+              {/* MidResultData의 courses 배열 사용 */}
               {courses &&
                 courses.map((place, index) => {
                   const placeData = place.places;
@@ -225,7 +225,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
             </div>
           </div>
           <div className='mb-6'>
-                        <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>모임원별 가는 방법</div>
+            <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>모임원별 가는 방법</div>
             {finalData.members.map((member, index) => {
               // 방장 판단 로직: member.name에 '(나)'가 포함되어 있고 현재 유저가 방장일 때 => 추후에 아이디로 비교해야 함
               const isThisMemberTheLeader = isCurrentUserLeader && member.name.includes('(나)');
@@ -246,7 +246,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
         return (
           <>
             <div className='flex justify-end'>
-                            <Button buttonName='저장' className='bg-gray-900' onClick={handleSave} />
+              <Button buttonName='저장' className='bg-gray-900' onClick={handleSave} />
             </div>
           </>
         );
@@ -256,9 +256,9 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
         return (
           <>
             <div className='flex justify-end'>
-                            {!isFirst && <Button buttonName='이전' className='mr-3 bg-gray-900' onClick={handlePrev} />}
+              {!isFirst && <Button buttonName='이전' className='mr-3 bg-gray-900' onClick={handlePrev} />}
               {!isLast && <Button buttonName='다음' onClick={handleNext} className='mr-3 ' />}
-                            <Button buttonName='저장' className='bg-gray-900' onClick={handleSave} />
+              <Button buttonName='저장' className='bg-gray-900' onClick={handleSave} />
             </div>
           </>
         );
@@ -267,7 +267,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
       return (
         <>
           <div className='flex justify-end'>
-                        <Button buttonName='결과 공유' className='bg-mint-500' onClick={() => console.log('공유하기')} />
+            <Button buttonName='결과 공유' className='bg-mint-500' onClick={() => console.log('공유하기')} />
           </div>
         </>
       );
@@ -278,20 +278,20 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
 
   return (
     <div className='max-w-6xl mx-auto'>
-            <div className='text-left mb-2 text-lg font-medium text-gray-700'>모임명: {partyName}</div>
+      <div className='text-left mb-2 text-lg font-medium text-gray-700'>모임명: {partyName}</div>
       <div className='flex flex-col md:flex-row items-start md:items-end mb-8 text-left'>
-                <div className='text-3xl font-semibold text-mint-500 mr-4'>중간지점: {midPoint}</div>        <div className='text-lg font-medium text-gray-700 mt-2 md:mt-0'>날짜: {dateToDisplay}</div>
+        <div className='text-3xl font-semibold text-mint-500 mr-4'>중간지점: {midPoint}</div>        <div className='text-lg font-medium text-gray-700 mt-2 md:mt-0'>날짜: {dateToDisplay}</div>
       </div>
       <div className='grid grid-cols-1 md:grid-cols-4 gap-4 mb-6'>
         <div className='col-span-1 md:col-span-3 bg-white border border-gray-200 rounded-lg shadow-sm'>
-                    {/* 💡 [수정]: key props 제거 (불필요한 Map 컴포넌트 재마운트 방지) */}
-                    <Map points={mapPoints} />
+          {/* 💡 [수정]: key props 제거 (불필요한 Map 컴포넌트 재마운트 방지) */}
+          <Map points={mapPoints} />
         </div>
         <div className='col-span-1 p-4 bg-white border border-gray-200 rounded-lg shadow-sm'>
-                    <CourseRouteViewer courses={courses} currentIndex={currentCourseIndex} />
+          <CourseRouteViewer courses={courses} currentIndex={currentCourseIndex} />
         </div>
       </div>
-            {/* 콘텐츠 영역 분기 */}      {renderContent()}      <div className='mt-8'>{renderButtons()}</div>
+      {/* 콘텐츠 영역 분기 */}      {renderContent()}      <div className='mt-8'>{renderButtons()}</div>
     </div>
   );
 };

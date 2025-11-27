@@ -13,6 +13,8 @@ export interface RecommendedPlace {
   hitMenu?: string;
   review?: string;
   link?: string;
+  imageUrl?: string;
+  placeUrl?: string;
 }
 
 // AI 추천 장소

@@ -20,9 +20,13 @@ const MidPlaceItemAI: React.FC<MidPlaceItemProps> = ({ index, data, onClickDetai
       {/* 🎯 본문: places 배열의 장소 이름 요약 */}
       <div className='font-normal text-gray-700'>
         {places.map((place, index) => (
-          <div>
-            {index + 1}번째: {place.placeName}
-          </div>
+          <>
+            <img src={place.imageUrl} />
+            <div>
+              {index + 1}번째: {place.placeName}
+            </div>
+          </>
+
         ))}
       </div>
 

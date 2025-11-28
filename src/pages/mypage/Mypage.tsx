@@ -92,7 +92,7 @@ const Mypage: React.FC = () => {
           if (error.response.status === 412) {
             alert('현재 비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
             setFocus('currentPassword');
-          } else if (error.response.status === 402) {
+          } else if (error.response.status === 411) {
             alert('새 비밀번호는 현재 비밀번호와 다르게 설정해야 합니다.');
           } else if (error.response.status === 500) {
             alert('일시적인 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');

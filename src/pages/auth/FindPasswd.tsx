@@ -53,25 +53,27 @@ const FindPasswd: React.FC = () => {
       email: data.email,
     };
 
-    console.log(payload);
+    // console.log(payload);
 
     try {
       const baseURL = import.meta.env.VITE_API_URL;
       const response = await axios.post(`${baseURL}/user/reset-password`, payload);
-      console.log(response);
-      if (response.status === 201) {
+      // console.log(response);
+      if (response.status === 200) {
         setResult({
           result: '비밀번호 재등록 메일을 보냈습니다. \n메일함을 확인해주세요.',
         });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (axios.isAxiosError(error) && error.response) {
         if (error.response.status === 404) {
           setResult({
             result: '해당 사용자가 없습니다.',
           });
         }
+      } else {
+        alert('시스템에 문제가 발생하였습니다. 다시 시도해주세요.');
       }
     }
   };

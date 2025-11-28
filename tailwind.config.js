@@ -1,5 +1,4 @@
 // tailwind.config.js
-
 import colors from 'tailwindcss/colors';
 
 /** @type {import('tailwindcss').Config} */
@@ -8,15 +7,15 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // ✅ sans (기본 폰트)에 NoonnuBasicGothic을 추가하고,
-        // fallback으로 system-ui 등을 설정합니다.
         sans: ['NoonnuBasicGothic', 'system-ui', 'sans-serif'],
-
-        // 또는, 'gothic'처럼 새로운 이름을 정의할 수 있습니다.
-        // gothic: ['NoonnuBasicGothic', 'sans-serif'],
       },
       colors: {
         'primary-green': '#00C48C',
+        'primary-navy': '#3B3D96',
+        'light-blue-bg': '#E0E7FF', // Pincobiz의 메인 배너 배경색 유사
+        'light-green-bg': '#E6FFE0', // 왜 MidMeet일까요? 카드 배경색 예시
+        'light-purple-bg': '#F0E0FF', // 다른 카드 배경색 예시
+        'light-yellow-bg': '#FFFBE0', // 또 다른 카드 배경색 예시
         ...colors,
       },
     },

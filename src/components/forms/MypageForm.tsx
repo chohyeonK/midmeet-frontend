@@ -22,11 +22,12 @@ interface MypageFormProps {
   onSubmit: SubmitHandler<FormData>;
   register: UseFormReturn<FormData>['register'];
   handleSubmit: UseFormReturn<FormData>['handleSubmit'];
+  handleEmail: (email: string) => void;
   errors: FieldErrors<FormData>;
   data: UserData;
 }
 
-const MypageForm: React.FC<MypageFormProps> = ({ onSubmit, register, handleSubmit, errors, data }) => {
+const MypageForm: React.FC<MypageFormProps> = ({ onSubmit, register, handleSubmit, errors, data, handleEmail }) => {
   return (
     <>
       <form className='space-y-6' onSubmit={handleSubmit(onSubmit)}>
@@ -44,7 +45,7 @@ const MypageForm: React.FC<MypageFormProps> = ({ onSubmit, register, handleSubmi
           </div>
           <div className='mt-2 flex items-center space-x-4'>
             <Input name='email' type='email' register={register} error={errors.email} placeholder={data.email} isFullWidth={false} className='grow-5' />
-            <Button type='button' buttonName='인증' className='w-28 flex-shrink-0 bg-indigo-600' />
+            <Button type='button' buttonName='인증' className='w-28 flex-shrink-0 bg-indigo-600' onClick={() => handleEmail(data.email)} />
           </div>
         </div>
         <div>

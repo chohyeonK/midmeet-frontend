@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,6 +7,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { mypageSchema } from '../../validation/authSchema';
 import FormCard from '../../components/common/FormCard';
 import MypageForm from '../../components/forms/MypageForm';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 // 핵심 데이터: 실제 저장 데이터
 interface UserData {
@@ -22,7 +23,10 @@ type FormData = yup.InferType<typeof mypageSchema>;
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
 
 const Mypage: React.FC = () => {
+  const token = getTokenFromStorage();
   const { user, updateUser } = useAuthStore();
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -40,6 +44,30 @@ const Mypage: React.FC = () => {
       phoneNumber: '',
     },
   });
+
+  const handleVerifyEmail = async (email: string) => {
+    try {
+      setIsLoading(true);
+      const paylod = {
+        email: email,
+      };
+      const baseURL = import.meta.env.VITE_API_URL;
+      const response = await axios.post(`${baseURL}/user/change-email`, paylod, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
+      if (response.status === 200) {
+        setIsLoading(false);
+        alert(response.data.message);
+      }
+    } catch (error) {
+      // console.log(error);
+      setIsLoading(false);
+      alert('시스템 에러가 발생하였습니다. 재로그인하여 다시 시도해주세요.');
+    }
+  };
 
   const handleSaveUser: SubmitHandler<FormData> = async (data: FormData) => {
     const token = getTokenFromStorage();
@@ -114,19 +142,43 @@ const Mypage: React.FC = () => {
         userName: '',
         phoneNumber: '',
       });
+
+      setIsInitialLoading(false);
     }
   }, [user, reset]);
 
-  // user가 null일 경우, 로딩 메시지를 반환합니다.
-  if (!user) {
-    return <div>회원 정보를 불러오는 중입니다...</div>;
-  }
+  // if (isLoading || isInitialLoading) {
+  //   return (
+  //     <div className='absolute inset-0 bg-gray-500/50 flex justify-center items-center z-40 rounded-lg'>
+  //       <BeatLoader color='#00c48c' loading={true} size={30} aria-label='Loading Spinner' data-testid='loader' />
+  //     </div>
+  //   );
+  // }
+
+  // // user가 null일 경우, 로딩 메시지를 반환합니다.
+  // if (!user) {
+  //   return <div>회원 정보를 불러오는 중입니다...</div>;
+  // }
 
   return (
     <>
-      <FormCard title='회원정보'>
-        <MypageForm onSubmit={handleSaveUser} register={register} handleSubmit={handleSubmit} errors={errors} data={user} />{' '}
-      </FormCard>
+      <div className='relative min-h-screen'>
+        <FormCard title='회원정보'>
+          {isLoading && (
+            <div className='fixed inset-0 bg-gray-500/50 flex justify-center items-center z-50'>
+              {/* 💡 2. 로딩 아이콘: 투명도 적용 없이 흰색 배경 위에 보이도록 */}
+              <BeatLoader
+                color='#00c48c' // 로더 색상
+                loading={true}
+                size={30}
+                aria-label='Loading Spinner'
+                data-testid='loader'
+              />
+            </div>
+          )}
+          <MypageForm onSubmit={handleSaveUser} register={register} handleSubmit={handleSubmit} handleEmail={handleVerifyEmail} errors={errors} data={user} />
+        </FormCard>
+      </div>
     </>
   );
 };

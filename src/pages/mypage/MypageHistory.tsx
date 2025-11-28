@@ -3,7 +3,7 @@ import FormCard from '../../components/common/FormCard';
 import VisitHistoryItem, { type PartyResponse } from '../../components/VisitHistoryItem';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-// const BASE_URL = import.meta.env.VITE_LOCAL_SERVER_URL;
+import BeatLoader from 'react-spinners/BeatLoader';
 type PartyList = PartyResponse[];
 
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
@@ -51,7 +51,11 @@ const MypageHistory: React.FC = () => {
   }, []);
 
   if (isLoading) {
-    return <div>데이터를 불러오는 중입니다...</div>;
+    return (
+      <div className='flex justify-center items-center'>
+        <BeatLoader color='#00c48c' loading={isLoading} size={30} aria-label='Loading Spinner' data-testid='loader' />
+      </div>
+    );
   }
 
   if (!partyList) {

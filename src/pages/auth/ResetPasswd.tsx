@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useAuthStore } from '../../store/useAuthStore';
 import { resetPasswdSchema } from '../../validation/authSchema';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 type FormData = yup.InferType<typeof resetPasswdSchema>;
 
@@ -47,6 +48,7 @@ const ResetPasswd: React.FC = () => {
   ] as const;
 
   const [result, setResult] = useState<{ result: string } | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleResetPasswd: SubmitHandler<FormData> = async (data: FormData) => {
     const payload = {
@@ -54,6 +56,7 @@ const ResetPasswd: React.FC = () => {
     };
 
     try {
+      setIsLoading(true);
       const baseURL = import.meta.env.VITE_API_URL;
       const response = await axios.post(`${baseURL}/auth/verify-reset?token=${token}`, payload, {
         headers: {
@@ -66,7 +69,7 @@ const ResetPasswd: React.FC = () => {
         navigate('/reset-passwd/success');
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (axios.isAxiosError(error) && error.response) {
         if (error.response.status === 409) {
           setResult({
@@ -82,10 +85,13 @@ const ResetPasswd: React.FC = () => {
           });
         }
       }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
     <FormCard title='비밀번호 변경'>
+      <LoadingOverlay isOverlay={true} isActive={isLoading} />
       <FindForm onSubmit={handleResetPasswd} handleSubmit={handleSubmit} inputs={inputsConfig} buttons={buttonConfig} register={register} errors={errors} ResultProps={result} />
     </FormCard>
   );

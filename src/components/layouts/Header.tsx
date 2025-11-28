@@ -86,7 +86,7 @@ const Header: React.FC = ({}) => {
                 <Link to='/login' className='text-gray-600 hover:text-gray-900'>
                   로그인
                 </Link>
-                <Link to='/signup' className='text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-md'>
+                <Link to='/signup' className='text-white bg-primary-navy hover:bg-indigo-700 py-2 px-4 rounded-md'>
                   회원가입
                 </Link>
               </>

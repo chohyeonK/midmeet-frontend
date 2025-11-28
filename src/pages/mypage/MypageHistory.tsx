@@ -3,13 +3,13 @@ import FormCard from '../../components/common/FormCard';
 import VisitHistoryItem, { type PartyResponse } from '../../components/VisitHistoryItem';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import BeatLoader from 'react-spinners/BeatLoader';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 type PartyList = PartyResponse[];
 
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
 
 const MypageHistory: React.FC = () => {
-  const [partyList, setPartyList] = useState<PartyList | null>();
+  const [partyList, setPartyList] = useState<PartyList>([]);
   const [isLoading, setIsLoading] = useState(true);
   const token = getTokenFromStorage();
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const MypageHistory: React.FC = () => {
           },
         });
 
-        console.log(response);
+        // console.log(response);
 
         if (response.status === 200) {
           setPartyList(response.data);
@@ -51,21 +51,14 @@ const MypageHistory: React.FC = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className='flex justify-center items-center'>
-        <BeatLoader color='#00c48c' loading={isLoading} size={30} aria-label='Loading Spinner' data-testid='loader' />
-      </div>
-    );
-  }
-
-  if (!partyList) {
-    return <div>생성된 모임이 없습니다.</div>;
+    return <LoadingOverlay isOverlay={false} isActive={isLoading} />;
   }
 
   return (
     <>
       <h1 className='mb-6 text-2xl font-semibold text-gray-900 dark:text-white'>방문 기록</h1>
       <div className='flex flex-col items-center justify-center px-6 mx-auto max-w-sm sm:max-w-5xl'>
+        {partyList.length === 0 && <div>생성된 모임이 없습니다.</div>}
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {partyList.map((party) => (
             <VisitHistoryItem key={party.party_id} party={party} onClick={handleShowMidpoint} />

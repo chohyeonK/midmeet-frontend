@@ -65,8 +65,25 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loginError, setLoginErr
 
         <Button type='submit' buttonName='로그인' className='w-full ' />
       </form>
-      <hr />
-      <Button type='submit' buttonName='비회원으로 시작하기' className='w-full bg-gray-400' onClick={customClick} />
+      <hr className='my-6 border-gray-200' />
+      {/* <Button
+        type='submit'
+        buttonName='비회원으로 시작하기'
+        className='w-full bg-gray-100 text-gray-600 hover:bg-gray-200 
+    focus-visible:outline-gray-400 
+    w-full py-2 px-4'
+        onClick={customClick}
+      /> */}
+
+      <button
+        type='button'
+        className='flex justify-center rounded-md text-sm font-semibold shadow-xs py-2 px-4 
+  bg-gray-100 text-gray-600 hover:bg-gray-200 
+    focus-visible:outline-gray-400 w-full'
+        onClick={customClick}
+      >
+        비회원으로 시작하기
+      </button>
 
       <p className='mt-10 text-center text-sm/6 text-gray-500 dark:text-gray-400'>
         아직 회원이 아니신가요?{' '}

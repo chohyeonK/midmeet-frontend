@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
 import { useAuthStore } from '../../store/useAuthStore';
 import { findIdSchema } from '../../validation/authSchema';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 type FormData = yup.InferType<typeof findIdSchema>;
 
@@ -21,6 +22,7 @@ const FindId: React.FC = () => {
   } = useForm<FormData>({
     resolver: yupResolver(findIdSchema), // Yup 스키마를 리졸버로 연결
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputsConfig = [
     {
@@ -44,6 +46,7 @@ const FindId: React.FC = () => {
   const handleFindId: SubmitHandler<FormData> = async () => {
     const email = getValues('email');
     try {
+      setIsLoading(true);
       const baseURL = import.meta.env.VITE_API_URL;
       const response = await axios.get(`${baseURL}/user/find-id?email=${email}`);
       if (response.status === 200) {
@@ -52,21 +55,30 @@ const FindId: React.FC = () => {
         });
       }
     } catch (error) {
-      console.log(error.response.data.message);
-      if (error.response.status === 404) {
-        setResult({
-          result: error.response.data.message,
-        });
-      } else if (error.response.status === 500) {
-        setResult({
-          result: '일시적인 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
-        });
+      // console.log(error);
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 401) {
+          setResult({
+            result: error.response.data.message,
+          });
+        } else if (error.response.status === 404) {
+          setResult({
+            result: error.response.data.message,
+          });
+        } else if (error.response.status === 500) {
+          setResult({
+            result: '일시적인 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
+          });
+        }
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <FormCard title='아이디 찾기'>
+      <LoadingOverlay isOverlay={true} isActive={isLoading} />
       <FindForm onSubmit={handleFindId} handleSubmit={handleSubmit} inputs={inputsConfig} buttons={buttonConfig} register={register} errors={errors} ResultProps={result} />
     </FormCard>
   );

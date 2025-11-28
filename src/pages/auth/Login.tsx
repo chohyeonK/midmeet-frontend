@@ -7,6 +7,7 @@ import { loginSchema } from '../../validation/authSchema';
 import FormCard from '../../components/common/FormCard';
 import LoginForm from '../../components/forms/LoginForm';
 import type { SubmitHandler } from 'react-hook-form';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 type FormData = yup.InferType<typeof loginSchema>;
 
@@ -14,8 +15,10 @@ const Login: React.FC = () => {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin: SubmitHandler<FormData> = async (data) => {
+    setIsLoading(true);
     setLoginError(null);
 
     const payload = {
@@ -39,6 +42,8 @@ const Login: React.FC = () => {
       } else {
         setLoginError('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -49,6 +54,7 @@ const Login: React.FC = () => {
 
   return (
     <FormCard title='로그인'>
+      <LoadingOverlay isOverlay={true} isActive={isLoading} />
       <LoginForm onSubmit={handleLogin} loginError={loginError} setLoginError={setLoginError} customClick={handleGuest} />
     </FormCard>
   );

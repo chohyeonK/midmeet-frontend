@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
 import { useAuthStore } from '../../store/useAuthStore';
 import { findPasswdSchema } from '../../validation/authSchema';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 type FormData = yup.InferType<typeof findPasswdSchema>;
 
@@ -21,6 +22,8 @@ const FindPasswd: React.FC = () => {
   } = useForm<FormData>({
     resolver: yupResolver(findPasswdSchema), // Yup 스키마를 리졸버로 연결
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputsConfig = [
     {
@@ -56,6 +59,7 @@ const FindPasswd: React.FC = () => {
     // console.log(payload);
 
     try {
+      setIsLoading(true);
       const baseURL = import.meta.env.VITE_API_URL;
       const response = await axios.post(`${baseURL}/user/reset-password`, payload);
       // console.log(response);
@@ -75,12 +79,15 @@ const FindPasswd: React.FC = () => {
       } else {
         alert('시스템에 문제가 발생하였습니다. 다시 시도해주세요.');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <>
       <FormCard title='비밀번호 찾기'>
+        <LoadingOverlay isOverlay={true} isActive={isLoading} />
         <FindForm onSubmit={handleFindPasswd} handleSubmit={handleSubmit} inputs={inputsConfig} buttons={buttonConfig} register={register} errors={errors} ResultProps={result} />
       </FormCard>
     </>

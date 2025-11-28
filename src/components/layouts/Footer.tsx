@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
       <div className='max-w-7xl mx-auto px-4 text-center'>
         <div className='flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0'>
           <div className=''>
-            <p>고객센터 | admin@inha.edu</p>
+            <p>고객센터 | webmaster.chlxx00@gmail.com</p>
           </div>
           <div className=''>
             <p>&copy; 2025 Midmeet. All rights reserved.</p>

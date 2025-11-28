@@ -8,6 +8,7 @@ import { mypageSchema } from '../../validation/authSchema';
 import FormCard from '../../components/common/FormCard';
 import MypageForm from '../../components/forms/MypageForm';
 import BeatLoader from 'react-spinners/BeatLoader';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 // 핵심 데이터: 실제 저장 데이터
 interface UserData {
@@ -57,7 +58,7 @@ const Mypage: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         setIsLoading(false);
         alert(response.data.message);
@@ -91,6 +92,7 @@ const Mypage: React.FC = () => {
 
     if (token) {
       try {
+        setIsLoading(true);
         // 1. 비밀번호 변경 API 호출
         if (passwordPayload) {
           const baseURL = import.meta.env.VITE_API_URL;
@@ -110,14 +112,18 @@ const Mypage: React.FC = () => {
         });
 
         if (response.status === 200) {
+          setIsLoading(false);
           alert('회원 정보가 수정되었습니다.');
           // 유저 상태 업데트
           updateUser(response.data.user);
         }
       } catch (error) {
+        setIsLoading(false);
         // console.log(error);
         if (axios.isAxiosError(error) && error.response) {
-          if (error.response.status === 412) {
+          if (error.response.status === 403) {
+            alert('이메일 인증 후 다시 시도해주세요.');
+          } else if (error.response.status === 412) {
             alert('현재 비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
             setFocus('currentPassword');
           } else if (error.response.status === 411) {
@@ -126,7 +132,7 @@ const Mypage: React.FC = () => {
             alert('일시적인 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');
           }
         } else {
-          alert('회원 정보 수정에 실패했습니다. 다시 시도해주세요.');
+          alert('회원 정보 수정에 실패했습니다. 잠시후에 시도해주세요.');
         }
       }
     }
@@ -162,11 +168,10 @@ const Mypage: React.FC = () => {
 
   return (
     <>
-      <div className='relative min-h-screen'>
+      <div className=''>
         <FormCard title='회원정보'>
-          {isLoading && (
+          {/* {isLoading && (
             <div className='fixed inset-0 bg-gray-500/50 flex justify-center items-center z-50'>
-              {/* 💡 2. 로딩 아이콘: 투명도 적용 없이 흰색 배경 위에 보이도록 */}
               <BeatLoader
                 color='#00c48c' // 로더 색상
                 loading={true}
@@ -175,7 +180,8 @@ const Mypage: React.FC = () => {
                 data-testid='loader'
               />
             </div>
-          )}
+          )} */}
+          <LoadingOverlay isOverlay={true} isActive={isLoading} />
           <MypageForm onSubmit={handleSaveUser} register={register} handleSubmit={handleSubmit} handleEmail={handleVerifyEmail} errors={errors} data={user} />
         </FormCard>
       </div>

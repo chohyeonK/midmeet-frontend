@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { signUpSchema } from '../../validation/authSchema';
 import FormCard from '../../components/common/FormCard';
 import SignUpForm from '../../components/forms/SignUpForm';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 // 폼 데이터의 타입을 정의합니다.
 // 스키마에 정의된 필드와 일치해야 합니다.
@@ -16,6 +17,7 @@ type FormData = yup.InferType<typeof signUpSchema>;
 const SignUp: React.FC = () => {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register, // 입력 필드를 폼에 등록하는 함수
@@ -38,6 +40,7 @@ const SignUp: React.FC = () => {
     };
 
     try {
+      setIsLoading(true);
       const baseURL = import.meta.env.VITE_API_URL;
       const response = await axios.post(`${baseURL}/auth/signup`, payload);
       console.log(response);
@@ -51,6 +54,8 @@ const SignUp: React.FC = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,6 +71,7 @@ const SignUp: React.FC = () => {
     // 아이디 중복 확인 메소드
     const userId = getValues('userId');
     try {
+      setIsLoading(true);
       const baseURL = import.meta.env.VITE_API_URL;
       const response = await axios.get(`${baseURL}/user/check-id?id=${userId}`);
 
@@ -80,14 +86,17 @@ const SignUp: React.FC = () => {
         }
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <FormCard title='회원가입'>
-      <SignUpForm onSubmit={handleSignup} onUserIdCheck={handleUserIdCheck} register={register} handleSubmit={handleSubmit} errors={errors} />{' '}
+      <LoadingOverlay isOverlay={true} isActive={isLoading} />
+      <SignUpForm onSubmit={handleSignup} onUserIdCheck={handleUserIdCheck} register={register} handleSubmit={handleSubmit} errors={errors} />
     </FormCard>
   );
 };

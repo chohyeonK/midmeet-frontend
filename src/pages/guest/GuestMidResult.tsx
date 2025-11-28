@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import MidContainer from '../../components/midpoint/MidContainer';
 import type { MidResultData } from '../../types/MidResultTypes';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 const GuestMidResult: React.FC = () => {
   const [partyResultData, setPartyResultData] = useState<MidResultData | null>(null); // 초기값을 null로 설정
+  const [isLoading, setIsLoading] = useState(true);
 
   const getData = () => {
+    setIsLoading(true);
     const storedData = sessionStorage.getItem('result');
 
     if (storedData) {
@@ -28,6 +31,8 @@ const GuestMidResult: React.FC = () => {
       };
       setPartyResultData(partyData);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -39,8 +44,8 @@ const GuestMidResult: React.FC = () => {
     resultData: partyResultData,
   };
 
-  if (partyResultData === null) {
-    return <div>데이터 세팅중...</div>;
+  if (isLoading || partyResultData === null) {
+    return <LoadingOverlay isOverlay={true} isActive={true} />;
   }
 
   return (

@@ -4,8 +4,10 @@ import type { AIRecommendPlace, MidFindData, RecommendedPlace } from '../../type
 import type { PartyCourse, PartyData } from '../../types/MidCommonTypes';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 const GuestMidFinding: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [props, setProps] = useState<MidFindData | null>(null);
   const midMode = 'FIND';
@@ -52,7 +54,7 @@ const GuestMidFinding: React.FC = () => {
   // ai 코스 선택 - 변경 없음
   const onCourseIndexSelect = useCallback(
     (selectedIndex: number) => {
-      console.log('코스선택');
+      // console.log('코스선택');
       const selectedPlacesArray = aiRecommendList?.[selectedIndex]?.places;
 
       if (!selectedPlacesArray || selectedPlacesArray.length === 0) {
@@ -68,7 +70,7 @@ const GuestMidFinding: React.FC = () => {
         } as PartyCourse;
       });
 
-      console.log('새로 클릭함 코스: ', newCourses);
+      // console.log('새로 클릭함 코스: ', newCourses);
 
       setCourses(newCourses);
 
@@ -94,7 +96,7 @@ const GuestMidFinding: React.FC = () => {
   );
 
   const submitData = async () => {
-    console.log('결과 데이터 만들어야 함');
+    // console.log('결과 데이터 만들어야 함');
 
     const { party } = partyData;
     const { partyName, partyDate, midPoint, midPointLat, midPointLng } = party;
@@ -133,67 +135,75 @@ const GuestMidFinding: React.FC = () => {
     console.log('결과 데이터: ', payload);
 
     // 임시 데이터 추후 삭제
-    const temp = {
-      party: {
-        party_name: '정윤초현',
-        date_time: '2025-11-27T17:30:00',
-        mid_place: '소새울',
-        mid_lat: 37.46851,
-        mid_lng: 126.79728,
-      },
-      participants: [
-        {
-          participant_name: '정윤',
-          start_address: '인천 연수구 선학로 100',
-          transport_mode: 'PUBLIC',
-        },
-        {
-          participant_name: '초현',
-          start_address: '서울 영등포구 문래로 175',
-          transport_mode: 'PUBLIC',
-        },
-      ],
-      courses: [
-        {
-          course_id: '1764057612380',
-          course_no: 1,
-          place_name: '광치꼴',
-          place_Addr: '경기 부천시 소사구 소사본동 400-3',
-          place_lat: 37.46795175403592,
-          place_lng: 126.7982925576838,
-          tag: {
-            category: 'FD6',
-            primaryQueries: ['한식'],
-            secondaryFilters: ['주차'],
-          },
-        },
-        {
-          course_id: '1764057645831',
-          course_no: 2,
-          place_name: '스시희',
-          place_Addr: '경기 부천시 소사구 소사본동 400-9',
-          place_lat: 37.4690615961908,
-          place_lng: 126.800829647732,
-          tag: {
-            category: 'FD6',
-            primaryQueries: ['일식'],
-            secondaryFilters: ['주차'],
-          },
-        },
-      ],
-    };
+    // const temp = {
+    //   party: {
+    //     party_name: '정윤초현',
+    //     date_time: '2025-11-27T17:30:00',
+    //     mid_place: '소새울',
+    //     mid_lat: 37.46851,
+    //     mid_lng: 126.79728,
+    //   },
+    //   participants: [
+    //     {
+    //       participant_name: '정윤',
+    //       start_address: '인천 연수구 선학로 100',
+    //       transport_mode: 'PUBLIC',
+    //     },
+    //     {
+    //       participant_name: '초현',
+    //       start_address: '서울 영등포구 문래로 175',
+    //       transport_mode: 'PUBLIC',
+    //     },
+    //   ],
+    //   courses: [
+    //     {
+    //       course_id: '1764057612380',
+    //       course_no: 1,
+    //       place_name: '광치꼴',
+    //       place_Addr: '경기 부천시 소사구 소사본동 400-3',
+    //       place_lat: 37.46795175403592,
+    //       place_lng: 126.7982925576838,
+    //       tag: {
+    //         category: 'FD6',
+    //         primaryQueries: ['한식'],
+    //         secondaryFilters: ['주차'],
+    //       },
+    //     },
+    //     {
+    //       course_id: '1764057645831',
+    //       course_no: 2,
+    //       place_name: '스시희',
+    //       place_Addr: '경기 부천시 소사구 소사본동 400-9',
+    //       place_lat: 37.4690615961908,
+    //       place_lng: 126.800829647732,
+    //       tag: {
+    //         category: 'FD6',
+    //         primaryQueries: ['일식'],
+    //         secondaryFilters: ['주차'],
+    //       },
+    //     },
+    //   ],
+    // };
 
-    const baseURL = import.meta.env.VITE_API_URL;
-    const response = await axios.post(`${baseURL}/party/guest/result`, payload);
+    try {
+      setIsLoading(true);
 
-    if (response.status === 200) {
-      // 기존 세션 스토리지 삭제 후 백엔드 api 연동
-      // 백엔드 response 결과 세션 스토리지 저장 후 페이지 리다이렉트
+      const baseURL = import.meta.env.VITE_API_URL;
+      const response = await axios.post(`${baseURL}/party/guest/result`, payload);
 
-      sessionStorage.removeItem('partyCreationResult');
-      sessionStorage.removeItem('partyMembers');
-      sessionStorage.setItem('result', JSON.stringify(response.data));
-      navigate('/guest/result');
+      if (response.status === 200) {
+        // 기존 세션 스토리지 삭제 후 백엔드 api 연동
+        // 백엔드 response 결과 세션 스토리지 저장 후 페이지 리다이렉트
+        sessionStorage.removeItem('partyCreationResult');
+        sessionStorage.removeItem('partyMembers');
+        sessionStorage.setItem('result', JSON.stringify(response.data));
+        navigate('/guest/result');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('시스템에 오류가 발생했습니다. 잠시후에 시도하여 주세요.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -201,7 +211,15 @@ const GuestMidFinding: React.FC = () => {
     getData();
   }, []);
 
-  return <>{props ? <MidContainer mode={midMode} resultData={props} handleSave={submitData} onPlaceAISelect={onCourseIndexSelect} /> : <div>데이터를 불러오는 중입니다...</div>}</>;
+  if (isLoading || props === null) {
+    return <LoadingOverlay isOverlay={false} isActive={true} />;
+  }
+
+  return (
+    <>
+      <MidContainer mode={midMode} resultData={props} handleSave={submitData} onPlaceAISelect={onCourseIndexSelect} />
+    </>
+  );
 };
 
 export default GuestMidFinding;

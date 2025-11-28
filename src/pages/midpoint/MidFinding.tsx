@@ -592,7 +592,7 @@ const MidFinding: React.FC = () => {
           return null;
         }
 
-        const { placeAddr, placeName, lat, lng, placeId } = courseItem.places;
+        const { placeAddr, placeName, lat, lng, placeId, placeUrl } = courseItem.places;
 
         // 🚨 서버 DTO 구조에 맞춰 party_id를 포함하고, 좌표는 숫자로 변환합니다.
         return {
@@ -604,6 +604,7 @@ const MidFinding: React.FC = () => {
           course_view: true, // boolean 값 전송
           place_lat: Number(lat), // ✅ 문자열 -> 숫자로 변환
           place_lng: Number(lng), // ✅ 문자열 -> 숫자로 변환
+          place_url:placeUrl
         };
       });
 

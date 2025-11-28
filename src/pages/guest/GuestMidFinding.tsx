@@ -49,6 +49,8 @@ const GuestMidFinding: React.FC = () => {
         placeData: null,
       });
     }
+
+    setIsLoading(false);
   };
 
   // ai 코스 선택 - 변경 없음

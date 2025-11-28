@@ -32,6 +32,29 @@ const ApiDbIcon = () => (
   </svg>
 );
 
+const LocationMarkerIcon = () => (
+  <svg className='w-12 h-12 text-purple-500 mb-4' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z'></path> {' '}
+  </svg>
+);
+
+const PaperAirplaneIcon = () => (
+  <svg className='w-12 h-12 text-green-500 mb-4 rotate-90' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+    <path
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      strokeWidth='2'
+      d='M12 19l9 2-9-18-9 18 9-2zm0 0v-8' // 종이 비행기 아이콘
+    ></path>
+  </svg>
+);
+
+const CompassIcon = () => (
+  <svg className='w-12 h-12 text-blue-500 mb-4' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M7 16V4m0 0L3 8m4-4l4 4m6 12V8m0 0l4 4m-4-4l-4 4m-8 6h16a2 2 0 002-2v-8a2 2 0 00-2-2H3a2 2 0 00-2 2v8a2 2 0 002 2z' />
+  </svg>
+);
+
 const Home = () => {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
@@ -87,7 +110,7 @@ const Home = () => {
         <div>✅ 장소만? 아니죠, 하루 코스까지 똑똑하게 추천!</div>
       </div> */}
       {/* "왜 MidMeet일까요?" 섹션 (Pincobiz의 카드형 섹션 디자인 차용) */}
-      <section className='py-16 bg-white px-4 md:px-8'>
+      <section className='pt-3 pb-16 bg-white px-4 md:px-8'>
         <h2 className='text-3xl md:text-4xl font-extrabold text-center text-primary-navy mb-12 text-left'>
           미드미트, <br />
           <span className='text-primary-green'>무엇이 다른가요?</span>
@@ -97,7 +120,7 @@ const Home = () => {
           {/* 카드 1 */}
           <div className='bg-light-green-bg p-8 rounded-xl shadow-lg flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300'>
             {/* 아이콘 (Pincobiz 처럼) */}
-            <SecurityIcon />
+            <LocationMarkerIcon />
             <h3 className='text-xl font-bold text-gray-800 mb-2'>공정한 약속 장소</h3>
             <p className='text-gray-600'>
               출발지가 달라도, 모두에게 공정한 <br /> 약속 장소를 찾아드려요.
@@ -106,7 +129,7 @@ const Home = () => {
 
           {/* 카드 2 */}
           <div className='bg-light-yellow-bg p-8 rounded-xl shadow-lg flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300'>
-            <AddressBookIcon />
+            <PaperAirplaneIcon />
             <h3 className='text-xl font-bold text-gray-800 mb-2'>간편한 시작</h3>
             <p className='text-gray-600'>
               회원가입 없이 바로 시작하여 <br /> 누구나 간편하게 이용할 수 있어요.
@@ -115,7 +138,7 @@ const Home = () => {
 
           {/* 카드 3 */}
           <div className='bg-light-purple-bg p-8 rounded-xl shadow-lg flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300'>
-            <ApiDbIcon />
+            <CompassIcon />
             <h3 className='text-xl font-bold text-gray-800 mb-2'>맞춤 코스 추천</h3>
             <p className='text-gray-600'>
               장소뿐만 아니라 하루 코스까지 <br /> 똑똑하게 추천해 드립니다.

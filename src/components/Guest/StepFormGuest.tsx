@@ -72,8 +72,9 @@ const StepFormGuest: React.FC<StepFormProps> = ({ data, onUpdateFormData }) => {
 
   return (
     <div>
-      <div>모임원 정보 입력하기</div>
-      <div className='mb-4 text-sm text-gray-500'>총 {data.numberOfPeople}명의 정보를 입력해주세요.</div>
+      <div className='my-4 text-lg text-gray-500 text-left'>모임원 정보 입력하기</div>
+      {/* <div>모임원 정보 입력하기</div> */}
+      {/* <div className='mb-4 text-sm text-gray-500'>총 {data.numberOfPeople}명의 정보를 입력해주세요.</div> */}
 
       {/* data.members를 직접 매핑 */}
       {data.members.map((member, index) => (

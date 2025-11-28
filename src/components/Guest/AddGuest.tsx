@@ -39,7 +39,7 @@ const AddGuest: React.FC<GuestAdd> = ({ index, member, onChange, onDelete }) => 
   };
 
   return (
-    <div className='p-4 border rounded-lg bg-white shadow-sm'>
+    <div className='bg-white border border-gray-200 rounded-lg shadow-sm my-3 space-y-2 p-4'>
       <div className='flex justify-between items-center mb-4'>
         <div className='text-xl font-bold'>모임원 {index + 1}</div>
         <Button buttonName='삭제' onClick={handleDeleteClick} />
@@ -54,7 +54,11 @@ const AddGuest: React.FC<GuestAdd> = ({ index, member, onChange, onDelete }) => 
       </div>
       <div className='text-left text-gray-700 mt-3'>
         <Label htmlFor='교통수단' LabelName='교통수단' />
-        <select value={member.transportMode} onChange={handleTransportChange} className='w-full border rounded-md p-2'>
+        <select
+          value={member.transportMode}
+          onChange={handleTransportChange}
+          className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+        >
           <option value='PUBLIC'>대중교통</option>
           <option value='PRIVATE'>자가용</option>
         </select>

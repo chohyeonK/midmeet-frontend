@@ -42,39 +42,64 @@ const StepForm: React.FC<StepFormProps> = ({ data, onUpdateFormData, onUpdateCou
 
   return (
     <>
-      <div>
-        <div className='flex items-center justify-between'>
-          <Label htmlFor='partyName' LabelName='모임명' />
+      <div className='space-y-8 py-4'>
+        {/* --------------------------- 1. 모임명 (Party Name) --------------------------- */}
+        <div>
+          <div className='flex items-center justify-between mb-2'>
+            {/* 💡 [수정]: Label 컴포넌트 대신 HTML <label> 사용 */}
+            <label
+              htmlFor='partyName'
+              className='text-lg font-semibold text-gray-800' // 폰트 크기와 굵기 적용
+            >
+              모임명
+            </label>
+          </div>
+          <div className='mt-2'>
+            <Input name='partyName' type='text' value={data.name} onChange={handleNameChange} className='h-12 border-gray-300 focus:border-mint-500 rounded-lg' />
+          </div>
         </div>
-        <div className='mt-2'>
-          <Input name='partyName' type='text' value={data.name} onChange={handleNameChange} />
+
+        {/* --------------------------- 2. 날짜 선택 (Party Date) --------------------------- */}
+        <div>
+          <div className='flex items-center justify-between mb-2'>
+            {/* 💡 [수정]: Label 컴포넌트 대신 HTML <label> 사용 */}
+            <label
+              htmlFor='partyDate'
+              className='text-lg font-semibold text-gray-800' // 폰트 크기와 굵기 적용
+            >
+              날짜 선택
+            </label>
+          </div>
+          <div className='mt-2 w-full'>
+            <DatePicker
+              selected={data.date}
+              onChange={handleDateChange}
+              dateFormat='yyyy년 MM월 dd일 h:mm aa'
+              showTimeSelect
+              timeFormat='h:mm aa'
+              timeIntervals={15}
+              timeCaption='시간'
+              locale={ko}
+              placeholderText='날짜와 시간을 선택하세요'
+              customInput={<CustomDatePickerInput className='h-12 w-full border-gray-300 focus:border-mint-500 rounded-lg px-3 py-2 text-base' />}
+            />
+          </div>
         </div>
-      </div>
-      <div>
-        <div className='flex items-center justify-between'>
-          <Label htmlFor='partyDate' LabelName='날짜 선택' />
-        </div>
-        <div className='mt-2 w-full'>
-          <DatePicker
-            selected={data.date}
-            onChange={handleDateChange}
-            dateFormat='yyyy년 MM월 dd일 h:mm aa'
-            showTimeSelect
-            timeFormat='h:mm aa'
-            timeIntervals={15}
-            timeCaption='시간'
-            locale={ko}
-            placeholderText='날짜와 시간을 선택하세요'
-            customInput={<CustomDatePickerInput />}
-          />
-        </div>
-      </div>
-      <div>
-        <div className='flex items-center justify-between'>
-          <Label htmlFor='partyCount' LabelName='인원수' />
-        </div>
-        <div className='mt-2'>
-          <Counter onUpdateCount={onUpdateCount} count={data.numberOfPeople} />
+
+        {/* --------------------------- 3. 인원수 (Party Count) --------------------------- */}
+        <div>
+          <div className='flex items-center justify-between mb-2'>
+            {/* 💡 [수정]: Label 컴포넌트 대신 HTML <label> 사용 */}
+            <label
+              htmlFor='partyCount'
+              className='text-lg font-semibold text-gray-800' // 폰트 크기와 굵기 적용
+            >
+              인원수
+            </label>
+          </div>
+          <div className='mt-2'>
+            <Counter onUpdateCount={onUpdateCount} count={data.numberOfPeople} />
+          </div>
         </div>
       </div>
     </>

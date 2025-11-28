@@ -89,8 +89,8 @@ const Mypage: React.FC = () => {
       } catch (error) {
         // console.log(error);
         if (axios.isAxiosError(error) && error.response) {
-          if (error.response.status === 403) {
-            alert('현재 비밀번호가 일치하지 않습니다.');
+          if (error.response.status === 412) {
+            alert('현재 비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
             setFocus('currentPassword');
           } else if (error.response.status === 402) {
             alert('새 비밀번호는 현재 비밀번호와 다르게 설정해야 합니다.');

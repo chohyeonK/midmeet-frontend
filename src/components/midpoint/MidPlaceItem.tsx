@@ -31,7 +31,7 @@ const MidPlaceItem: React.FC<MidPlaceItemProps> = ({ index, data, onClickDetail,
       ) : (
         // 이미지 없을 때 회색 플레이스홀더
 
-        <img src='https://placehold.co/200x150/00C48C/fff?text=Empty+Image' className='h-1/2 w-full object-cover mb-2 rounded-t-lg' alt={data.placeName} />
+        <img src='https://placehold.co/200x150/00C48C/fff?text=Empty+Image' className='h-[130px] w-full object-cover mb-2 rounded-t-lg' alt={data.placeName} />
         // <div className={imagePlaceholderStyle} style={{ height: '150px', minHeight: '150px' }}></div>
       )}
 

@@ -242,23 +242,26 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
 
   const renderButtons = () => {
     if (isFindMode && findData) {
+      const isAllCoursesSelected = courses.every((course) => course.places && course.places.placeName && course.places.placeName !== '');
       if (findData.courseMode === 'AI_COURSE') {
         return (
           <>
-            <div className='flex justify-end'>
-              <Button buttonName='저장' className='bg-gray-900' onClick={handleSave} />
-            </div>
+            <div className='flex justify-end'>{isAllCoursesSelected && <Button buttonName='저장' className='bg-gray-900' onClick={handleSave} />}</div>
           </>
         );
       } else {
         const isFirst = findData.currentCourseIndex === 0;
         const isLast = findData.currentCourseIndex === totalCourses - 1;
+
+        // 코스 모두 선택 시 저장 버튼 나오게
+        // const isAllCoursesSelected = courses.every((course) => course.places && course.places.placeName && course.places.placeName !== '');
+
         return (
           <>
             <div className='flex justify-end'>
               {!isFirst && <Button buttonName='이전' className='mr-3 bg-gray-900' onClick={handlePrev} />}
               {!isLast && findData.placeData !== null && <Button buttonName='다음' onClick={handleNext} className='mr-3 ' />}
-              <Button buttonName='저장' className='bg-gray-900' onClick={handleSave} />
+              {isAllCoursesSelected && <Button buttonName='저장' className='bg-gray-900' onClick={handleSave} />}
             </div>
           </>
         );

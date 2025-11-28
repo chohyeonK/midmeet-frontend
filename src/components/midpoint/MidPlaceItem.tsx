@@ -38,7 +38,7 @@ const MidPlaceItem: React.FC<MidPlaceItemProps> = ({ index, data, onClickDetail,
       {/* 정보 섹션 (패딩 추가) */}
       <div className='p-4 pt-0'>
         {/* 장소 이름 - 이미지의 녹색 텍스트와 비슷하게 조정 */}
-        <h5 className='mb-2 text-xl font-bold tracking-tight text-green-600 dark:text-green-400'>{data.placeName}</h5>
+        <h5 className='mb-2 text-xl font-bold tracking-tight text-green-600 dark:text-green-400 h-12 line-clamp-2 overflow-hidden'>{data.placeName}</h5>
 
         {/* 주소 */}
         <p className='font-normal text-gray-700 dark:text-gray-400 text-sm'>{data.placeAddr}</p>

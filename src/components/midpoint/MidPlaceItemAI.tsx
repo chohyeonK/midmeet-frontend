@@ -15,21 +15,23 @@ const MidPlaceItemAI: React.FC<MidPlaceItemProps> = ({ index, data, onClickDetai
   return (
     <div className='flex flex-col h-full justify-between text-left min-w-48 w-64 mr-3 p-0 bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden'>
       {/* 1. 이미지 영역 (첫 번째 장소만 표시) */}
-      {places.length > 0 && places[0].imageUrl && (
+      {places.length > 0 && places[0].imageUrl ? (
         <img
           src={places[0].imageUrl}
           alt={`${courseName} 1번째 장소`}
-          className='w-full h-40 object-cover' // 이미지 높이 고정 (h-40) 및 꽉 채우기
+          className={`w-full h-[130px] object-cover rounded-t-lg`} // 💡 클래스 적용
         />
+      ) : (
+        <img src='https://placehold.co/200x150/00C48C/fff?text=Empty+Image' className='h-[130px] w-full object-cover mb-2 rounded-t-lg' alt={'이미지 없음'} />
       )}
 
       {/* 2. 정보 섹션 (패딩 추가, 원본 카드와 유사하게 pt-0을 제외한 p-4 유지) */}
       <div className='p-4'>
         {/* 🎯 제목: courseName 사용 (녹색 텍스트) */}
-        <h5 className='mb-2 text-xl font-bold tracking-tight text-green-600 dark:text-green-400'>{courseName}</h5>
+        <h5 className='mb-2 text-xl font-bold tracking-tight text-green-600 dark:text-green-400 h-12 line-clamp-2 overflow-hidden'>{courseName}</h5>
 
         {/* 🎯 본문: places 배열의 장소 이름 요약 */}
-        <div className='font-normal text-gray-700 dark:text-gray-400 text-sm'>
+        <div className='font-normal text-gray-700 dark:text-gray-400 text-sm overflow-y-auto h-24 mb-3'>
           {/* 장소 목록을 모두 출력 (원래 로직 유지) */}
           {places.map((place, index) => (
             // key prop은 map을 사용할 때 필수입니다.

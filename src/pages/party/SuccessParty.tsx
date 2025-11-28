@@ -51,7 +51,7 @@ const SuccessParty: React.FC = () => {
           const joinLink = partyId && token ? `${baseURL}/join/${partyId}/${token}` : '링크 생성 정보가 없습니다.';
           setStatusProps({
             title: '모임이 생성되었습니다!',
-            message: '모임원 정보 입력 이메일이 자동으로 발송되었습니다. \n확인 후 모임을 시작해 주세요.',
+            message: '아래 공유 버튼으로 링크를 복사하여\n 모임원들에게 공유하여 시작해주세요.',
             buttonText: '공유(복사)',
             url: joinLink,
             handleClick: handleCopy,

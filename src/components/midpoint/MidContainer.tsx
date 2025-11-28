@@ -36,7 +36,7 @@ interface MidContainerProps {
 }
 
 const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNext, handlePrev, handleSave, onPlaceSelect, onPlaceAISelect }) => {
-  console.log('데이터: ', resultData);
+  // console.log('데이터: ', resultData);
   const { partyId } = useParams();
   const token = getTokenFromStorage();
 
@@ -169,7 +169,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
     if (isFindMode && findData) {
       if (midCourseMode === 'AI_COURSE' && findData.aiRecommendList) {
         // AI_COURSE 모드에서는 AIRecommendPlace[] 배열을 순회
-        console.log('AI 코스 렌더링 모드 진입', courses); // AI 코스에서 courses[0].places?.placeName이 ''인 경우, 선택되지 않은 것으로 간주
+        // console.log('AI 코스 렌더링 모드 진입', courses); // AI 코스에서 courses[0].places?.placeName이 ''인 경우, 선택되지 않은 것으로 간주
         const isCoursesSelected = courses.length > 0 && courses[0].places?.placeName !== '';
         return (
           <>
@@ -257,7 +257,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
           <>
             <div className='flex justify-end'>
               {!isFirst && <Button buttonName='이전' className='mr-3 bg-gray-900' onClick={handlePrev} />}
-              {!isLast && <Button buttonName='다음' onClick={handleNext} className='mr-3 ' />}
+              {!isLast && findData.placeData !== null && <Button buttonName='다음' onClick={handleNext} className='mr-3 ' />}
               <Button buttonName='저장' className='bg-gray-900' onClick={handleSave} />
             </div>
           </>
@@ -266,9 +266,9 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
     } else {
       return (
         <>
-          <div className='flex justify-end'>
+          {/* <div className='flex justify-end'>
             <Button buttonName='결과 공유' className='bg-mint-500' onClick={() => console.log('공유하기')} />
-          </div>
+          </div> */}
         </>
       );
     }

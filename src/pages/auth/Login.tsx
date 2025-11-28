@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; // 👈 useLocation 추가
 import * as yup from 'yup';
 import axios from 'axios';
 import { useAuthStore } from '../../store/useAuthStore';
@@ -14,8 +14,13 @@ type FormData = yup.InferType<typeof loginSchema>;
 const Login: React.FC = () => {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+  const location = useLocation(); // 👈 현재 위치 정보를 가져옵니다.
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // PrivateRoute에서 전달받은 'from' 경로를 추출
+  // 경로가 없으면 기본값인 '/' (Home)으로 설정
+  const from = location.state?.from?.pathname || '/';
 
   const handleLogin: SubmitHandler<FormData> = async (data) => {
     setIsLoading(true);
@@ -32,7 +37,8 @@ const Login: React.FC = () => {
       if (response.status === 200) {
         const { user, token } = response.data;
         login(user, token);
-        navigate('/');
+
+        navigate(from, { replace: true });
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

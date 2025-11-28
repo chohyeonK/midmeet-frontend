@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { usePartyStore } from '../../store/usePartyStore';
 import { FILTER_CATEGORIES } from '../../data/filterCategory';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 type CategoryKeys = keyof typeof FILTER_CATEGORIES;
 
@@ -42,6 +43,7 @@ const getTokenFromStorage = () => localStorage.getItem('token') || null;
 
 const Create: React.FC = () => {
   const UNLOAD_MESSAGE = '페이지를 벗어나면 입력한 내용이 사라질 수 있습니다. 계속하시겠습니까?';
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState<PartyFormData>({
@@ -94,6 +96,7 @@ const Create: React.FC = () => {
   };
   const onSubmit: SubmitHandler<PartyFormData> = async () => {
     try {
+      setIsLoading(true);
       if (!formData.name.trim()) {
         alert('모임명을 입력해주세요.');
         return;
@@ -166,6 +169,8 @@ const Create: React.FC = () => {
       } else {
         alert('저장하는데 오류가 발생하였습니다. 다시 시도하여 주시기 바랍니다.');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -253,7 +258,10 @@ const Create: React.FC = () => {
 
   return (
     <>
-      <PartyFormContainer {...props}>{steps[step]}</PartyFormContainer>
+      <PartyFormContainer {...props}>
+        <LoadingOverlay isOverlay={true} isActive={isLoading} />
+        {steps[step]}
+      </PartyFormContainer>
     </>
   );
 };

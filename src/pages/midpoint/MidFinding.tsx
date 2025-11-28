@@ -1,240 +1,3 @@
-// import React, { useCallback, useEffect, useState } from 'react';
-// import MidContainer from '../../components/midpoint/MidContainer';
-// import Loading from '../../components/common/Loading';
-// import { useNavigate, useParams } from 'react-router-dom';
-// import type { PartyData, PartyCourse } from '../../types/MidCommonTypes'; // PartyCourse 추가
-// import type { AIRecommendPlace, MidFindData, RecommendedPlace } from '../../types/MidFindTypes';
-// import { MOCK_FOOD_LIST, MOCK_CAFE_LIST, MOCK_SHOPPING_LIST, MOCK_MID_FIND_INITIAL_DATA, MOCK_AI_RECOMMEND_LIST } from '../../data/mockRecommend';
-// import axios from 'axios';
-
-// const getTokenFromStorage = () => localStorage.getItem('token') || null;
-
-// const MidFinding: React.FC = () => {
-//   const { partyId } = useParams();
-//   const token = getTokenFromStorage();
-
-//   const navigate = useNavigate();
-//   // 초기 기본 모임 데이터 세팅
-//   const initParty = MOCK_MID_FIND_INITIAL_DATA;
-//   const midMode = 'FIND';
-//   // const midCourseMode = initParty.courseMode;
-//   const [midCourseMode, setMidCourseMode] = initParty.courseMode;
-
-//   const partyInfo = {
-//     partyName: initParty.party.partyName,
-//     partyDate: initParty.party.partyDate,
-//     midPoint: initParty.party.midPoint,
-//     midPointLat: initParty.party.midPointLat,
-//     midPointLng: initParty.party.midPointLng,
-//   };
-
-//   const [courses, setCourses] = useState<PartyCourse[]>(initParty.party.courses);
-//   const [currentCourseIndex, setCurrentCourseIndex] = useState(initParty.currentCourseIndex);
-//   const [recommendList, setRecommendList] = useState<RecommendedPlace[] | null>(null);
-//   const [aiRecommendList, setAiRecommendList] = useState<AIRecommendPlace[] | null>(null);
-//   const [placeData, setPlaceData] = useState<RecommendedPlace | null>(null);
-//   const [isLoading, setIsLoading] = useState(true);
-
-//   const totalCourses = courses.length;
-//   const isFirst = currentCourseIndex === 0;
-//   const isLast = currentCourseIndex === totalCourses - 1;
-
-//   // 2. 추천 리스트 로드 로직 (currentCourseIndex가 바뀔 때 실행, ai/custom 분기 처리)
-//   const loadRecommendList = useCallback(() => {
-//     let newRecommend: RecommendedPlace[] = []; // CUSTOM 모드용
-//     let newAIRecommend: AIRecommendPlace[] = [];
-
-//     if (midCourseMode === 'AI_COURSE') {
-//       // ... (AI 모드 로직 주석 유지 또는 구현) ...
-//       newAIRecommend = MOCK_AI_RECOMMEND_LIST;
-//     }
-
-//     // ✅ 2. CUSTOM 모드일 때: 인덱스별 리스트를 설정
-//     switch (currentCourseIndex) {
-//       case 0:
-//         newRecommend = MOCK_FOOD_LIST;
-//         break;
-//       case 1:
-//         newRecommend = MOCK_CAFE_LIST;
-//         break;
-//       case 2:
-//         newRecommend = MOCK_SHOPPING_LIST;
-//         break;
-//       default:
-//         newRecommend = [];
-//         break;
-//     }
-
-//     setRecommendList(newRecommend);
-//     setAiRecommendList(newAIRecommend);
-
-//     // 🎯 현재 코스에 이미 선택된 장소 데이터가 있는지 확인합니다.
-//     // const selectedPlace = courses[currentCourseIndex]?.places;
-
-//     // 💡 [수정] 이미 선택된 장소가 없다면, 새 리스트의 첫 번째 장소를 상세 정보로 설정
-//     // placeName이 '미정'이거나 placeId가 초기값(900 등)인 경우를 '미선택'으로 간주
-//     // if (selectedPlace && selectedPlace.placeName !== '미정' && selectedPlace.placeId !== 900) {
-//     //   setPlaceData(selectedPlace);
-//     // } else {
-//     //   setPlaceData(newRecommend[0] || null);
-//     // }
-//   }, [currentCourseIndex, courses, midCourseMode]); // midCourseMode 의존성 추가
-
-//   // 받은 데이터 프론트가 원하는 형식으로 변환하는 함수
-//     const convertDataFront = (data) => {
-//       console.log('받은 데이터: ', data);
-//       const { party, midpoint, course_list } = data;
-//       const { party_name, date_time, party_type } = party;
-//       const { name, lat, lng } = midpoint;
-
-//       const findDataFront: MidFindData = {
-//         party: {
-//           partyName: party_name,
-//           partyDate: date_time,
-//           midPoint: name,
-//           midPointLat: lat,
-//           midPointLng: lng,
-//           courses: course_list,
-//         },
-//         courseMode: party_type,
-//         customRecommendList: null,
-//         aiRecommendList: null,
-//         currentCourseIndex: 0,
-//         placeData: null,
-//       };
-//       setMidCourseMode(party_type);
-//       console.log('변환한 데이터: ', findDataFront);
-//     };
-
-//     const getPartyAndCourse = async () => {
-//       try {
-//         const baseURL = import.meta.env.VITE_API_URL;
-//         const response = await axios.get(`${baseURL}/party/${partyId}/mid`, {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-//         console.log('데이터 세팅: ', response);
-//         convertDataFront(response.data);
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     };
-
-//   // 3. '이전/다음' 버튼 핸들러 (useCallback 사용)
-//   const handlePrev = useCallback(() => {
-//     if (!isFirst) {
-//       setCurrentCourseIndex((prev) => prev - 1);
-//       setPlaceData(null);
-//     }
-//   }, [isFirst]);
-
-//   const handleNext = useCallback(() => {
-//     if (!isLast) {
-//       setCurrentCourseIndex((next) => next + 1);
-//       setPlaceData(null);
-//     }
-//   }, [isLast]);
-
-//   // 4. 장소 선택/상세 보기 핸들러 (useCallback 사용)
-//   const onPlaceSelect = useCallback(
-//     (place: RecommendedPlace): void => {
-//       // console.log('장소 선택 클릭', place);
-//       setPlaceData(place);
-
-//       // ✅ [수정] 선택된 장소의 모든 정보를 코스 리스트(state)에 반영
-//       setCourses((prevCourses) => {
-//         const updatedCourses = [...prevCourses];
-//         updatedCourses[currentCourseIndex] = {
-//           ...prevCourses[currentCourseIndex], // 기존 courseNo 복사
-
-//           // 🎯 places 속성 전체를 선택된 장소 (place)의 모든 정보로 교체
-//           places: place,
-//         };
-//         return updatedCourses;
-//       });
-//     },
-//     [currentCourseIndex], // courses 의존성은 제거하여 불필요한 loadRecommendList 재실행 방지
-//   );
-
-//   // ai 코스 선택
-//   const onCourseIndexSelect = useCallback(
-//     (selectedIndex: number) => {
-//       // 1. 선택된 AI 코스 객체의 places 배열 (RecommendedPlace[])을 가져옵니다.
-//       const selectedPlacesArray = aiRecommendList?.[selectedIndex]?.places;
-
-//       if (!selectedPlacesArray || selectedPlacesArray.length === 0) {
-//         console.warn(`선택된 인덱스 ${selectedIndex}에 대한 장소 목록이 비어 있습니다.`);
-//         return;
-//       }
-
-//       const newCourses: PartyCourse[] = selectedPlacesArray.map((place, index) => {
-//         return {
-//           courseNo: index + 1,
-//           places: place,
-//         } as PartyCourse;
-//       });
-
-//       setCourses(newCourses);
-
-//       // 4. 인덱스를 첫 번째 코스로 초기화
-//       setCurrentCourseIndex(0);
-//     },
-//     [aiRecommendList, setCourses, setCurrentCourseIndex, setPlaceData],
-//   );
-
-//   // 5. 최종 데이터 제출 핸들러 (저장 버튼)
-//   const sumbitData = useCallback(() => {
-//     console.log('최종 저장 버튼 클릭', { ...partyInfo, courses: courses });
-//     // 서버 전송 로직 구현
-//     navigate('/midpoint/success');
-//   }, [courses, navigate, partyInfo]);
-
-//   // 6. useEffect: 초기 로딩 및 currentCourseIndex 변경 감지
-//   useEffect(() => {
-//     const loadingTimer = setTimeout(() => {
-//       setIsLoading(false);
-//       getPartyAndCourse();
-//       loadRecommendList();
-//       // console.log('✅ useEffect에서 확인한 최종 변경된 코스:', courses);
-//     }, 1000);
-//     return () => clearTimeout(loadingTimer);
-//   }, [loadRecommendList]);
-
-//   if (isLoading) {
-//     return <Loading title='최적의 만남 장소를 분석하고 있습니다.' message='잠시만 기다려주세요!' />;
-//   }
-
-//   // MidContainer로 전달할 최종 Props 구성
-//   const midContainerProps: MidFindData = {
-//     party: {
-//       ...partyInfo,
-//       courses: courses,
-//     } as PartyData,
-//     courseMode: midCourseMode,
-//     customRecommendList: recommendList,
-//     aiRecommendList: aiRecommendList,
-//     currentCourseIndex: currentCourseIndex,
-//     placeData: placeData,
-//   };
-
-//   return (
-//     <>
-//       <MidContainer
-//         mode={midMode}
-//         resultData={midContainerProps}
-//         handlePrev={handlePrev}
-//         handleNext={handleNext}
-//         handleSave={sumbitData}
-//         onPlaceSelect={onPlaceSelect}
-//         onPlaceAISelect={onCourseIndexSelect}
-//       />
-//     </>
-//   );
-// };
-
-// export default MidFinding;
-
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import MidContainer from '../../components/midpoint/MidContainer';
 import Loading from '../../components/common/Loading';
@@ -243,6 +6,7 @@ import type { PartyData, PartyCourse } from '../../types/MidCommonTypes';
 import type { AIRecommendPlace, MidFindData, RecommendedPlace } from '../../types/MidFindTypes';
 import { MOCK_FOOD_LIST, MOCK_CAFE_LIST, MOCK_SHOPPING_LIST, MOCK_AI_RECOMMEND_LIST } from '../../data/mockRecommend';
 import axios from 'axios';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
 
@@ -255,7 +19,7 @@ interface BackendItem {
 }
 
 const convertDataToAIRecommend = (backendData: { list: BackendItem[][] }): AIRecommendPlace[] => {
-  console.log('들어옴?????')
+  console.log('들어옴?????');
   // 1. 유효성 검사 (list가 있는지 확인)
   if (!backendData || !backendData.list || backendData.list.length === 0) {
     return [];
@@ -277,7 +41,8 @@ const convertDataToAIRecommend = (backendData: { list: BackendItem[][] }): AIRec
   const groupedCourses = new Map<string, BackendItem[]>();
 
   // 2. courseId를 기준으로 데이터를 그룹화 (평탄화된 리스트 사용)
-  for (const item of flattenedList) { // ✅ item은 이제 BackendItem 객체입니다.
+  for (const item of flattenedList) {
+    // ✅ item은 이제 BackendItem 객체입니다.
     // 🚨 item.courseId가 숫자형(0, 1)이므로 Map의 키로 사용하기 위해 문자열로 변환합니다.
     const key = String(item.courseId);
 
@@ -307,7 +72,7 @@ const initialPartyInfo = {
 type CourseMode = 'AI_COURSE' | 'CUSTOM_COURSE';
 
 const MidFinding: React.FC = () => {
-    const didMount = useRef(false);
+  const didMount = useRef(false);
 
   const { partyId } = useParams();
   const token = getTokenFromStorage();
@@ -333,43 +98,43 @@ const MidFinding: React.FC = () => {
   const [cachedRecommendLists, setCachedRecommendLists] = useState<Map<number, RecommendedPlace[]>>(new Map());
 
   // 2. 추천 리스트 로드 로직 (currentCourseIndex가 바뀔 때 실행, ai/custom 분기 처리)
-  const loadRecommendList = useCallback(() => {
-    let newRecommend: RecommendedPlace[] = [];
-    let newAIRecommend: AIRecommendPlace[] = [];
+  // const loadRecommendList = useCallback(() => {
+  //   let newRecommend: RecommendedPlace[] = [];
+  //   let newAIRecommend: AIRecommendPlace[] = [];
 
-    // midCourseMode가 설정되지 않았다면 리턴
-    if (!midCourseMode) return;
+  //   // midCourseMode가 설정되지 않았다면 리턴
+  //   if (!midCourseMode) return;
 
-    if (midCourseMode === 'AI_COURSE') {
-      // ... (AI 모드 로직 주석 유지 또는 구현) ...
-      newAIRecommend = MOCK_AI_RECOMMEND_LIST;
-      setAiRecommendList(newAIRecommend);
-    } else {
-      // 사용자 추천 코스
-      console.log('장소 세팅: ', newRecommend)
-      setRecommendList(newRecommend);
-    }
+  //   if (midCourseMode === 'AI_COURSE') {
+  //     // ... (AI 모드 로직 주석 유지 또는 구현) ...
+  //     newAIRecommend = MOCK_AI_RECOMMEND_LIST;
+  //     setAiRecommendList(newAIRecommend);
+  //   } else {
+  //     // 사용자 추천 코스
+  //     console.log('장소 세팅: ', newRecommend);
+  //     setRecommendList(newRecommend);
+  //   }
 
-    // ✅ 2. CUSTOM 모드일 때: 인덱스별 리스트를 설정
-    // switch (currentCourseIndex) {
-    //   case 0:
-    //     newRecommend = MOCK_FOOD_LIST;
-    //     break;
-    //   case 1:
-    //     newRecommend = MOCK_CAFE_LIST;
-    //     break;
-    //   case 2:
-    //     newRecommend = MOCK_SHOPPING_LIST;
-    //     break;
-    //   default:
-    //     newRecommend = [];
-    //     break;
-    // }
+  //   // ✅ 2. CUSTOM 모드일 때: 인덱스별 리스트를 설정
+  //   // switch (currentCourseIndex) {
+  //   //   case 0:
+  //   //     newRecommend = MOCK_FOOD_LIST;
+  //   //     break;
+  //   //   case 1:
+  //   //     newRecommend = MOCK_CAFE_LIST;
+  //   //     break;
+  //   //   case 2:
+  //   //     newRecommend = MOCK_SHOPPING_LIST;
+  //   //     break;
+  //   //   default:
+  //   //     newRecommend = [];
+  //   //     break;
+  //   // }
 
-    // 🎯 이미 선택된 장소가 없다면, 새 리스트의 첫 번째 장소를 상세 정보로 설정 (원래 로직 유지)
-    // 이 로직이 courses에 의존하지 않도록 수정해야 재귀 호출을 막을 수 있습니다.
-    // 현재 courses를 직접 참조하는 로직은 주석 처리되어 있으므로, dependencies에서 courses만 제거합니다.
-  }, [currentCourseIndex, midCourseMode]); // courses 의존성 제거: 장소 선택 시 불필요한 재실행 방지
+  //   // 🎯 이미 선택된 장소가 없다면, 새 리스트의 첫 번째 장소를 상세 정보로 설정 (원래 로직 유지)
+  //   // 이 로직이 courses에 의존하지 않도록 수정해야 재귀 호출을 막을 수 있습니다.
+  //   // 현재 courses를 직접 참조하는 로직은 주석 처리되어 있으므로, dependencies에서 courses만 제거합니다.
+  // }, [currentCourseIndex, midCourseMode]); // courses 의존성 제거: 장소 선택 시 불필요한 재실행 방지
 
   // 받은 데이터 프론트가 원하는 형식으로 변환하는 함수
   const convertDataFront = (data: any) => {
@@ -398,19 +163,16 @@ const MidFinding: React.FC = () => {
 
     // 4. 첫번째 장소 추천 리스트
     if (partyType === 'AI_COURSE') {
-      console.log(
-        'AI 코스 데이터 변환 중: ', list
-      )
+      console.log('AI 코스 데이터 변환 중: ', list);
       // const aiCourses = convertDataToAIRecommend(list);
       // console.log('////변환된 AI 코스 데이터: ', aiCourses);
 
       setAiRecommendList(list);
     } else {
       setRecommendList(list);
-
     }
     if (list && list.length > 0) {
-      setCachedRecommendLists(prev => {
+      setCachedRecommendLists((prev) => {
         const newMap = new Map(prev);
         newMap.set(0, list); // ✅ 인덱스 0 (첫 코스) 리스트 캐싱
         return newMap;
@@ -439,7 +201,7 @@ const MidFinding: React.FC = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);   // ← 성공/실패 후 딱 한 번만 상태 변경
+      setIsLoading(false); // ← 성공/실패 후 딱 한 번만 상태 변경
     }
   };
 
@@ -450,9 +212,8 @@ const MidFinding: React.FC = () => {
 
       // 캐시 확인
       const prevRecommendList = cachedRecommendLists.get(prevIndex);
-      console.log(prevIndex)
+      console.log(prevIndex);
       // const courseIndexId = courses[prevIndex].courseId;
-
 
       if (prevRecommendList) {
         console.log(`✅ 캐시 히트: 코스 ${prevIndex} 리스트를 캐시에서 로드합니다.`);
@@ -460,7 +221,6 @@ const MidFinding: React.FC = () => {
         setPlaceData(courses[prevIndex].places);
       } else {
         setPlaceData(null);
-
       }
 
       // 페이지 인덱스 이동
@@ -475,14 +235,15 @@ const MidFinding: React.FC = () => {
 
       // 1. 캐시 확인: 다음 코스의 리스트가 이미 있는지 확인
       if (cachedRecommendLists.has(nextIndex)) {
-        console.log(`✅ 캐시 히트: 코스 ${nextIndex} 리스트를 캐시에서 로드합니다.`);
+        // console.log(`✅ 캐시 히트: 코스 ${nextIndex} 리스트를 캐시에서 로드합니다.`);
         nextRecommendList = cachedRecommendLists.get(nextIndex);
-        console.log(courses[nextIndex].places)
+        console.log(courses[nextIndex].places);
         setPlaceData(courses[nextIndex].places);
       } else if (placeData !== null) {
         // 2. 캐시 미스 & 장소 선택 완료: API 호출
         const { lat, lng } = placeData;
         try {
+          setIsLoading(true);
           const baseURL = import.meta.env.VITE_API_URL;
           const courseIndexId = courses[nextIndex].courseId;
 
@@ -491,24 +252,23 @@ const MidFinding: React.FC = () => {
             headers: { Authorization: `Bearer ${token}` },
           });
 
-          console.log(`📡 API 성공: 코스 ${courseIndexId} 리스트를 서버에서 로드했습니다.`);
+          // console.log(`📡 API 성공: 코스 ${courseIndexId} 리스트를 서버에서 로드했습니다.`);
 
           // TODO: 받은 데이터를 nextRecommendList에 할당하고, 캐시에 저장
           const receivedList = response.data.list; // 실제 API 응답 구조에 맞게 수정 필요
 
-          setCachedRecommendLists(prev => {
+          setCachedRecommendLists((prev) => {
             const newMap = new Map(prev);
             newMap.set(nextIndex, receivedList);
             return newMap;
           });
 
-
           nextRecommendList = receivedList;
           setPlaceData(null);
-
-
         } catch (error) {
           console.error('API 오류:', error);
+          alert('시스템 에러가 발생하였습니다. 잠시후에 다시 시도해주세요.');
+        } finally {
           setIsLoading(false);
         }
       }
@@ -526,14 +286,20 @@ const MidFinding: React.FC = () => {
       setCurrentCourseIndex(nextIndex);
     }
   }, [
-    isLast, placeData, currentCourseIndex, partyId, token,
-    cachedRecommendLists, setCachedRecommendLists, setRecommendList // 캐싱 관련 상태 및 세터 추가
+    isLast,
+    placeData,
+    currentCourseIndex,
+    partyId,
+    token,
+    cachedRecommendLists,
+    setCachedRecommendLists,
+    setRecommendList, // 캐싱 관련 상태 및 세터 추가
   ]);
 
   // 4. 장소 선택/상세 보기 핸들러 (useCallback 사용) - 변경 없음
   const onPlaceSelect = useCallback(
     (place: RecommendedPlace): void => {
-      console.log('선택한 장소: ', place)
+      // console.log('선택한 장소: ', place);
       setPlaceData(place);
 
       setCourses((prevCourses) => {
@@ -566,7 +332,7 @@ const MidFinding: React.FC = () => {
         } as PartyCourse;
       });
 
-      console.log('새로 클릭함 코스: ', newCourses);
+      // console.log('새로 클릭함 코스: ', newCourses);
 
       setCourses(newCourses);
 
@@ -579,13 +345,13 @@ const MidFinding: React.FC = () => {
   // MidFinding.tsx 내부
 
   const sumbitData = useCallback(async () => {
-    console.log('최종 저장 버튼 클릭', { ...partyInfo, courses: courses });
+    // console.log('최종 저장 버튼 클릭', { ...partyInfo, courses: courses });
     let payloadCourses = [];
     let requestBody = {};
 
     if (partyInfo.partyType === 'AI_COURSE') {
       payloadCourses = courses.map((courseItem) => {
-        console.log('코스 아이템 확인: ', courseItem);
+        // console.log('코스 아이템 확인: ', courseItem);
 
         if (!courseItem.places) {
           console.error(`ERROR: Course No ${courseItem.courseNo}에 선택된 장소 정보가 없습니다.`);
@@ -604,15 +370,13 @@ const MidFinding: React.FC = () => {
           course_view: true, // boolean 값 전송
           place_lat: Number(lat), // ✅ 문자열 -> 숫자로 변환
           place_lng: Number(lng), // ✅ 문자열 -> 숫자로 변환
-          place_url:placeUrl
+          place_url: placeUrl,
         };
       });
-
-
     } else {
       // 1. 전송할 데이터 구조로 변환 (Mapping)
       payloadCourses = courses.map((courseItem) => {
-        console.log(courseItem)
+        // console.log(courseItem)
         if (!courseItem.places) {
           console.error(`ERROR: Course No ${courseItem.courseNo}에 선택된 장소 정보가 없습니다.`);
           return null;
@@ -630,11 +394,9 @@ const MidFinding: React.FC = () => {
           course_view: true, // boolean 값 전송
           place_lat: Number(lat), // ✅ 문자열 -> 숫자로 변환
           place_lng: Number(lng), // ✅ 문자열 -> 숫자로 변환
-          place_url: courseItem.places.placeUrl
+          place_url: courseItem.places.placeUrl,
         };
       });
-
-
     }
 
     // API 요청 본문 (DTO가 courses 배열을 감싸는 객체를 요구한다고 가정)
@@ -642,49 +404,39 @@ const MidFinding: React.FC = () => {
       courses: payloadCourses,
     };
 
-    console.log('최종 전송 데이터:', requestBody);
+    // console.log('최종 전송 데이터:', requestBody);
 
     // 2. 서버 전송 로직 구현
     try {
+      setIsLoading(true);
       const baseURL = import.meta.env.VITE_API_URL;
-      const response = await axios.patch(
-        `${baseURL}/party/${partyId}/courseArray`,
-        requestBody,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log('데이터 전송 성공: ', response);
-      navigate(`/midpoint/success/${partyId}`); // 성공 시 이동
+      const response = await axios.patch(`${baseURL}/party/${partyId}/courseArray`, requestBody, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // console.log('데이터 전송 성공: ', response);
+      if (response.status === 200) {
+        navigate(`/midpoint/success/${partyId}`);
+      }
     } catch (error) {
       // 🚨 서버에서 반환한 구체적인 400 에러 메시지를 확인합니다.
-      console.error('코스 저장 API 오류:', error);
+      // console.error('코스 저장 API 오류:', error);
+      alert('결과를 저장하지 못했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false);
     }
   }, [courses, navigate, partyId, token]);
-
-  // // 6. useEffect: 초기 데이터 로딩 (컴포넌트 마운트 시 1회 실행)
-  // useEffect(() => {
-
-  // }, []);
 
   // 7. useEffect: 데이터 로드 완료 및 courseIndex/mode 변경 감지 후 추천 리스트 로드
   useEffect(() => {
     if (didMount.current) return;
     didMount.current = true;
-    console.log('유즈이펙트', isLoading)
-    // isLoading이 false이고, midCourseMode가 설정되었을 때만 추천 리스트 로드
-    // if (!isLoading) {
-    //   getPartyAndCourse();
-    //   // loadRecommendList();
-    // }
     getPartyAndCourse();
-
   }, []);
 
   // 로딩 중이거나 필수 데이터(midCourseMode)가 아직 로드되지 않았다면 로딩 컴포넌트를 표시
-  if (isLoading || midCourseMode === null) {
+  if (midCourseMode === null) {
     return <Loading title='최적의 만남 장소를 분석하고 있습니다.' message='잠시만 기다려주세요!' />;
   }
 
@@ -703,6 +455,7 @@ const MidFinding: React.FC = () => {
 
   return (
     <>
+      <LoadingOverlay isOverlay={true} isActive={isLoading} />
       <MidContainer
         mode={midMode}
         resultData={midContainerProps}

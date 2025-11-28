@@ -14,6 +14,14 @@ const MidPlaceItem: React.FC<MidPlaceItemProps> = ({ index, data, onClickDetail,
   // 이미지가 없을 때를 대비한 플레이스홀더 스타일
   const imagePlaceholderStyle = 'h-1/2 w-full object-cover mb-2 bg-gray-300 rounded-t-lg';
 
+  const handleUrl = (url: string) => {
+    const newWindow = window.open(url, '_blank');
+    if (!newWindow) {
+      // 팝업 차단 메시지 처리 (console 대신 사용자에게 보이는 메시지 박스 사용 권장)
+      console.error('팝업 차단으로 인해 새 탭을 열 수 없습니다.');
+    }
+  };
+
   return (
     // 전체 컨테이너 스타일 조정 (그림자 및 여백 유지)
     <div className='flex flex-col h-full justify-between text-left min-w-48 w-64 mr-3 p-0 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700'>
@@ -22,7 +30,7 @@ const MidPlaceItem: React.FC<MidPlaceItemProps> = ({ index, data, onClickDetail,
         <img src={data.imageUrl} className='h-[130px] w-full object-cover mb-2 rounded-t-lg' alt={data.placeName} />
       ) : (
         // 이미지 없을 때 회색 플레이스홀더
-       
+
         <img src='https://placehold.co/200x150/00C48C/fff?text=Empty+Image' className='h-1/2 w-full object-cover mb-2 rounded-t-lg' alt={data.placeName} />
         // <div className={imagePlaceholderStyle} style={{ height: '150px', minHeight: '150px' }}></div>
       )}
@@ -31,7 +39,7 @@ const MidPlaceItem: React.FC<MidPlaceItemProps> = ({ index, data, onClickDetail,
       <div className='p-4 pt-0'>
         {/* 장소 이름 - 이미지의 녹색 텍스트와 비슷하게 조정 */}
         <h5 className='mb-2 text-xl font-bold tracking-tight text-green-600 dark:text-green-400'>{data.placeName}</h5>
-        
+
         {/* 주소 */}
         <p className='font-normal text-gray-700 dark:text-gray-400 text-sm'>{data.placeAddr}</p>
 
@@ -54,7 +62,7 @@ const MidPlaceItem: React.FC<MidPlaceItemProps> = ({ index, data, onClickDetail,
           )}
           {mode === 'VIEW' && (
             <Button
-              onClick={() => onClickDetail && onClickDetail(data)}
+              onClick={() => data.placeUrl && handleUrl(data.placeUrl)}
               buttonName='자세히 보기'
               // 이미지의 녹색 버튼 스타일로 변경
               className='w-full items-center px-3 py-2 text-sm font-medium text-center text-white bg-teal-500 rounded-lg hover:bg-teal-600 focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800'

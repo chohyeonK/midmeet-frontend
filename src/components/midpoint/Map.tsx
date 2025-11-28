@@ -69,7 +69,7 @@ const Map: React.FC<MapProps> = ({ points, initialCenter }) => {
 
   return (
     <>
-      <MapContainer center={center} zoom={13} style={{ height: '350px', width: '100%' }}>
+      <MapContainer center={center} zoom={13} style={{ height: '350px', width: '100%', zIndex: 0 }}>
         <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' />
 
         {points.length > 0 && <MapViewAdjuster />}

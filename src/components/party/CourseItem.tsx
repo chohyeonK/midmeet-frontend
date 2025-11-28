@@ -157,7 +157,7 @@ const CourseItem: React.FC<CourseItemProps> = ({ index, course, onUpdate, onRemo
 
         // ✅ 상태가 업데이트된 직후의 newTags를 사용하여 부모 업데이트 로직 실행
         const transformedTags = getTransformedTags(newTags, selectedCategory);
-        console.log('transformedTags', transformedTags);
+        // console.log('transformedTags', transformedTags);
 
         onUpdate(index, {
           ...course,

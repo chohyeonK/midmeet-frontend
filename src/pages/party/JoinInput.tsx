@@ -7,6 +7,7 @@ import { partyJoinInputSchema } from '../../validation/authSchema';
 import axios from 'axios';
 import { usePartyStore } from '../../store/usePartyStore';
 import { useNavigate, useLocation } from 'react-router-dom';
+import LoadingOverlay from '../../components/common/LoadingOverlay';
 
 type FormData = yup.InferType<typeof partyJoinInputSchema>;
 const getTokenFromStorage = () => localStorage.getItem('token') || null;
@@ -17,7 +18,7 @@ const JoinInput: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const partyName = location.state?.partyName;
-
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -34,6 +35,7 @@ const JoinInput: React.FC = () => {
   const handleJoinSubmit: SubmitHandler<FormData> = async (data: FormData) => {
     // console.log('handleJoinSubmit => ', data);
     try {
+      setIsLoading(true);
       const payload = {
         transport_mode: data.transportation,
         start_address: data.from,
@@ -57,6 +59,8 @@ const JoinInput: React.FC = () => {
         }
         navigate('/mypage/history');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,6 +68,7 @@ const JoinInput: React.FC = () => {
 
   return (
     <>
+      <LoadingOverlay isOverlay={true} isActive={isLoading} />
       <JoinForm title={partyName} subTitle='모임원 정보 입력하기' setAddressAndField={setAddressAndField} onSubmit={formSubmitHandler} register={register} errors={errors} />
     </>
   );

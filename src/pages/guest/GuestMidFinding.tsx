@@ -134,7 +134,7 @@ const GuestMidFinding: React.FC = () => {
       courses: coursesPaylod,
     };
 
-    console.log('결과 데이터: ', payload);
+    // console.log('결과 데이터: ', payload);
 
     // 임시 데이터 추후 삭제
     // const temp = {

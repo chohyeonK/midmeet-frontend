@@ -14,6 +14,7 @@ import { format, parse } from 'date-fns';
 import { ko } from 'date-fns/locale'; // 한국어 로케일
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useAuthStore } from '../../store/useAuthStore';
 
 // *******************************************************************
 // MidFindData와 MidResultData의 구조적 차이 사용
@@ -39,6 +40,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
   // console.log('데이터: ', resultData);
   const { partyId } = useParams();
   const token = getTokenFromStorage();
+  const user = useAuthStore((state) => state.user);
 
   const isFindMode = mode === 'FIND';
   const isViewMode = mode === 'VIEW';
@@ -48,7 +50,7 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
   // 받은 데이터 할당
   const finalData: MidResultData | null = isViewMode && isResultData ? (resultData as MidResultData) : null;
   const findData: MidFindData | null = isFindMode && !isResultData ? (resultData as MidFindData) : null; // 공통 데이터 추출 (data.party 속성 사용)
-
+  // console.log('파이널 데이터: ', finalData);
   const partyInfo: PartyData | null = isFindMode ? findData?.party || null : finalData?.party || null;
   const partyName = partyInfo?.partyName || '모임명 미정';
   const midPoint = partyInfo?.midPoint || '중간 지점 미정';
@@ -166,119 +168,114 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
     if (!findData && !finalData) return [];
 
     const extractPoints = () => {
-        const dataToProcess = findData || finalData;
-        if (!dataToProcess || !dataToProcess.party) return [];
+      const dataToProcess = findData || finalData;
+      if (!dataToProcess || !dataToProcess.party) return [];
 
-        const { party } = dataToProcess;
-        const newPoints: Point[] = [];
-        const uniquePoints = new Set<string>(); // -------------------------------------------------------------
-        // 헬퍼 함수: 중복 체크 후 포인트 추가. (순서 정보 없는 포인트 우선)
-        // -------------------------------------------------------------
+      const { party } = dataToProcess;
+      const newPoints: Point[] = [];
+      const uniquePoints = new Set<string>(); // -------------------------------------------------------------
+      // 헬퍼 함수: 중복 체크 후 포인트 추가. (순서 정보 없는 포인트 우선)
+      // -------------------------------------------------------------
 
-        const addPoint = (point: Point) => {
-            const key = `${point.lat},${point.lng}`;
+      const addPoint = (point: Point) => {
+        const key = `${point.lat},${point.lng}`;
 
-            if (point.type === 'midpoint') {
-                newPoints.push(point);
-                return;
-            } // ⭐ 'selected' 타입일 때, 중복 체크 및 추가
+        if (point.type === 'midpoint') {
+          newPoints.push(point);
+          return;
+        } // ⭐ 'selected' 타입일 때, 중복 체크 및 추가
 
-            if (!uniquePoints.has(key)) {
-                newPoints.push(point);
-                uniquePoints.add(key);
-            }
-        }; // -------------------------------------------------------------
-        // 🎯 1. 중간 지점 좌표 추가 (항상 최우선)
-        // -------------------------------------------------------------
-
-        if (party.midPointLat && party.midPointLng) {
-            // 💡 [수정]: 중간 지점 좌표도 0이 아닌지 체크하는 것이 안전하지만, 
-            //         일반적으로 중간 지점은 유효한 좌표로 계산된다고 가정하고 로직 유지
-            addPoint({
-                lat: party.midPointLat,
-                lng: party.midPointLng,
-                name: '계산된 중간 지점',
-                type: 'midpoint',
-            });
+        if (!uniquePoints.has(key)) {
+          newPoints.push(point);
+          uniquePoints.add(key);
         }
-        // console.log('중간 완료', newPoints);
+      }; // -------------------------------------------------------------
+      // 🎯 1. 중간 지점 좌표 추가 (항상 최우선)
+      // -------------------------------------------------------------
 
-        // console.log('코스 시작', courses);
+      if (party.midPointLat && party.midPointLng) {
+        // 💡 [수정]: 중간 지점 좌표도 0이 아닌지 체크하는 것이 안전하지만,
+        //         일반적으로 중간 지점은 유효한 좌표로 계산된다고 가정하고 로직 유지
+        addPoint({
+          lat: party.midPointLat,
+          lng: party.midPointLng,
+          name: '계산된 중간 지점',
+          type: 'midpoint',
+        });
+      }
+      // console.log('중간 완료', newPoints);
 
-        // -------------------------------------------------------------
-        // 🎯 2. 코스 장소들 추가 (순서 정보가 있으므로 우선 처리)
-        // -------------------------------------------------------------
-        courses.forEach((course, index) => {
-            const p = course.places;
-            
-            // 💡 [핵심 수정]: 좌표가 존재하고, 유효한 숫자인지, 그리고 '0'이나 0이 아닌지 확인
-            const latValue = Number(p?.lat);
-            const lngValue = Number(p?.lng);
-            
-            // p.lat과 p.lng이 존재하고, 숫자로 변환했을 때 0이 아니며, 유효한 숫자인지 확인합니다.
-            const isCourseCoordinateValid = 
-                p?.lat && p.lng && 
-                !isNaN(latValue) && !isNaN(lngValue) && 
-                (latValue !== 0 || lngValue !== 0);
+      // console.log('코스 시작', courses);
 
-            if (isCourseCoordinateValid) {
-                const key = `${p.lat},${p.lng}`; 
+      // -------------------------------------------------------------
+      // 🎯 2. 코스 장소들 추가 (순서 정보가 있으므로 우선 처리)
+      // -------------------------------------------------------------
+      courses.forEach((course, index) => {
+        const p = course.places;
 
-                if (!uniquePoints.has(key)) {
-                    newPoints.push({
-                        lat: p.lat,
-                        lng: p.lng,
-                        name: p.placeName,
-                        type: 'selected',
-                        index: index + 1, // ⭐ 코스 순서 부여
-                    });
-                    uniquePoints.add(key);
-                }
-            }
-        }); 
-        // console.log('코스 완료', newPoints);
+        // 💡 [핵심 수정]: 좌표가 존재하고, 유효한 숫자인지, 그리고 '0'이나 0이 아닌지 확인
+        const latValue = Number(p?.lat);
+        const lngValue = Number(p?.lng);
 
-        // -------------------------------------------------------------
-        // 🎯 3. CUSTOM 모드 임시 선택 장소 추가 (순서 정보 없음, 코스에 없을 때만)
-        // -------------------------------------------------------------
+        // p.lat과 p.lng이 존재하고, 숫자로 변환했을 때 0이 아니며, 유효한 숫자인지 확인합니다.
+        const isCourseCoordinateValid = p?.lat && p.lng && !isNaN(latValue) && !isNaN(lngValue) && (latValue !== 0 || lngValue !== 0);
 
-        const midCourseMode = findData?.courseMode;
+        if (isCourseCoordinateValid) {
+          const key = `${p.lat},${p.lng}`;
 
-        if (midCourseMode === 'CUSTOM_COURSE' && findData && findData.placeData && findData.placeData.lat && findData.placeData.lng) {
-            // console.log('들어옴???');
-            const p = findData.placeData;
-            
-            // 💡 [추가]: 임시 선택 장소도 좌표가 0이 아닌지 확인
-            const pLatValue = Number(p.lat);
-            const pLngValue = Number(p.lng);
-            
-            const isPlaceDataValid = 
-                !isNaN(pLatValue) && !isNaN(pLngValue) && 
-                (pLatValue !== 0 || pLngValue !== 0);
-            
-            if (isPlaceDataValid) {
-                const key = `${p.lat},${p.lng}`; 
+          if (!uniquePoints.has(key)) {
+            newPoints.push({
+              lat: p.lat,
+              lng: p.lng,
+              name: p.placeName,
+              type: 'selected',
+              index: index + 1, // ⭐ 코스 순서 부여
+            });
+            uniquePoints.add(key);
+          }
+        }
+      });
+      // console.log('코스 완료', newPoints);
 
-                if (!uniquePoints.has(key)) {
-                    // index가 없는 임시 장소
-                    newPoints.push({
-                        lat: p.lat,
-                        lng: p.lng,
-                        name: p.placeName,
-                        type: 'selected', // index 필드 생략 (순서 없음)
-                    });
-                    uniquePoints.add(key);
-                }
-            }
-        } 
+      // -------------------------------------------------------------
+      // 🎯 3. CUSTOM 모드 임시 선택 장소 추가 (순서 정보 없음, 코스에 없을 때만)
+      // -------------------------------------------------------------
 
-        // console.log('맵포인츠', newPoints);
+      const midCourseMode = findData?.courseMode;
 
-        return newPoints;
+      if (midCourseMode === 'CUSTOM_COURSE' && findData && findData.placeData && findData.placeData.lat && findData.placeData.lng) {
+        // console.log('들어옴???');
+        const p = findData.placeData;
+
+        // 💡 [추가]: 임시 선택 장소도 좌표가 0이 아닌지 확인
+        const pLatValue = Number(p.lat);
+        const pLngValue = Number(p.lng);
+
+        const isPlaceDataValid = !isNaN(pLatValue) && !isNaN(pLngValue) && (pLatValue !== 0 || pLngValue !== 0);
+
+        if (isPlaceDataValid) {
+          const key = `${p.lat},${p.lng}`;
+
+          if (!uniquePoints.has(key)) {
+            // index가 없는 임시 장소
+            newPoints.push({
+              lat: p.lat,
+              lng: p.lng,
+              name: p.placeName,
+              type: 'selected', // index 필드 생략 (순서 없음)
+            });
+            uniquePoints.add(key);
+          }
+        }
+      }
+
+      // console.log('맵포인츠', newPoints);
+
+      return newPoints;
     };
 
     return extractPoints();
-}, [findData, finalData, courses]); // findData, finalData, courses가 변경될 때만 mapPoints 재계산
+  }, [findData, finalData, courses]); // findData, finalData, courses가 변경될 때만 mapPoints 재계산
   // 🚨 [제거]: 불필요한 useEffect 블록은 제거되었습니다.
   // *******************************************************************
   // 3. 렌더링 콘텐츠 로직
@@ -330,6 +327,17 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
       }
     } else if (isViewMode && finalData) {
       // VIEW 모드: 확정된 코스 및 모임원별 경로 표시
+      // 1. 리더를 맨 앞으로 가져오기 위해 멤버 배열 정렬
+      // 원본 데이터를 변경하지 않기 위해 스프레드 연산자([...])로 복사본을 만듭니다.
+      const sortedMembers = [...finalData.members].sort((a, b) => {
+        // a가 리더이면 위로(-1), b가 리더이면 아래로(1)
+        const aIsLeader = isCurrentUserLeader && a.name.includes(user!.name);
+        const bIsLeader = isCurrentUserLeader && b.name.includes(user!.name);
+
+        if (aIsLeader && !bIsLeader) return -1;
+        if (!aIsLeader && bIsLeader) return 1;
+        return 0;
+      });
       return (
         <>
           <div className='mb-6'>
@@ -345,9 +353,13 @@ const MidContainer: React.FC<MidContainerProps> = ({ mode, resultData, handleNex
           </div>
           <div className='mb-6'>
             <div className='text-left mb-3 text-2xl font-semibold text-gray-900'>모임원별 가는 방법</div>
-            {finalData.members.map((member, index) => {
-              // 방장 판단 로직: member.name에 '(나)'가 포함되어 있고 현재 유저가 방장일 때 => 추후에 아이디로 비교해야 함
-              const isThisMemberTheLeader = isCurrentUserLeader && member.name.includes('(나)');
+            {/* {finalData.members.map((member, index) => {
+              const isThisMemberTheLeader = isCurrentUserLeader && member.name.includes(user!.name);
+              return <MemberRouteDetail key={member.name} member={member} isLeader={!!isThisMemberTheLeader} />;
+            })} */}
+            {/* 2. 정렬된 sortedMembers를 렌더링 */}
+            {sortedMembers.map((member) => {
+              const isThisMemberTheLeader = isCurrentUserLeader && member.name.includes(user!.name);
               return <MemberRouteDetail key={member.name} member={member} isLeader={!!isThisMemberTheLeader} />;
             })}
           </div>

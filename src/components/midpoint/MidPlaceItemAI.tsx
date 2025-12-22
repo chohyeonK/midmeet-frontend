@@ -31,7 +31,7 @@ const MidPlaceItemAI: React.FC<MidPlaceItemProps> = ({ index, data, onClickDetai
         <h5 className='mb-2 text-xl font-bold tracking-tight text-green-600 dark:text-green-400 h-12 line-clamp-2 overflow-hidden'>{courseName}</h5>
 
         {/* 🎯 본문: places 배열의 장소 이름 요약 */}
-        <div className='font-normal text-gray-700 dark:text-gray-400 text-sm overflow-y-auto h-24 mb-3'>
+        <div className='font-normal text-gray-700 dark:text-gray-400 text-sm overflow-y-auto h-12 mb-3'>
           {/* 장소 목록을 모두 출력 (원래 로직 유지) */}
           {places.map((place, index) => (
             // key prop은 map을 사용할 때 필수입니다.

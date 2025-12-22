@@ -75,7 +75,7 @@ function App() {
             <Route path='/midpoint/calculate/:partyId' element={<MidFinding />} />
             <Route path='/midpoint/success/:partyId' element={<MidSuccess />} />
             <Route path='/midpoint/result/:partyId' element={<MidResult />} />
-            {/* <Route path='/midpoint/edit/:partyId' element={<MidEdit />} /> */}
+            <Route path='/midpoint/edit/:partyId' element={<MidEdit />} />
           </Route>
         </Route>
         <Route path='*' element={<NotFound />} />

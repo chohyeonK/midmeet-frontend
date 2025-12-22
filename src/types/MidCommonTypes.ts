@@ -5,9 +5,10 @@ export type ViewMode = 'FIND' | 'VIEW';
 
 // 전체 코스 보기 시 사용
 export interface PartyCourse {
-  courseId: number | string;
+  courseId: string;
   courseNo: number;
   places: RecommendedPlace;
+  // courseView?: boolean; // 추후 개발
 }
 
 export interface PartyData {

@@ -8,6 +8,7 @@ interface DragAndDropCourseProps {
   index: number;
   currentIndex: number;
   className: string;
+  // handlePartyActive: (targetId: string) => void; // 추후 개발
 }
 
 // 드래그 핸들 (세 개의 점 아이콘)
@@ -26,12 +27,12 @@ const DragAndDropCourse: React.FC<DragAndDropCourseProps> = ({ course, index, cu
     opacity: isDragging ? 0.8 : 1,
   };
 
-  // 숨김 기능 관련(현재 사용 안함)
-  const [isHidden, setIsHidden] = useState(false);
-  const statusText = isHidden ? '숨김 ON' : '숨김 OFF';
-  const statusClasses = isHidden
-    ? 'bg-gray-700 text-white hover:bg-gray-800' // ON 상태 스타일
-    : 'bg-gray-200 text-gray-400'; // OFF 상태 스타일
+  // 숨김 기능 추후 개발
+  // const isActive = course.courseView;
+  // const statusText = isActive ? '숨김 ON' : '숨김 OFF';
+  // const statusClasses = isActive
+  //   ? 'bg-gray-700 text-white hover:bg-gray-800' // ON 상태 스타일
+  //   : 'bg-gray-200 text-gray-400'; // OFF 상태 스타일
   return (
     <div
       ref={setNodeRef} // DND 노드 참조 연결
@@ -52,10 +53,11 @@ const DragAndDropCourse: React.FC<DragAndDropCourseProps> = ({ course, index, cu
                     <div>{course.places.placeName}</div>
         </div>
       </div>
-           
-      <div className={`p-2 rounded cursor-pointer text-sm font-semibold transition duration-150 ${statusClasses}`} onClick={() => setIsHidden((prev) => !prev)}>
+
+      {/* 숨김 기능 추후 개발 */}
+      {/* <div className={`p-2 rounded cursor-pointer text-sm font-semibold transition duration-150 ${statusClasses}`} onClick={() => handlePartyActive(course.courseId)}>
         {statusText}
-      </div>
+      </div> */}
     </div>
   );
 };

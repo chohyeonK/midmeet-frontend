@@ -37,7 +37,21 @@ const MypageHistory: React.FC = () => {
         // console.log(response);
 
         if (response.status === 200) {
-          setPartyList(response.data);
+          // 1. 전체 모임 목록(data)을 순회하며 내부의 courses를 정렬
+          const sortedData = response.data.map((party) => {
+            return {
+              ...party,
+              // 2. 각 party 객체 안의 courses 배열을 정렬
+              courses: [...party.courses].sort((a, b) => {
+                const noA = Number(a.course_no || 0);
+                const noB = Number(b.course_no || 0);
+                return noA - noB; // 오름차순 정렬
+              }),
+            };
+          });
+
+          // console.log('정렬 완료된 전체 데이터:', sortedData);
+          setPartyList(sortedData);
         }
       } catch (error) {
         // console.log(error);

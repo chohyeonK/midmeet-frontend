@@ -139,9 +139,9 @@ const MidFinding: React.FC = () => {
   // 받은 데이터 프론트가 원하는 형식으로 변환하는 함수
   const convertDataFront = (data: any) => {
     // data 타입은 백엔드 응답 구조에 맞게 수정 필요
-    console.log('받은 데이터!!!!!!!!!!!!!!!!!!!!!!: ', data);
+    // console.log('받은 데이터!!!!!!!!!!!!!!!!!!!!!!: ', data);
     const { party, list } = data;
-    console.log('받은 리스트 데이터@@@@@@@@@@: ', list);
+    // console.log('받은 리스트 데이터@@@@@@@@@@: ', list);
     const { partyName, partyDate, midPoint, midPointLat, midPointLng, partyType, courses } = party;
 
     // 1. midCourseMode 상태 업데이트
@@ -163,7 +163,7 @@ const MidFinding: React.FC = () => {
 
     // 4. 첫번째 장소 추천 리스트
     if (partyType === 'AI_COURSE') {
-      console.log('AI 코스 데이터 변환 중: ', list);
+      // console.log('AI 코스 데이터 변환 중: ', list);
       // const aiCourses = convertDataToAIRecommend(list);
       // console.log('////변환된 AI 코스 데이터: ', aiCourses);
 
@@ -185,7 +185,7 @@ const MidFinding: React.FC = () => {
     // 4. 로딩 상태 해제
     // setIsLoading(false);
 
-    console.log('변환 후 설정된 partyInfo: ', newPartyInfo);
+    // console.log('변환 후 설정된 partyInfo: ', newPartyInfo);
   };
 
   const getPartyAndCourse = async () => {
@@ -196,7 +196,7 @@ const MidFinding: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('데이터 세팅: ', response);
+      // console.log('데이터 세팅: ', response);
       convertDataFront(response.data);
     } catch (error) {
       console.log(error);
@@ -212,11 +212,11 @@ const MidFinding: React.FC = () => {
 
       // 캐시 확인
       const prevRecommendList = cachedRecommendLists.get(prevIndex);
-      console.log(prevIndex);
+      // console.log(prevIndex);
       // const courseIndexId = courses[prevIndex].courseId;
 
       if (prevRecommendList) {
-        console.log(`✅ 캐시 히트: 코스 ${prevIndex} 리스트를 캐시에서 로드합니다.`);
+        // console.log(`✅ 캐시 히트: 코스 ${prevIndex} 리스트를 캐시에서 로드합니다.`);
         setRecommendList(prevRecommendList); // 이전 코스의 리스트를 로드
         setPlaceData(courses[prevIndex].places);
       } else {

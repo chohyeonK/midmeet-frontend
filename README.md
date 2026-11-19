@@ -15,17 +15,6 @@
 - **주변 장소 추천 및 코스 구성** · 추천 목록에서 장소를 선택합니다. 직접 코스를 구성하는 모드에서는 선택한 장소를 기준으로 다음 코스의 후보를 불러옵니다.
 - **결과 확인** · 확정된 코스와 참가자별 예상 이동시간 및 경로 상세를 확인합니다.
 
-## 내 담당 범위
-
-서비스 기획에 참여하고, 출발지와 교통수단 입력 화면, 중간지점 지도, 주변 장소 추천 및 모임 코스 구성 화면을 개발했습니다. REST API로 받은 중간지점과 장소 데이터를 지도 및 목록에 연결했습니다.
-
-| 구현 내용 | 관련 코드 |
-|---|---|
-| 출발지와 교통수단을 입력받고 참여 API에 전송 | [`JoinInput.tsx`](https://github.com/chohyeonK/midmeet-frontend/blob/master/src/pages/party/JoinInput.tsx#L12-L48) |
-| 중간지점과 선택한 코스 장소를 지도 마커 데이터로 구성 | [`MidContainer.tsx`](https://github.com/chohyeonK/midmeet-frontend/blob/master/src/components/midpoint/MidContainer.tsx#L149-L252) |
-| 마커를 표시하고 모든 지점이 보이도록 지도 범위를 조정 | [`Map.tsx`](https://github.com/chohyeonK/midmeet-frontend/blob/master/src/components/midpoint/Map.tsx#L46-L84) |
-| 선택한 장소의 좌표로 다음 코스의 후보를 조회 | [`MidFinding.tsx`](https://github.com/chohyeonK/midmeet-frontend/blob/master/src/pages/midpoint/MidFinding.tsx#L212-L252) |
-
 ## 중간지점 추천 방식
 
 백엔드는 OpenTripPlanner(OTP)에서 각 참가자가 일정 시간 안에 도달할 수 있는 영역을 받아옵니다. 참가자들의 영역이 겹치는 곳에서 지하철역 후보를 찾고, 후보별로 참가자의 예상 이동시간을 비교합니다. 이동시간 표준편차가 가장 작은 역을 추천하고, 표준편차가 같으면 평균 이동시간이 더 짧은 역을 선택합니다. 프론트엔드는 추천 결과를 받아 지도와 장소 목록에 반영합니다. [백엔드 중간지점 계산 코드](https://github.com/skand406/midmeet-backend/blob/master/src/party/services/otp/otp.service.ts#L218-L344)
